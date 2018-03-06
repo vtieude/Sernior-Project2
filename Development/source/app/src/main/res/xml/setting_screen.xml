@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:sample="http://schemas.android.com/apk/res-auto"
+    android:key="setting_pre">
+
+    <SwitchPreference
+    android:title="Age"
+    android:key="switch_age"
+    android:summaryOff="Off"
+    android:summaryOn="On"
+    >
+    </SwitchPreference>
+    <SwitchPreference
+        android:title="Gender"
+        android:key="switch_gender"
+        android:summaryOff="Off"
+        android:summaryOn="On">
+    </SwitchPreference>
+    <SwitchPreference
+        android:title="Emotion"
+        android:key="switch_emotion"
+        android:summaryOff="Off"
+        android:summaryOn="On">
+    </SwitchPreference>
+    <SwitchPreference
+        android:title="Characteristic"
+        android:key="switch_character"
+        android:summaryOff="Off"
+        android:summaryOn="On">
+    </SwitchPreference>
+    <com.pavelsikun.seekbarpreference.SeekBarPreference
+        android:key="amount_face"
+        android:title="Amount"
+        sample:msbp_minValue="1"
+        sample:msbp_maxValue="10"
+        />
+</PreferenceScreen>

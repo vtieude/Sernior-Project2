@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">HumanCharacteristics</string>
+    <string name="setting_name">Setting</string>
+    <string name="storage">Storage</string>
+    <string name="start">Start</string>
+    <string name="exit">Exit</string>
+    <string name="author">Author</string>
+</resources>
