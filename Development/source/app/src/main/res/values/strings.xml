@@ -5,4 +5,10 @@
     <string name="start">Start</string>
     <string name="exit">Exit</string>
     <string name="author">Author</string>
+    <string name="text_comment">Type your comment</string>
+    <string name="text_phone">Type phone number</string>
+    <string name="text_email">Type email</string>
+    <string name="tittle_email">Email</string>
+    <string name="tittle_phone">Phone</string>
+    <string name="tittle_comment">Comment</string>
 </resources>

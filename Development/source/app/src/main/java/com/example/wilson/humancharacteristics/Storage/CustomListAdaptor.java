@@ -1,8 +1,6 @@
 package com.example.wilson.humancharacteristics.Storage;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.wilson.humancharacteristics.R;
+import com.example.wilson.humancharacteristics.bean.HumanModel;
 
 import java.util.List;
 
@@ -50,8 +49,8 @@ public class CustomListAdaptor extends BaseAdapter{
             view = layoutInflater.inflate(R.layout.list_item_human, null);
             holder = new ViewHolder();
             holder.flagView = (ImageView)view.findViewById(R.id.imageView_flag);
-            holder.nameView = (TextView)view.findViewById(R.id.text_name);
-            holder.ageView = (TextView)view.findViewById(R.id.text_age);
+            holder.nameView = (TextView)view.findViewById(R.id.item_name);
+            holder.ageView = (TextView)view.findViewById(R.id.item_age);
             view.setTag(holder);
         }
         else {
@@ -60,19 +59,10 @@ public class CustomListAdaptor extends BaseAdapter{
         HumanModel human = this.listHuman.get(i);
         holder.nameView.setText("Name: " +human.getName());
         holder.ageView.setText("Age: " + human.getAge());
-        int imageId = getMipmapResIdByName(human.getFlagImage());
+        int imageId = human.getMipmapResIdByName(context,human.getFlagImage());
         holder.flagView.setImageResource(imageId);
         return view;
     }
-    public int getMipmapResIdByName(String resName)  {
-        String pkgName = context.getPackageName();
-
-        // Trả về 0 nếu không tìm thấy.
-        int resID = context.getResources().getIdentifier(resName , "mipmap", pkgName);
-        Log.i("CustomListView", "Res Name: "+ resName+"==> Res ID = "+ resID);
-        return resID;
-    }
-
     static class ViewHolder {
         ImageView flagView;
         TextView nameView;

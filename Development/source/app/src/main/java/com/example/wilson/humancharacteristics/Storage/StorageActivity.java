@@ -1,14 +1,15 @@
 package com.example.wilson.humancharacteristics.Storage;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
-import com.example.wilson.humancharacteristics.MainActivity;
+import com.example.wilson.humancharacteristics.HumanInformation.HumanInformationActivity;
 import com.example.wilson.humancharacteristics.R;
+import com.example.wilson.humancharacteristics.bean.HumanModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,8 +31,14 @@ public class StorageActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Object o = listView.getItemAtPosition(i);
                 HumanModel humanModel = (HumanModel)o;
+                Intent intent = new Intent(StorageActivity.this, HumanInformationActivity.class).putExtra("human", humanModel);
+                startActivity(intent);
             };
         });
+
+    }
+    public void selectListItemClick(){
+
     }
     private  List<HumanModel> getListData(){
         List<HumanModel> list = new ArrayList<HumanModel>();

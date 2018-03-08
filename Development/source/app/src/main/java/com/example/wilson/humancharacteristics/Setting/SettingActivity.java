@@ -15,6 +15,8 @@ import com.pavelsikun.seekbarpreference.SeekBarPreference;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class SettingActivity extends AppCompatActivity {
 
@@ -51,12 +53,12 @@ public class SettingActivity extends AppCompatActivity {
             listSwitch.add(switchGender);
             listSwitch.add(switchEmotion);
             listSwitch.add(switchCharacteristic);
-            setOnChangeSwitch();
         }
         public int getAmount() {
             return seekBarAmount.getCurrentValue();
         }
         public void setOnChangeSwitch() {
+
             for (int i =0; i < listSwitch.size(); i++) {
                 final int finalI = i;
                 listSwitch.get(i).setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {

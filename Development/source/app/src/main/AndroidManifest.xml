@@ -23,6 +23,7 @@
         <activity android:name=".CameraDetect.CameraDetectActivity" />
         <activity android:name=".Setting.SettingActivity" />
         <activity android:name=".Storage.StorageActivity" />
+        <activity android:name=".HumanInformation.HumanInformationActivity" />
         <activity android:name=".Author.AuthorInformationActivity"></activity>
     </application>
 

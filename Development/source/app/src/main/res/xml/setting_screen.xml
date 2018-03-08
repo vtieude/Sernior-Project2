@@ -2,7 +2,11 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:sample="http://schemas.android.com/apk/res-auto"
     android:key="setting_pre">
-
+    <EditTextPreference
+        android:key="PREF_EDITTEXT"
+        android:title="EditText title"
+        android:summary="EditText summary"
+        android:dialogTitle="EditText Dialog" />
     <SwitchPreference
     android:title="Age"
     android:key="switch_age"
