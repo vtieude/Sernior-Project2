@@ -11,4 +11,5 @@
     <string name="tittle_email">Email</string>
     <string name="tittle_phone">Phone</string>
     <string name="tittle_comment">Comment</string>
+    <string name="delete">Delete</string>
 </resources>
