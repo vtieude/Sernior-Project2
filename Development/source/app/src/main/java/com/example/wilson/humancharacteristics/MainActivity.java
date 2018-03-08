@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.wilson.humancharacteristics.Author.AuthorInformationActivity;
 import com.example.wilson.humancharacteristics.CameraDetect.CameraDetectActivity;
 import com.example.wilson.humancharacteristics.Setting.SettingActivity;
 import com.example.wilson.humancharacteristics.Storage.StorageActivity;
@@ -27,6 +28,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        HumanDatabaseHelper database = new HumanDatabaseHelper(this);
         listButton = new ArrayList<Button>();
         // Example of a call to a native method
         btStart = (Button)this.findViewById(R.id.buttonStart);
@@ -53,9 +56,11 @@ public class MainActivity extends AppCompatActivity {
                             break;
                         case 1: myIntent = new Intent(MainActivity.this, StorageActivity.class);
                             break;
-                        case 2:  myIntent = new Intent(MainActivity.this, SettingActivity.class);
+                        case 2: myIntent = new Intent(MainActivity.this, SettingActivity.class);
                             break;
-                        case 4: finish(); System.exit(0);
+                        case 3: myIntent = new Intent(MainActivity.this, AuthorInformationActivity.class);
+                            break;
+                        case 4: MainActivity.this.finishAffinity(); System.exit(0);
                         default: break;
                     }
                     MainActivity.this.startActivity(myIntent);
