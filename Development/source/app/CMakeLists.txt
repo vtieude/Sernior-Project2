@@ -3,7 +3,7 @@
 
 # Sets the minimum version of CMake required to build the native library.
 set (pathToProject E:/DATN/GitCompany/BC11-Human-Analysis/Development/source)
-set (pathToOpencv E:/Software/opencv-3.3.1-android-sdk/OpenCV-android-sdk)
+set (pathToOpencv E:/DATN/GitCompany/opencv3-android-sdk-with-contrib-master/OpenCV-android-sdk)
 
 
 cmake_minimum_required(VERSION 3.4.1)
@@ -28,8 +28,7 @@ add_library( # Sets the name of the library.
              # Provides a relative path to your source file(s).
              src/main/cpp/native-lib.cpp
              src/main/cpp/detectFaceLib.cpp
-             src/main/cpp/recognizeFace.cpp
-             src/main/cpp/CNN_Classifier.cpp
+             src/main/cpp/landmarkPoint.cpp
              )
 add_library(lib_opencv SHARED IMPORTED)
 
