@@ -35,7 +35,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignTop="@+id/item_name"
-        android:visibility="gone"
-        android:text="" />
+         />
 
 </RelativeLayout>

@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -21,7 +22,6 @@ import java.util.List;
 public class CustomListAdaptor extends BaseAdapter{
     private List<HumanModel> listHuman;
     private LayoutInflater layoutInflater;
-    public Boolean cb = false;
     private Context context;
     public CustomListAdaptor(Context context,List<HumanModel> listHuman) {
         this.listHuman = listHuman;
@@ -54,17 +54,10 @@ public class CustomListAdaptor extends BaseAdapter{
             holder.nameView = (TextView)view.findViewById(R.id.item_name);
             holder.ageView = (TextView)view.findViewById(R.id.item_age);
             holder.checkBox = (CheckBox)view.findViewById(R.id.checkBox);
-
             view.setTag(holder);
         }
         else {
             holder = (ViewHolder)view.getTag();
-        }
-        if (cb) {
-            holder.checkBox.setVisibility(View.VISIBLE);
-        }
-        else {
-            holder.checkBox.setVisibility(View.GONE);
         }
         HumanModel human = this.listHuman.get(i);
         holder.nameView.setText("Name: " +human.getName());

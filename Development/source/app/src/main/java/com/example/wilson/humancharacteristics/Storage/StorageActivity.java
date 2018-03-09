@@ -56,6 +56,8 @@ public class StorageActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Object o = listView.getItemAtPosition(i);
                 HumanModel humanModel = (HumanModel)o;
+                Toast.makeText(StorageActivity.this, "This is my Toast message!",
+                        Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(StorageActivity.this, HumanInformationActivity.class).putExtra("human", humanModel);
                 startActivity(intent);
             };
