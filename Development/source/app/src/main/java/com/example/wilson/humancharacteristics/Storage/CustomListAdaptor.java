@@ -53,7 +53,6 @@ public class CustomListAdaptor extends BaseAdapter{
             holder.flagView = (ImageView)view.findViewById(R.id.imageView_flag);
             holder.nameView = (TextView)view.findViewById(R.id.item_name);
             holder.ageView = (TextView)view.findViewById(R.id.item_age);
-            holder.checkBox = (CheckBox)view.findViewById(R.id.checkBox);
             view.setTag(holder);
         }
         else {
@@ -70,6 +69,5 @@ public class CustomListAdaptor extends BaseAdapter{
         ImageView flagView;
         TextView nameView;
         TextView ageView;
-        CheckBox checkBox;
     }
 }
