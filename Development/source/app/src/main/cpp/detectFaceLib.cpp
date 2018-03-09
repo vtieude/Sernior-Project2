@@ -17,7 +17,7 @@
 cv::Mat frame_gray;
 std::vector<cv::Rect> faces;
 std::vector< std::vector<cv::Point2f> > shapes;
-cv::CascadeClassifier face_cascade("/sdcard/data/lbpcascade_frontalface.xml");
+cv::CascadeClassifier face_cascade("/sdcard/data/haarcascade_frontalface_alt.xml");
 
 // Limit face detect
 int id_max;
@@ -168,7 +168,6 @@ void removeIntersect(std::vector<cv::Rect>& rects) {
 
     for ( ; rect != rects.end()-1; ++rect ){
         if (checkIntersect(*rect, *(rect+1))){
-
         }
     }
 
