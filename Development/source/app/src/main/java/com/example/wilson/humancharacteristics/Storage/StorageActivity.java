@@ -41,36 +41,11 @@ public class StorageActivity extends AppCompatActivity {
         setOnItemClick();
         setItemLongClick();
     }
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-        super.onCreateContextMenu(menu, v, menuInfo);
-        getMenuInflater().inflate(R.menu.menu_storage, menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.menu_delete_storage) {
-            Toast.makeText(this, "back", Toast.LENGTH_LONG).show();
-            return true;
-        }
-
-        if (id == R.id.menu_delete_storage) {
-            Toast.makeText(this, "Setting", Toast.LENGTH_LONG).show();
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 
     public void setItemLongClick() {
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             public boolean onItemLongClick(AdapterView<?> arg0, View v,
                                            int index, long arg3) {
-                customListAdaptor.cb = !customListAdaptor.cb;
-                customListAdaptor.notifyDataSetChanged();
-                Toast.makeText(getApplicationContext(), customListAdaptor.cb.toString(), Toast.LENGTH_SHORT).show();
                 return true;
             }
         });
@@ -79,7 +54,6 @@ public class StorageActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Toast.makeText(getApplicationContext(), "Click one item", Toast.LENGTH_SHORT).show();
                 Object o = listView.getItemAtPosition(i);
                 HumanModel humanModel = (HumanModel)o;
                 Intent intent = new Intent(StorageActivity.this, HumanInformationActivity.class).putExtra("human", humanModel);
