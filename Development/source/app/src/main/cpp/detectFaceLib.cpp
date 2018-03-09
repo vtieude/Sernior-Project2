@@ -17,20 +17,22 @@
 cv::Mat frame_gray;
 std::vector<cv::Rect> faces;
 std::vector< std::vector<cv::Point2f> > shapes;
-cv::CascadeClassifier face_cascade("/sdcard/data/haarcascade_frontalface_alt.xml");
+cv::CascadeClassifier face_cascade("/sdcard/data/lbpcascade_frontalface.xml");
 
 // Limit face detect
 int id_max;
-std::vector<int> indexFaces;
-double maxAreaValue = 0;
-int i=0, j=0;
+static std::vector<int> indexFaces;
+static int countFaces = 1;
+static double maxAreaValue = 0;
+static int i=0, j=0;
 
 bool checkSameValue(const std::vector<int>& indexFaces, int compare_value);
-void limitFaces(const std::vector<cv::Rect>&, std::vector<int>&, int);
+static void limitFaces(const std::vector<cv::Rect>&, std::vector<int>& );
 
-void haarCascadeDetect(cv::Mat& frame, int countFaces );
+void haarCascadeDetect(cv::Mat& frame );
 static bool myDetector(cv::InputArray image, cv::OutputArray faces, cv::CascadeClassifier *face_cascade);
-double areaROI(const cv::Rect&);
+static double areaROI(const cv::Rect&);
+static void removeByIndex(std::vector<cv::Rect>&, std::vector<int>& );
 
 static bool initialized;
 cv::face::FacemarkKazemi::Params params;
@@ -44,12 +46,10 @@ JNIEXPORT void JNICALL
 Java_com_example_wilson_humancharacteristics_CameraDetect_CameraDetectActivity_detectFace(
         JNIEnv *env,
         jobject /* this */,
-        jlong imgMat,
-        jint countFaces
+        jlong imgMat
         ) {
     cv::Mat* img = (cv::Mat*) imgMat;
-    int number = (int) countFaces;
-    haarCascadeDetect(*img, number);
+    haarCascadeDetect(*img );
 }
 
 JNIEXPORT jstring JNICALL
@@ -63,7 +63,7 @@ Java_com_example_wilson_humancharacteristics_CameraDetect_CameraDetectActivity_f
 
 }
 
-void haarCascadeDetect(cv::Mat& frame, int countFaces ){
+void haarCascadeDetect(cv::Mat& frame ){
     if (!initialized) {
         initialized = true;
         facemark->setFaceDetector((cv::face::FN_FaceDetector)myDetector, &face_cascade);
@@ -75,7 +75,6 @@ void haarCascadeDetect(cv::Mat& frame, int countFaces ){
     shapes.clear();
 
     facemark->getFaces(frame,faces);
-    removeIntersect(faces);
     if(faces.size()==0){
         std::cout<<"No faces found in this frame"<<std::endl;
     }
@@ -91,28 +90,6 @@ void haarCascadeDetect(cv::Mat& frame, int countFaces ){
             }
         }
     }
-
-
-
-//    if(face_cascade.empty()){
-//        printf("--(!)Error loading\n"); return;
-//    }
-//
-//    cv::cvtColor( frame, frame_gray, cv::COLOR_RGBA2GRAY );
-//    cv::equalizeHist( frame_gray, frame_gray );
-//
-//    //-- Detect faces
-//    face_cascade.detectMultiScale( frame_gray, faces, 1.3, 3, 0|cv::CASCADE_SCALE_IMAGE, cv::Size(50, 50) );
-//
-//    // -- Limiting face recognition.
-//    indexFaces.clear();
-//    limitFaces(faces, indexFaces, countFaces);
-//
-//    for( size_t i = 0; i < indexFaces.size(); i++ )
-//    {
-//        cv::rectangle(frame, cv::Point(faces[indexFaces[i]].x, faces[indexFaces[i]].y),
-//                      cv::Point(faces[indexFaces[i]].x + faces[indexFaces[i]].width, faces[indexFaces[i]].y+faces[indexFaces[i]].height), cv::Scalar(255,0,255), 3);
-//    }
 }
 
 double areaROI(const cv::Rect& face){
@@ -133,8 +110,13 @@ static bool myDetector(cv::InputArray image, cv::OutputArray faces, cv::CascadeC
 
     std::vector<cv::Rect> faces_;
     face_cascade->detectMultiScale(gray, faces_, 1.3, 3, 0|cv::CASCADE_SCALE_IMAGE, cv::Size(50, 50));
-    cv::Mat(faces_).copyTo(faces);
 
+//    // -- Limiting face recognition.
+//    indexFaces.clear();
+//    limitFaces(faces_, indexFaces);
+//    removeByIndex(faces_, indexFaces);
+
+    cv::Mat(faces_).copyTo(faces);
     return true;
 }
 
@@ -147,14 +129,14 @@ bool checkSameValue(const std::vector<int>& indexFaces, int compare_value){
     return false;
 }
 
-void limitFaces(const std::vector<cv::Rect>& faces, std::vector<int>& indexFaces, int countFace){
-    if(faces.size() < countFace){
+static void limitFaces(const std::vector<cv::Rect>& faces, std::vector<int>& indexFaces_ ){
+    if(faces.size() < countFaces){
         for ( i = 0; i < static_cast<int>(faces.size()); ++i) {
-            indexFaces.push_back(i);
+            indexFaces_.push_back(i);
         }
     }
     else{
-        while(indexFaces.size() < countFace) {
+        while(indexFaces_.size() < countFaces) {
             maxAreaValue = 0;
             for ( i = 0; i < static_cast<int>(faces.size()); ++i) {
                 if ( checkSameValue(indexFaces, i) ) {
@@ -165,11 +147,20 @@ void limitFaces(const std::vector<cv::Rect>& faces, std::vector<int>& indexFaces
                     id_max = i;
                 }
             }
-            indexFaces.push_back(id_max);
+            indexFaces_.push_back(id_max);
         }
     }
 }
 
+static void removeByIndex(std::vector<cv::Rect>& faces_, std::vector<int>& indexArray) {
+    int it = 0;
+    for ( i = 0; i < static_cast<int>(indexArray.size()) ; ++i) {
+        faces_.erase(faces_.begin()+it+indexArray[i]);
+        it = it-1;
+    }
+}
+
+// Haven't done
 void removeIntersect(std::vector<cv::Rect>& rects) {
     std::vector<cv::Rect>::iterator rect;
     rect = rects.begin();
@@ -184,13 +175,5 @@ void removeIntersect(std::vector<cv::Rect>& rects) {
 }
 
 bool checkIntersect(cv::Rect rect1, cv::Rect rect2){
-    if( rect1.x < rect2.x && rect1.height > rect2.height &&
-            rect1.y < rect2.y && rect1.width > rect2.width ){
-        return true;
-    }
-    else if( rect2.x < rect1.x && rect2.height > rect1.height &&
-            rect2.y < rect1.y && rect2.width > rect1.width ){
-        return true;
-    }
     return false;
 }

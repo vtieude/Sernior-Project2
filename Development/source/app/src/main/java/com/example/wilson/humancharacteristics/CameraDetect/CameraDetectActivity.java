@@ -19,7 +19,6 @@ import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 
 import org.opencv.imgproc.Imgproc;
-import org.opencv.objdetect.CascadeClassifier;
 
 public class CameraDetectActivity extends AppCompatActivity implements CameraBridgeViewBase.CvCameraViewListener2{
 
@@ -88,7 +87,7 @@ public class CameraDetectActivity extends AppCompatActivity implements CameraBri
             javaCameraView.disableView();
     }
 
-    public native void detectFace( long imgMat, int countFaces );
+    public native void detectFace( long imgMat );
     public native String fromDetectFaceLib();
 
     @Override
@@ -114,7 +113,7 @@ public class CameraDetectActivity extends AppCompatActivity implements CameraBri
         Imgproc.resize(mRgbaT, mRgbaF, mRgbaF.size(), 0,0, 0);
 
         Core.flip(mRgbaF, img, 1);
-        detectFace(img.getNativeObjAddr(), 2);
+        detectFace(img.getNativeObjAddr());
 
         return img;
     }
