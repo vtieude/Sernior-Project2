@@ -1,18 +1,12 @@
 package com.example.wilson.humancharacteristics.Storage;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.graphics.Color;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.ContextMenu;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -56,8 +50,6 @@ public class StorageActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Object o = listView.getItemAtPosition(i);
                 HumanModel humanModel = (HumanModel)o;
-                Toast.makeText(StorageActivity.this, "This is my Toast message!",
-                        Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(StorageActivity.this, HumanInformationActivity.class).putExtra("human", humanModel);
                 startActivity(intent);
             };
