@@ -1,20 +1,13 @@
 package com.example.wilson.humancharacteristics.Storage;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.graphics.Color;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.ContextMenu;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.example.wilson.humancharacteristics.HumanInformation.HumanInformationActivity;
 import com.example.wilson.humancharacteristics.R;
@@ -41,7 +34,12 @@ public class StorageActivity extends AppCompatActivity {
         setOnItemClick();
         setItemLongClick();
     }
-
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_storage, menu);
+        return true;
+    }
     public void setItemLongClick() {
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             public boolean onItemLongClick(AdapterView<?> arg0, View v,

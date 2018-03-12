@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.wilson.humancharacteristics.MainActivity">
+    >
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -12,32 +11,46 @@
         android:orientation="vertical"
         tools:layout_editor_absoluteX="8dp"
         tools:layout_editor_absoluteY="8dp"
+        style="@style/HomePage"
         tools:ignore="MissingConstraints">
 
         <Button
             android:id="@+id/buttonStart"
+            style="@style/CodeFont"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/buttonStorage"
             android:layout_alignParentStart="true"
-            android:layout_marginBottom="16dp"
-            android:text="@string/start" />
+            android:layout_alignParentTop="true"
+            android:textAllCaps="false"
+            android:layout_marginTop="50dp"
+            android:background="@drawable/button_selector"
+            android:text="@string/start"
+            android:textSize="@dimen/text_size_button_40" />
 
         <Button
             android:id="@+id/buttonStorage"
+            style="@style/CodeFont"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
-            android:layout_centerVertical="true"
-            android:text="@string/storage" />
+            android:layout_below="@+id/buttonStart"
+            android:textAllCaps="false"
+            android:layout_marginTop="@dimen/margin_top"
+            android:background="@drawable/button_selector"
+            android:text="@string/storage"
+            android:textSize="@dimen/text_size_button_40" />
 
         <Button
             android:id="@+id/buttonSetting"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textAllCaps="false"
             android:layout_alignParentEnd="true"
             android:layout_below="@+id/buttonStorage"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="@dimen/margin_top"
+            android:background="@drawable/button_selector"
+            style="@style/CodeFont"
+            android:textSize="@dimen/text_size_button_40"
             android:text="@string/setting_name" />
 
         <Button
@@ -46,7 +59,11 @@
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_below="@+id/buttonSetting"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="@dimen/margin_top"
+            android:textAllCaps="false"
+            android:background="@drawable/button_selector"
+            style="@style/CodeFont"
+            android:textSize="@dimen/text_size_button_40"
             android:text="@string/author" />
 
         <Button
@@ -55,7 +72,11 @@
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_below="@+id/buttonCopyright"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="@dimen/margin_top"
+            android:background="@drawable/button_selector"
+            style="@style/CodeFont"
+            android:textSize="@dimen/text_size_button_40"
+            android:textAllCaps="false"
             android:text="@string/exit" />
     </RelativeLayout>
 </android.support.constraint.ConstraintLayout>
