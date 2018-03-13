@@ -2,39 +2,39 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:sample="http://schemas.android.com/apk/res-auto"
     android:key="setting_pre">
-    <EditTextPreference
-        android:key="PREF_EDITTEXT"
-        android:title="EditText title"
-        android:summary="EditText summary"
-        android:dialogTitle="EditText Dialog" />
     <SwitchPreference
-    android:title="Age"
-    android:key="switch_age"
-    android:summaryOff="Off"
-    android:summaryOn="On"
+        android:title="@string/you_age"
+        android:key="switch_age"
+        android:icon="@mipmap/age"
+        android:summaryOff="Off"
+        android:summaryOn="On"
     >
     </SwitchPreference>
     <SwitchPreference
-        android:title="Gender"
+        android:title="@string/gender_setting"
+        android:icon="@mipmap/gender"
         android:key="switch_gender"
         android:summaryOff="Off"
         android:summaryOn="On">
     </SwitchPreference>
     <SwitchPreference
-        android:title="Emotion"
+        android:title="@string/emotion_setting"
         android:key="switch_emotion"
+        android:icon="@mipmap/emotion"
         android:summaryOff="Off"
         android:summaryOn="On">
     </SwitchPreference>
     <SwitchPreference
-        android:title="Characteristic"
+        android:title="@string/characteristic_setting"
         android:key="switch_character"
+        android:icon="@mipmap/characteristic"
         android:summaryOff="Off"
         android:summaryOn="On">
     </SwitchPreference>
     <com.pavelsikun.seekbarpreference.SeekBarPreference
         android:key="amount_face"
-        android:title="Amount"
+        android:title="@string/amount_setting"
+        android:summary="@string/description_amount"
         sample:msbp_minValue="1"
         sample:msbp_maxValue="10"
         />

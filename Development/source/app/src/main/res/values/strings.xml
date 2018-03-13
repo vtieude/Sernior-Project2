@@ -12,4 +12,12 @@
     <string name="tittle_phone">Phone</string>
     <string name="tittle_comment">Comment</string>
     <string name="delete">Delete</string>
+    <string name="your_name">Your name</string>
+    <string name="you_age">Age</string>
+    <string name="emotion_setting">Emotion</string>
+    <string name="characteristic_setting">Characteristic</string>
+    <string name="gender_setting">Gender</string>
+    <string name="amount_setting">Amount</string>
+    <string name="description_amount">Display amount of face detect</string>
+    <string name="toask_default_setting">Default value setting</string>
 </resources>
