@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">HumanCharacteristics</string>
+    <string name="setting_name" translatable="false">Cài Đặt</string>
+    <string name="storage">Lưu Trữ</string>
+    <string name="start">Bắt Đầu</string>
+    <string name="exit">Thoát</string>
+    <string name="author">Tác Giả</string>
+    <string name="text_comment">Nhận xét</string>
+    <string name="text_phone">Số điện thoại</string>
+    <string name="text_email">Email</string>
+    <string name="delete">Xóa</string>
+    <string name="your_name">Tên</string>
+    <string name="you_age">Tuổi</string>
+    <string name="emotion_setting">Cảm xúc</string>
+    <string name="characteristic_setting">Đặc trưng</string>
+    <string name="gender_setting">Giới tính</string>
+    <string name="amount_setting">Số lượng</string>
+    <string name="description_amount">Hiển thị số lượng khuôn mặt nhận diện</string>
+    <string name="toask_default_setting">Cài đặt mặc định</string>
+</resources>

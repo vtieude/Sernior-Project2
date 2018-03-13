@@ -1,11 +1,11 @@
 package com.example.wilson.humancharacteristics;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.example.wilson.humancharacteristics.Author.AuthorInformationActivity;
 import com.example.wilson.humancharacteristics.CameraDetect.CameraDetectActivity;
@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
 
         HumanDatabaseHelper database = new HumanDatabaseHelper(this);
         listButton = new ArrayList<Button>();
+
         // Example of a call to a native method
         btStart = (Button)this.findViewById(R.id.buttonStart);
         btStorage = (Button)this.findViewById(R.id.buttonStorage);

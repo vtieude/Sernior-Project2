@@ -3,5 +3,9 @@
     <dimen name="tittle">25dp</dimen>
     <dimen name="textview_width">150dp</dimen>
     <dimen name="ball_radius">30dp</dimen>
-    <dimen name="font_size">16sp</dimen>
+    <dimen name="font_size_16">16dp</dimen>
+    <dimen name="text_size_30">30dp</dimen>
+    <dimen name="text_size_button_40">40dp</dimen>
+    <dimen name="margin_top">40dp</dimen>
+    <dimen name="land_margin_top">17dp</dimen>
 </resources>

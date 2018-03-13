@@ -3,59 +3,87 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.example.wilson.humancharacteristics.MainActivity">
+    android:layout_height="match_parent">
 
     <RelativeLayout
+        style="@style/HomePage"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:layout_editor_absoluteX="8dp"
-        tools:layout_editor_absoluteY="8dp"
-        tools:ignore="MissingConstraints">
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp">
 
         <Button
             android:id="@+id/buttonStart"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/buttonStorage"
-            android:layout_alignParentStart="true"
-            android:layout_marginBottom="16dp"
-            android:text="@string/start" />
+            style="@style/CodeFont"
+            android:layout_width="300dp"
+            android:layout_height="72dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="40dp"
+            android:background="@drawable/button_selector"
+            android:drawableLeft="@mipmap/camera"
+            android:text="@string/start"
+            android:textAllCaps="false"
+            android:textSize="@dimen/text_size_button_40" />
 
         <Button
             android:id="@+id/buttonStorage"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_centerVertical="true"
-            android:text="@string/storage" />
+            style="@style/CodeFont"
+            android:layout_width="300dp"
+            android:layout_height="72dp"
+            android:layout_alignStart="@+id/buttonStart"
+            android:layout_below="@+id/buttonStart"
+            android:layout_marginTop="@dimen/margin_top"
+            android:background="@drawable/button_selector"
+            android:drawableLeft="@mipmap/storage"
+            android:text="@string/storage"
+            android:textAllCaps="false"
+            android:textSize="@dimen/text_size_button_40" />
 
         <Button
             android:id="@+id/buttonSetting"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
+            style="@style/CodeFont"
+            android:layout_width="300dp"
+            android:layout_height="72dp"
+            android:layout_alignStart="@+id/buttonStorage"
             android:layout_below="@+id/buttonStorage"
-            android:layout_marginTop="16dp"
-            android:text="@string/setting_name" />
+            android:layout_marginTop="@dimen/margin_top"
+            android:background="@drawable/button_selector"
+            android:drawableLeft="@mipmap/setting"
+            android:text="@string/setting_name"
+            android:textAllCaps="false"
+            android:textSize="@dimen/text_size_button_40" />
 
         <Button
             android:id="@+id/buttonCopyright"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
+            style="@style/CodeFont"
+            android:layout_width="300dp"
+            android:layout_height="72dp"
+            android:layout_alignStart="@+id/buttonSetting"
             android:layout_below="@+id/buttonSetting"
-            android:layout_marginTop="16dp"
-            android:text="@string/author" />
+            android:layout_marginTop="@dimen/margin_top"
+            android:background="@drawable/button_selector"
+            android:drawableLeft="@mipmap/author"
+            android:text="@string/author"
+            android:textAllCaps="false"
+            android:textSize="@dimen/text_size_button_40" />
 
         <Button
             android:id="@+id/buttonExit"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
+            style="@style/CodeFont"
+            android:layout_width="300dp"
+            android:layout_height="72dp"
+            android:layout_alignStart="@+id/buttonCopyright"
             android:layout_below="@+id/buttonCopyright"
-            android:layout_marginTop="16dp"
-            android:text="@string/exit" />
+            android:layout_marginTop="@dimen/margin_top"
+            android:background="@drawable/button_selector"
+            android:drawableLeft="@mipmap/exit"
+            android:text="@string/exit"
+            android:textAllCaps="false"
+            android:textSize="@dimen/text_size_button_40"
+            tools:layout_editor_absoluteX="111dp"
+            tools:layout_editor_absoluteY="534dp" />
     </RelativeLayout>
 </android.support.constraint.ConstraintLayout>

@@ -2,13 +2,11 @@ package com.example.wilson.humancharacteristics.CameraDetect;
 
 import android.content.Context;
 import android.content.pm.ActivityInfo;
-import android.content.res.Configuration;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.OrientationEventListener;
 import android.view.SurfaceView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.wilson.humancharacteristics.R;
 
@@ -19,8 +17,8 @@ import org.opencv.android.OpenCVLoader;
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
-import org.opencv.imgproc.Imgproc;
 
+import org.opencv.imgproc.Imgproc;
 
 public class CameraDetectActivity extends AppCompatActivity implements CameraBridgeViewBase.CvCameraViewListener2{
 
@@ -30,7 +28,6 @@ public class CameraDetectActivity extends AppCompatActivity implements CameraBri
         System.loadLibrary("native-lib");
         System.loadLibrary("opencv_java3");
     }
-
     private JavaCameraView javaCameraView;
     private Mat img, mRgbaT, mRgbaF;
     private TextView textView;
@@ -60,7 +57,7 @@ public class CameraDetectActivity extends AppCompatActivity implements CameraBri
 
         textView = (TextView) findViewById(R.id.textview);
         textView.setText(fromDetectFaceLib());
-//        orientationListener = new OrientationListener(this);
+
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
@@ -90,7 +87,7 @@ public class CameraDetectActivity extends AppCompatActivity implements CameraBri
             javaCameraView.disableView();
     }
 
-    public native void detectFace(long imgMat);
+    public native void detectFace( long imgMat );
     public native String fromDetectFaceLib();
 
     @Override
@@ -107,37 +104,20 @@ public class CameraDetectActivity extends AppCompatActivity implements CameraBri
         mRgbaT.release();
     }
 
-
     @Override
     public Mat onCameraFrame(CameraBridgeViewBase.CvCameraViewFrame inputFrame) {
         img = inputFrame.rgba();
 
-            // this is for make camera portrait
-            Core.transpose(img, mRgbaT);
-            Imgproc.resize(mRgbaT, mRgbaF, mRgbaF.size(), 0,0, 0);
+        // this is for make camera portrait
+        Core.transpose(img, mRgbaT);
+        Imgproc.resize(mRgbaT, mRgbaF, mRgbaF.size(), 0,0, 0);
 
-            Core.flip(mRgbaF, img, 1);
-            detectFace(img.getNativeObjAddr());
+        Core.flip(mRgbaF, img, 1);
+        detectFace(img.getNativeObjAddr());
 
         return img;
     }
 
-
-//    @Override
-//    public void onConfigurationChanged(Configuration newConfig){
-//        super.onConfigurationChanged(newConfig);
-//        String s = "";
-//        if(newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE){
-//            s = "OREINTATION LANDSCAPE\n";
-//            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-//        }
-//        else if(newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
-//            s = "OREITATION PORTRAIT\n";
-//        }
-//        s += "on configure changed was canceled";
-//        Toast.makeText(this, s, Toast.LENGTH_SHORT).show();
-//    }
-//
 
 private class OrientationListener extends OrientationEventListener {
     final int ROTATION_O    = 1;
