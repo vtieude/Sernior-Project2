@@ -1,7 +1,9 @@
 package com.example.wilson.humancharacteristics.Storage;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -27,7 +29,9 @@ public class StorageActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_storage);
-
+        // that get value from setting page
+//        SharedPreferences setting = PreferenceManager.getDefaultSharedPreferences(this);
+//        int a = setting.getInt("amount_face", 0);
         List<HumanModel> image_Details = this.getListData();
         listView = (ListView) findViewById(R.id.list_human);
         customListAdaptor = new CustomListAdaptor(this,image_Details);
