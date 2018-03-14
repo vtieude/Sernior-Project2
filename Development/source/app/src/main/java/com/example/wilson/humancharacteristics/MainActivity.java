@@ -5,12 +5,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.example.wilson.humancharacteristics.Author.AuthorInformationActivity;
 import com.example.wilson.humancharacteristics.CameraDetect.CameraDetectActivity;
 import com.example.wilson.humancharacteristics.Setting.SettingActivity;
 import com.example.wilson.humancharacteristics.Storage.StorageActivity;
+import com.example.wilson.humancharacteristics.bean.HumanDatabaseHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +29,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        HumanDatabaseHelper database = new HumanDatabaseHelper(this);
         listButton = new ArrayList<Button>();
 
         // Example of a call to a native method
