@@ -2,7 +2,7 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/topLayout"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:keepScreenOn="true"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -12,12 +12,9 @@
         android:id="@+id/preview"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-    <com.example.wilson.humancharacteristics.ui.camera.GraphicOverlay
-        android:id="@+id/faceOverlay"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
+        <com.example.wilson.humancharacteristics.ui.camera.GraphicOverlay
+            android:id="@+id/faceOverlay"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
     </com.example.wilson.humancharacteristics.ui.camera.CameraSourcePreview>
-
-
 </LinearLayout>

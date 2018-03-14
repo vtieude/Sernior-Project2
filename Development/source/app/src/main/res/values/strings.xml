@@ -20,4 +20,8 @@
     <string name="amount_setting">Amount</string>
     <string name="description_amount">Display amount of face detect</string>
     <string name="toask_default_setting">Default value setting</string>
+    <string name="ok">OK</string>
+    <string name="permission_camera_rationale">Access to the camera is needed for detection</string>
+    <string name="no_camera_permission">This application cannot run because it does not have the camera permission.  The application will now exit.</string>
+    <string name="low_storage_error">Face detector dependencies cannot be downloaded due to low device storage</string>
 </resources>
