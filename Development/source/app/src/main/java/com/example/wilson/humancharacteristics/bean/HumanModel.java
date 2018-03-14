@@ -97,6 +97,7 @@ public class HumanModel implements Serializable{
     }
 
     //find image.
+
     public int getMipmapResIdByName(Context context, String resName)  {
         String pkgName = context.getPackageName();
         int resID = context.getResources().getIdentifier(resName , "mipmap", pkgName);

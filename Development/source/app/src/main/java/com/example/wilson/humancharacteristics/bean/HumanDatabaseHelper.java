@@ -1,4 +1,4 @@
-package com.example.wilson.humancharacteristics;
+package com.example.wilson.humancharacteristics.bean;
 
 import android.content.ContentValues;
 import android.content.Context;
