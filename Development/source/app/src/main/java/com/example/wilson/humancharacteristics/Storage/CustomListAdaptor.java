@@ -53,6 +53,7 @@ public class CustomListAdaptor extends BaseAdapter{
             holder.flagView = (ImageView)view.findViewById(R.id.imageView_flag);
             holder.nameView = (TextView)view.findViewById(R.id.item_name);
             holder.ageView = (TextView)view.findViewById(R.id.item_age);
+            holder.idHuman = (TextView)view.findViewById(R.id.id_human);
             view.setTag(holder);
         }
         else {
@@ -61,13 +62,15 @@ public class CustomListAdaptor extends BaseAdapter{
         HumanModel human = this.listHuman.get(i);
         holder.nameView.setText("Name: " +human.getName());
         holder.ageView.setText("Age: " + human.getAge());
-        int imageId = human.getMipmapResIdByName(context,human.getFlagImage());
+        int imageId = human.getMipmapResIdByName(context,"so1");
         holder.flagView.setImageResource(imageId);
+        holder.idHuman.setText(human.getId());
         return view;
     }
     static class ViewHolder {
         ImageView flagView;
         TextView nameView;
         TextView ageView;
+        TextView idHuman;
     }
 }

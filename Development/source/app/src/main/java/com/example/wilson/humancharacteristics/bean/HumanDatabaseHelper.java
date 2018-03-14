@@ -7,7 +7,10 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.example.wilson.humancharacteristics.R;
+import com.example.wilson.humancharacteristics.Storage.StorageActivity;
 import com.example.wilson.humancharacteristics.bean.HumanModel;
 
 import java.util.ArrayList;
@@ -40,17 +43,16 @@ public class HumanDatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        String scriptHuman = "CREATE TABLE IF NOT EXISTS " + TABLE_HUMAN + "("
+        String scriptHuman = "CREATE TABLE " + TABLE_HUMAN + "("
                 + COLUMN_HUMAN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + COLUMN_HUMAN_NAME + " TEXT,"
                 + COLUMN_HUMAN_AGE + " INTEGER,"+ COLUMN_HUMAN_PHONE + " TEXT," + COLUMN_HUMAN_EMAIL
-                + " TEXT," + COLUMN_HUMAN_COMMENT + "TEXT" + ")";
+                + " TEXT," + COLUMN_HUMAN_COMMENT + " TEXT" + ")";
         String scriptImage = "CREATE TABLE " + TABLE_IMAGE + "("
                 + COLUMN_IMAGE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + COLUMN_IMAGE + " BLOB,"
                 + COLUMN_IMAGE_ID_HUMAN + " INTEGER" + ")";
         sqLiteDatabase.execSQL(scriptHuman);
         sqLiteDatabase.execSQL(scriptImage);
     }
-
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_HUMAN);
@@ -60,9 +62,9 @@ public class HumanDatabaseHelper extends SQLiteOpenHelper {
     //create default value to check
     public void createDefaultValue() {
         int count = this.getHumanCount();
-        if(count ==0 ) {
-            HumanModel humanModel = new HumanModel("Area",18,"Handsome boy","0976554445","gmail@gmail.com");
-            HumanModel humanModel2 = new HumanModel("Area",18,"Handsome boy","0976554445","gmail@gmail.com");
+        if(count == 0 ) {
+            HumanModel humanModel = new HumanModel("Mynameis",30,"Handsome boy","0976554445","gmail@gmail.com");
+            HumanModel humanModel2 = new HumanModel("TenToiLa",40,"Handsome boy","0976554445","gmail@gmail.com");
             this.addHuman(humanModel);
             this.addHuman(humanModel2);
         }
@@ -108,6 +110,7 @@ public class HumanDatabaseHelper extends SQLiteOpenHelper {
 
     public List<HumanModel> getListHuman(){
         List<HumanModel> list = new ArrayList<HumanModel>();
+
         String selectQuery = "SELECT * FROM "+ TABLE_HUMAN;
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery,null);
