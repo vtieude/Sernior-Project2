@@ -13,18 +13,15 @@ public class HumanModel implements Serializable{
     private String phone;
     private String email;
     private String flagImage;
-    private byte[] image;
     public HumanModel() {
         super();
     }
-    public HumanModel(int id, String name,  int age, String comment, String phone, String email, byte[] image) {
+    public HumanModel( String name,  int age, String comment, String phone, String email) {
         this.name = name;
-        this.image = image;
         this.age = age;
         this.comment = comment;
         this.phone = phone;
         this.email = email;
-        this.id = id;
     }
     public HumanModel(String name, String flag, int age) {
         this.name = name;
@@ -86,14 +83,6 @@ public class HumanModel implements Serializable{
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public byte[] getImage() {
-        return image;
-    }
-
-    public void setImage(byte[] image) {
-        image = image;
     }
 
     //find image.

@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.example.wilson.humancharacteristics.HumanInformation.HumanInformationActivity;
 import com.example.wilson.humancharacteristics.R;
+import com.example.wilson.humancharacteristics.bean.HumanDatabaseHelper;
 import com.example.wilson.humancharacteristics.bean.HumanModel;
 
 import java.util.ArrayList;
@@ -32,6 +33,10 @@ public class StorageActivity extends AppCompatActivity {
         // that get value from setting page
 //        SharedPreferences setting = PreferenceManager.getDefaultSharedPreferences(this);
 //        int a = setting.getInt("amount_face", 0);
+
+        HumanDatabaseHelper databaseHelper = new HumanDatabaseHelper(this);
+        databaseHelper.createDefaultValue();
+        
         List<HumanModel> image_Details = this.getListData();
         listView = (ListView) findViewById(R.id.list_human);
         customListAdaptor = new CustomListAdaptor(this,image_Details);
