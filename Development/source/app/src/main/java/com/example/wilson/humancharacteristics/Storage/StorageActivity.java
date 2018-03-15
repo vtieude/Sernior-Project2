@@ -37,7 +37,7 @@ public class StorageActivity extends AppCompatActivity {
 //        SharedPreferences setting = PreferenceManager.getDefaultSharedPreferences(this);
 //        int a = setting.getInt("amount_face", 0);
         databaseHelper = new HumanDatabaseHelper(this);
-        databaseHelper.createDefaultValue();
+//        databaseHelper.createDefaultValue();
         listHuman = databaseHelper.getListHuman();
         listView = (ListView) findViewById(R.id.list_human);
         customListAdaptor = new CustomListAdaptor(this,listHuman);
@@ -61,6 +61,8 @@ public class StorageActivity extends AppCompatActivity {
 
                 Object o = listView.getItemAtPosition(i);
                 HumanModel humanModel = (HumanModel)o;
+//                Toast.makeText(StorageActivity.this,  "das" + humanModel.getName().toString(),
+//                        Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(StorageActivity.this, HumanInformationActivity.class).putExtra("human", humanModel);
                 startActivity(intent);
             };

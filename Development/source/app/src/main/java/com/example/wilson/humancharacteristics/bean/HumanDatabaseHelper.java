@@ -33,6 +33,7 @@ public class HumanDatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_HUMAN_COMMENT = "Comment";
     private static final String COLUMN_HUMAN_PHONE = "Phone";
     private static final String COLUMN_HUMAN_EMAIL = "Email";
+    private static final String COLUMN_HUMAN_IMAGE = "Image";
     private static final String COLUMN_IMAGE = "Image";
     private static final String COLUMN_IMAGE_ID_HUMAN = "IdHuman";
     private static final String COLUMN_IMAGE_ID = "Id";
@@ -46,29 +47,29 @@ public class HumanDatabaseHelper extends SQLiteOpenHelper {
         String scriptHuman = "CREATE TABLE " + TABLE_HUMAN + "("
                 + COLUMN_HUMAN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + COLUMN_HUMAN_NAME + " TEXT,"
                 + COLUMN_HUMAN_AGE + " INTEGER,"+ COLUMN_HUMAN_PHONE + " TEXT," + COLUMN_HUMAN_EMAIL
-                + " TEXT," + COLUMN_HUMAN_COMMENT + " TEXT" + ")";
+                + " TEXT," + COLUMN_HUMAN_COMMENT + " TEXT," + COLUMN_HUMAN_IMAGE + " BLOB," + ")";
         String scriptImage = "CREATE TABLE " + TABLE_IMAGE + "("
                 + COLUMN_IMAGE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + COLUMN_IMAGE + " BLOB,"
                 + COLUMN_IMAGE_ID_HUMAN + " INTEGER" + ")";
         sqLiteDatabase.execSQL(scriptHuman);
-        sqLiteDatabase.execSQL(scriptImage);
+//        sqLiteDatabase.execSQL(scriptImage);
     }
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_HUMAN);
-        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_IMAGE);
+//        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_IMAGE);
         onCreate(sqLiteDatabase);
     }
     //create default value to check
-    public void createDefaultValue() {
-        int count = this.getHumanCount();
-        if(count == 0 ) {
-            HumanModel humanModel = new HumanModel("Mynameis",30,"Handsome boy","0976554445","gmail@gmail.com");
-            HumanModel humanModel2 = new HumanModel("TenToiLa",40,"Handsome boy","0976554445","gmail@gmail.com");
-            this.addHuman(humanModel);
-            this.addHuman(humanModel2);
-        }
-    }
+//    public void createDefaultValue() {
+//        int count = this.getHumanCount();
+//        if(count == 0 ) {
+//            HumanModel humanModel = new HumanModel("Mynameis",30,"Handsome boy","0976554445","gmail@gmail.com");
+//            HumanModel humanModel2 = new HumanModel("TenToiLa",40,"Handsome boy","0976554445","gmail@gmail.com");
+//            this.addHuman(humanModel);
+//            this.addHuman(humanModel2);
+//        }
+//    }
     public int getHumanCount() {
         String countQuery = "SELECT  * FROM " + TABLE_HUMAN;
         SQLiteDatabase db = this.getReadableDatabase();
@@ -88,6 +89,7 @@ public class HumanDatabaseHelper extends SQLiteOpenHelper {
         values.put(COLUMN_HUMAN_PHONE, human.getPhone());
         values.put(COLUMN_HUMAN_EMAIL, human.getEmail());
         values.put(COLUMN_HUMAN_COMMENT, human.getComment());
+        values.put(COLUMN_HUMAN_IMAGE, human.getImage());
         db.insert(TABLE_HUMAN,null, values);
         db.close();
     }
@@ -102,7 +104,8 @@ public class HumanDatabaseHelper extends SQLiteOpenHelper {
                 cursor.getInt(cursor.getColumnIndex(COLUMN_HUMAN_AGE)),
                 cursor.getString(cursor.getColumnIndex(COLUMN_HUMAN_COMMENT)),
                 cursor.getString(cursor.getColumnIndex(COLUMN_HUMAN_PHONE)),
-                cursor.getString(cursor.getColumnIndex(COLUMN_HUMAN_EMAIL))
+                cursor.getString(cursor.getColumnIndex(COLUMN_HUMAN_EMAIL)),
+                cursor.getBlob(cursor.getColumnIndex(COLUMN_HUMAN_IMAGE))
         );
         humanModel.setId(cursor.getInt(cursor.getColumnIndex(COLUMN_HUMAN_ID)));
         return humanModel;
@@ -123,6 +126,7 @@ public class HumanDatabaseHelper extends SQLiteOpenHelper {
                 humanModel.setPhone(cursor.getString(cursor.getColumnIndex(COLUMN_HUMAN_PHONE)));
                 humanModel.setEmail(cursor.getString(cursor.getColumnIndex(COLUMN_HUMAN_EMAIL)));
                 humanModel.setComment(cursor.getString(cursor.getColumnIndex(COLUMN_HUMAN_COMMENT)));
+                humanModel.setImage(cursor.getBlob(cursor.getColumnIndex(COLUMN_HUMAN_IMAGE)));
                 list.add(humanModel);
             } while (cursor.moveToNext());
         }
@@ -138,6 +142,7 @@ public class HumanDatabaseHelper extends SQLiteOpenHelper {
         values.put(COLUMN_HUMAN_PHONE, human.getPhone());
         values.put(COLUMN_HUMAN_EMAIL, human.getEmail());
         values.put(COLUMN_HUMAN_COMMENT, human.getComment());
+        values.put(COLUMN_HUMAN_IMAGE,human.getImage());
         return db.update(TABLE_HUMAN, values, "id = ? ", new String[] { Integer.toString(human.getId()) } );
     }
     public void deleteHuman (int id)
