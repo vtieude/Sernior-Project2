@@ -47,7 +47,7 @@ public class HumanDatabaseHelper extends SQLiteOpenHelper {
         String scriptHuman = "CREATE TABLE " + TABLE_HUMAN + "("
                 + COLUMN_HUMAN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + COLUMN_HUMAN_NAME + " TEXT,"
                 + COLUMN_HUMAN_AGE + " INTEGER,"+ COLUMN_HUMAN_PHONE + " TEXT," + COLUMN_HUMAN_EMAIL
-                + " TEXT," + COLUMN_HUMAN_COMMENT + " TEXT," + COLUMN_HUMAN_IMAGE + " BLOB," + ")";
+                + " TEXT," + COLUMN_HUMAN_COMMENT + " TEXT," + COLUMN_HUMAN_IMAGE + " BLOB" + ")";
         String scriptImage = "CREATE TABLE " + TABLE_IMAGE + "("
                 + COLUMN_IMAGE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + COLUMN_IMAGE + " BLOB,"
                 + COLUMN_IMAGE_ID_HUMAN + " INTEGER" + ")";

@@ -8,6 +8,7 @@ import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -45,7 +46,25 @@ public class StorageActivity extends AppCompatActivity {
         setOnItemClick();
         setItemLongClick();
     }
-
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_storage, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.add_storage:
+                Intent intent = new Intent(StorageActivity.this, HumanInformationActivity.class);
+                startActivity(intent);
+                return true;
+            case R.id.delete_storage:
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
     public void setItemLongClick() {
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             public boolean onItemLongClick(AdapterView<?> arg0, View v,
