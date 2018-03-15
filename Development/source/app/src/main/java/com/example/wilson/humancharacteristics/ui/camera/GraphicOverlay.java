@@ -77,7 +77,6 @@ public class GraphicOverlay extends View {
         }
 
 
-
         /**
          * Adjusts the y coordinate from the preview's coordinate system to the view coordinate
          * system.
@@ -89,6 +88,11 @@ public class GraphicOverlay extends View {
         public void postInvalidate() {
             mOverlay.postInvalidate();
         }
+
+        public GraphicOverlay getOverlay(){
+            return mOverlay;
+        }
+
     }
 
     public GraphicOverlay(Context context, AttributeSet attrs) {
@@ -138,6 +142,7 @@ public class GraphicOverlay extends View {
         postInvalidate();
     }
 
+
     /**
      * Draws the overlay with its associated graphic objects.
      */
@@ -156,6 +161,4 @@ public class GraphicOverlay extends View {
             }
         }
     }
-
-
 }
