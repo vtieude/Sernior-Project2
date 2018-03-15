@@ -51,7 +51,7 @@
                     android:textAppearance="?android:attr/textAppearanceLarge" />
             </LinearLayout>
             <ImageView
-                android:id="@+id/imageView2"
+                android:id="@+id/imageViewPencil"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_gravity="right"
