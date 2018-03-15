@@ -77,12 +77,11 @@ public class StorageActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
-                Object o = listView.getItemAtPosition(i);
-                HumanModel humanModel = (HumanModel)o;
 //                Toast.makeText(StorageActivity.this,  "das" + humanModel.getName().toString(),
 //                        Toast.LENGTH_LONG).show();
-                Intent intent = new Intent(StorageActivity.this, HumanInformationActivity.class).putExtra("human", humanModel);
+                Intent intent = new Intent(StorageActivity.this, HumanInformationActivity.class);
+
+//                Intent intent = new Intent(StorageActivity.this, HumanInformationActivity.class).putExtra("human", databaseHelper.getHuman(i));
                 startActivity(intent);
             };
         });

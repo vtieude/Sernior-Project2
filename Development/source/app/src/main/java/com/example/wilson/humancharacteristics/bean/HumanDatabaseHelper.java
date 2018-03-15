@@ -143,7 +143,7 @@ public class HumanDatabaseHelper extends SQLiteOpenHelper {
         values.put(COLUMN_HUMAN_EMAIL, human.getEmail());
         values.put(COLUMN_HUMAN_COMMENT, human.getComment());
         values.put(COLUMN_HUMAN_IMAGE,human.getImage());
-        return db.update(TABLE_HUMAN, values, "id = ? ", new String[] { Integer.toString(human.getId()) } );
+        return db.update(TABLE_HUMAN, values, COLUMN_HUMAN_ID + " = ? ", new String[] { Integer.toString(human.getId()) } );
     }
     public void deleteHuman (int id)
     {

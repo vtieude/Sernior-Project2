@@ -11,7 +11,7 @@
     <string name="text_email">Email</string>
     <string name="delete">Xóa</string>
     <string name="your_name">Tên</string>
-    <string name="you_age">Tuổi</string>
+    <string name="you_age">18</string>
     <string name="emotion_setting">Cảm xúc</string>
     <string name="characteristic_setting">Đặc trưng</string>
     <string name="gender_setting">Giới tính</string>
@@ -19,4 +19,6 @@
     <string name="description_amount">Hiển thị số lượng khuôn mặt nhận diện</string>
     <string name="toask_default_setting">Cài đặt mặc định</string>
     <string name="add">Thêm</string>
+    <string name="save_button">Lưu</string>
+    <string name="alert_succsess">Thêm thành công</string>
 </resources>
