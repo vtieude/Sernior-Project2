@@ -1,6 +1,8 @@
 package com.example.wilson.humancharacteristics.Storage;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,7 +37,7 @@ public class CustomListAdaptor extends BaseAdapter{
     }
 
     @Override
-    public Object getItem(int i) {
+    public HumanModel getItem(int i) {
         return listHuman.get(i);
     }
 
@@ -61,8 +63,8 @@ public class CustomListAdaptor extends BaseAdapter{
         HumanModel human = this.listHuman.get(i);
         holder.nameView.setText("Name: " +human.getName());
         holder.ageView.setText("Age: " + human.getAge());
-        int imageId = human.getMipmapResIdByName(context,human.getFlagImage());
-        holder.flagView.setImageResource(imageId);
+        Bitmap bitmap= BitmapFactory.decodeByteArray(human.getImage(), 0, human.getImage().length);
+        holder.flagView.setImageBitmap(bitmap);
         return view;
     }
     static class ViewHolder {

@@ -51,7 +51,7 @@
                     android:textAppearance="?android:attr/textAppearanceLarge" />
             </LinearLayout>
             <ImageView
-                android:id="@+id/imageView2"
+                android:id="@+id/imageViewPencil"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_gravity="right"
@@ -61,7 +61,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:background="@drawable/background_border"
             android:padding="15dp"
             android:layout_centerHorizontal="true"
@@ -103,6 +103,7 @@
                 android:layout_marginTop="13dp"
                 android:text="@string/text_phone" />
 
+
             <TextView
                 android:id="@+id/tittleEmail"
                 android:layout_width="match_parent"
@@ -118,7 +119,15 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_marginTop="13dp"
+                android:maxLength="20"
                 android:text="@string/text_email" />
         </LinearLayout>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btSave"
+            android:layout_gravity="center|bottom"
+            android:text="@string/save_button" />
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

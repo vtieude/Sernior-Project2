@@ -17,14 +17,13 @@ public class HumanModel implements Serializable{
     public HumanModel() {
         super();
     }
-    public HumanModel(int id, String name,  int age, String comment, String phone, String email, byte[] image) {
+    public HumanModel( String name,  int age, String comment, String phone, String email, byte[] image) {
         this.name = name;
-        this.image = image;
         this.age = age;
         this.comment = comment;
         this.phone = phone;
         this.email = email;
-        this.id = id;
+        this.image = image;
     }
     public HumanModel(String name, String flag, int age) {
         this.name = name;
@@ -93,9 +92,8 @@ public class HumanModel implements Serializable{
     }
 
     public void setImage(byte[] image) {
-        image = image;
+        this.image = image;
     }
-
     //find image.
 
     public int getMipmapResIdByName(Context context, String resName)  {
