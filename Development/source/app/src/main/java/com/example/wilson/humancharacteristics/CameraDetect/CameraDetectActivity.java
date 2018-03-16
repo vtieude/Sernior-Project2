@@ -1,151 +1,169 @@
 package com.example.wilson.humancharacteristics.CameraDetect;
 
+import android.Manifest;
+import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
-import android.content.pm.ActivityInfo;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.pm.PackageManager;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.OrientationEventListener;
-import android.view.SurfaceView;
-import android.widget.TextView;
+import android.util.Log;
+import android.view.View;
 
 import com.example.wilson.humancharacteristics.R;
+import com.example.wilson.humancharacteristics.ui.camera.CameraSourcePreview;
+import com.example.wilson.humancharacteristics.ui.camera.GraphicOverlay;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.gms.vision.CameraSource;
+import com.google.android.gms.vision.MultiDetector;
+import com.google.android.gms.vision.MultiProcessor;
+import com.google.android.gms.vision.face.FaceDetector;
 
-import org.opencv.android.BaseLoaderCallback;
-import org.opencv.android.CameraBridgeViewBase;
-import org.opencv.android.JavaCameraView;
-import org.opencv.android.OpenCVLoader;
-import org.opencv.core.Core;
-import org.opencv.core.CvType;
-import org.opencv.core.Mat;
+import android.support.design.widget.Snackbar;
+import android.widget.Toast;
 
-import org.opencv.imgproc.Imgproc;
+import java.io.IOException;
 
-public class CameraDetectActivity extends AppCompatActivity implements CameraBridgeViewBase.CvCameraViewListener2{
 
-    private OrientationListener orientationListener;
+public class CameraDetectActivity extends AppCompatActivity {
+
+    private static final String TAG = "MultiTracker";
+
+    private static final int RC_HANDLE_GMS = 9001;
+    // permission request codes need to be < 256
+    private static final int RC_HANDLE_CAMERA_PERM = 2;
+
+    private CameraSource mCameraSource = null;
+    private CameraSourcePreview mPreview;
+    private GraphicOverlay mGraphicOverlay;
+
 
     static {
         System.loadLibrary("native-lib");
-        System.loadLibrary("opencv_java3");
     }
-    private JavaCameraView javaCameraView;
-    private Mat img, mRgbaT, mRgbaF;
-    private TextView textView;
-    private BaseLoaderCallback baseLoaderCallback = new BaseLoaderCallback(this) {
-        @Override
-        public void onManagerConnected(int status) {
-            switch(status){
-                case BaseLoaderCallback.SUCCESS:{
-                    javaCameraView.enableView();
-                    break;
-                }
-                default:{
-                    super.onManagerConnected(status);
-                    break;
-                }
-            }
-        }
-    };
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera_detect);
-        javaCameraView = (JavaCameraView) this.findViewById(R.id.javaCameraView);
-        javaCameraView.setVisibility(SurfaceView.VISIBLE);
-        javaCameraView.enableView();
-        javaCameraView.setCvCameraViewListener(this);
 
-        textView = (TextView) findViewById(R.id.textview);
-        textView.setText(fromDetectFaceLib());
+        mPreview = (CameraSourcePreview) findViewById(R.id.preview);
+        mGraphicOverlay = (GraphicOverlay) findViewById(R.id.faceOverlay);
 
-
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        int rc = ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
+        if (rc == PackageManager.PERMISSION_GRANTED) {
+            createCameraSource();
+        } else {
+            requestCameraPermission();
+        }
     }
 
     @Override
     protected void onResume(){
         super.onResume();
-        if (OpenCVLoader.initDebug()){
-            baseLoaderCallback.onManagerConnected(BaseLoaderCallback.SUCCESS);
-        }
-        else{
-            OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_3_3_0, this, baseLoaderCallback);
-        }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (javaCameraView!=null)
-            javaCameraView.disableView();
+        startCameraSource();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        if(javaCameraView!=null)
-            javaCameraView.disableView();
-    }
-
-    public native void detectFace( long imgMat );
-    public native String fromDetectFaceLib();
-
-    @Override
-    public void onCameraViewStarted(int width, int height) {
-        img = new Mat(height, width, CvType.CV_8UC4);
-        mRgbaT = new Mat(height, width, CvType.CV_8UC4);
-        mRgbaF = new Mat(height, width, CvType.CV_8UC4);
+        mPreview.stop();
     }
 
     @Override
-    public void onCameraViewStopped() {
-        img.release();
-        mRgbaF.release();
-        mRgbaT.release();
-    }
-
-    @Override
-    public Mat onCameraFrame(CameraBridgeViewBase.CvCameraViewFrame inputFrame) {
-        img = inputFrame.rgba();
-
-        // this is for make camera portrait
-        Core.transpose(img, mRgbaT);
-        Imgproc.resize(mRgbaT, mRgbaF, mRgbaF.size(), 0,0, 0);
-
-        Core.flip(mRgbaF, img, 1);
-        detectFace(img.getNativeObjAddr());
-
-        return img;
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mCameraSource != null) {
+            mCameraSource.release();
     }
 
 
-private class OrientationListener extends OrientationEventListener {
-    final int ROTATION_O    = 1;
-    final int ROTATION_90   = 2;
-    final int ROTATION_180  = 3;
-    final int ROTATION_270  = 4;
+    }
 
-    private int rotation = 0;
-    public OrientationListener(Context context) { super(context); }
+    private void createCameraSource() {
 
-    @Override public void onOrientationChanged(int orientation) {
-        if( (orientation < 35 || orientation > 325) && rotation!= ROTATION_O){ // PORTRAIT
-            rotation = ROTATION_O;
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        Context context = getApplicationContext();
+        FaceDetector faceDetector = new FaceDetector.Builder(context)
+                .setLandmarkType(FaceDetector.ALL_LANDMARKS)
+                .setMode(FaceDetector.FAST_MODE)
+                .build();
+        FaceTrackerFactory faceFactory = new FaceTrackerFactory(mGraphicOverlay);
+        faceDetector.setProcessor(
+                new MultiProcessor.Builder<>(faceFactory).build());
+        MultiDetector multiDetector = new MultiDetector.Builder()
+                .add(faceDetector)
+                .build();
+
+        if (!multiDetector.isOperational()) {
+            Log.w(TAG, "Detector dependencies are not yet available.");
+
+            IntentFilter lowstorageFilter = new IntentFilter(Intent.ACTION_DEVICE_STORAGE_LOW);
+            boolean hasLowStorage = registerReceiver(null, lowstorageFilter) != null;
+
+            if (hasLowStorage) {
+                Toast.makeText(this, R.string.low_storage_error, Toast.LENGTH_LONG).show();
+                Log.w(TAG, getString(R.string.low_storage_error));
+            }
         }
-        else if( orientation > 145 && orientation < 215 && rotation!=ROTATION_180){ // REVERSE PORTRAIT
-            rotation = ROTATION_180;
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
+        mCameraSource = new CameraSource.Builder(getApplicationContext(), multiDetector)
+                .setFacing(CameraSource.CAMERA_FACING_BACK)
+                .setRequestedPreviewSize(1600, 1024)
+                .setRequestedFps(15.0f)
+                .build();
+    }
+
+    private void requestCameraPermission() {
+        Log.w(TAG, "Camera permission is not granted. Requesting permission");
+
+        final String[] permissions = new String[]{Manifest.permission.CAMERA};
+
+        if (!ActivityCompat.shouldShowRequestPermissionRationale(this,
+                Manifest.permission.CAMERA)) {
+            ActivityCompat.requestPermissions(this, permissions, RC_HANDLE_CAMERA_PERM);
+            return;
         }
-        else if(orientation > 55 && orientation < 125 && rotation!=ROTATION_270){ // REVERSE LANDSCAPE
-            rotation = ROTATION_270;
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+
+        final Activity thisActivity = this;
+
+        View.OnClickListener listener = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ActivityCompat.requestPermissions(thisActivity, permissions,
+                        RC_HANDLE_CAMERA_PERM);
+            }
+        };
+
+        Snackbar.make(mGraphicOverlay, R.string.permission_camera_rationale,
+                Snackbar.LENGTH_INDEFINITE)
+                .setAction(R.string.ok, listener)
+                .show();
+    }
+    private void startCameraSource() {
+
+        int code = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(
+                getApplicationContext());
+        if (code != ConnectionResult.SUCCESS) {
+            Dialog dlg =
+                    GoogleApiAvailability.getInstance().getErrorDialog(this, code,
+                            RC_HANDLE_GMS);
+            dlg.show();
         }
-        else if(orientation > 235 && orientation < 305 && rotation!=ROTATION_90){ //LANDSCAPE
-            rotation = ROTATION_90;
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+
+        if (mCameraSource != null) {
+            try {
+                mPreview.start(mCameraSource, mGraphicOverlay);
+            } catch (IOException e) {
+                Log.e(TAG, "Unable to start camera source.", e);
+                mCameraSource.release();
+                mCameraSource = null;
+            }
         }
     }
-}
 }
 
