@@ -17,7 +17,9 @@
 .externalNativeBuild
 
 .app/CMakeLists.txt
+*/CMakeLists.txt
 
+*/CMakeLists.txt
 
 
 
