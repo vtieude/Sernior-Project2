@@ -48,8 +48,8 @@ public class HumanInformationActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_human_information);
-        checkItent();
         getView();
+        checkItent();
         viewEvent();
     }
     public void imagePencilEvent() {
@@ -194,9 +194,11 @@ public class HumanInformationActivity extends AppCompatActivity {
         if (intent.hasExtra("human") ) {
             checkItent = true;
             humanInfor = (HumanModel)intent.getSerializableExtra("human");
-            Bitmap bitmap= BitmapFactory.decodeByteArray(humanInfor.getImage(), 0, humanInfor.getImage().length);
-            imageView.setImageBitmap(bitmap);
-            textName.setText(humanInfor.getName().toString());
+            if ( humanInfor.getImage() != null) {
+                Bitmap bitmap= BitmapFactory.decodeByteArray(humanInfor.getImage(), 0, humanInfor.getImage().length);
+                imageView.setImageBitmap(bitmap);
+            }
+            textName.setText(humanInfor.getName());
             textAge.setText(String.valueOf(humanInfor.getAge()));
             textEmail.setText(humanInfor.getEmail());
             textPhone.setText(humanInfor.getPhone());
@@ -204,6 +206,7 @@ public class HumanInformationActivity extends AppCompatActivity {
         }
         else {
             accessCamera();
+
         }
     }
     @Override

@@ -37,7 +37,7 @@ public class CustomListAdaptor extends BaseAdapter{
     }
 
     @Override
-    public Object getItem(int i) {
+    public HumanModel getItem(int i) {
         return listHuman.get(i);
     }
 
