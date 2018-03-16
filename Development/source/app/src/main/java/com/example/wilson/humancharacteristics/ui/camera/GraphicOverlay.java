@@ -77,6 +77,10 @@ public class GraphicOverlay extends View {
         }
 
 
+        public void getButton(){
+
+        }
+
         /**
          * Adjusts the y coordinate from the preview's coordinate system to the view coordinate
          * system.

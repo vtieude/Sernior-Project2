@@ -24,6 +24,7 @@ import com.google.android.gms.vision.MultiProcessor;
 import com.google.android.gms.vision.face.FaceDetector;
 
 import android.support.design.widget.Snackbar;
+import android.widget.Button;
 import android.widget.Toast;
 
 import java.io.IOException;
@@ -36,6 +37,9 @@ public class CameraDetectActivity extends AppCompatActivity {
     private static final int RC_HANDLE_GMS = 9001;
     // permission request codes need to be < 256
     private static final int RC_HANDLE_CAMERA_PERM = 2;
+
+    private Button mButton;
+    public static boolean check=false;
 
     private CameraSource mCameraSource = null;
     private CameraSourcePreview mPreview;
@@ -54,6 +58,7 @@ public class CameraDetectActivity extends AppCompatActivity {
 
         mPreview = (CameraSourcePreview) findViewById(R.id.preview);
         mGraphicOverlay = (GraphicOverlay) findViewById(R.id.faceOverlay);
+        mButton = (Button) findViewById(R.id.btn_wearMark);
 
         int rc = ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
         if (rc == PackageManager.PERMISSION_GRANTED) {
@@ -61,6 +66,7 @@ public class CameraDetectActivity extends AppCompatActivity {
         } else {
             requestCameraPermission();
         }
+        setOnclick();
     }
 
     @Override
@@ -80,9 +86,17 @@ public class CameraDetectActivity extends AppCompatActivity {
         super.onDestroy();
         if (mCameraSource != null) {
             mCameraSource.release();
+        }
     }
 
-
+    public boolean setOnclick(){
+        mButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                check = !check;
+            }
+        });
+        return check;
     }
 
     private void createCameraSource() {

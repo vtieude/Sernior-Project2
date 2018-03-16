@@ -51,16 +51,10 @@ class FaceTrackerFactory implements MultiProcessor.Factory<Face> {
 }
 
 class FaceGraphic extends TrackedGraphic<Face> {
-    private static final float FACE_POSITION_RADIUS = 10.0f;
     private static final float ID_TEXT_SIZE = 40.0f;
-    private static final float ID_Y_OFFSET = 50.0f;
-    private static final float ID_X_OFFSET = -50.0f;
     private static final float BOX_STROKE_WIDTH = 5.0f;
 
-    private static int mCurrentColorIndex = 0;
 
-    private Mat tmpMat;
-    private Bitmap bmp32;
 
     private Paint mIdPaint;
     private Paint mBoxPaint;
@@ -139,72 +133,75 @@ class FaceGraphic extends TrackedGraphic<Face> {
         float bottom = cy + yOffset;
 
 
-        canvas.drawRoundRect(left, top, right, bottom, 20, 20, mBoxPaint);
-
-        for ( Landmark landmark : mFace.getLandmarks() ) {
+        if(CameraDetectActivity.check){
+            myBitmap =  Bitmap.createScaledBitmap(myBitmap, (int) mFace.getWidth(),
+                    (int) mFace.getHeight(), false);
+            canvas.drawBitmap(myBitmap, left, top, mBoxPaint);
+        }
+        else {
+            for (Landmark landmark : mFace.getLandmarks()) {
 
 /*----------------  After ---------------------*/
 
-            switch (landmark.getType()){
-                case BOTTOM_MOUTH:{
-                    mBottomMouthPosition = landmark.getPosition();
-                    break;
+                switch (landmark.getType()) {
+                    case BOTTOM_MOUTH: {
+                        mBottomMouthPosition = landmark.getPosition();
+                        break;
+                    }
+                    case LEFT_CHEEK: {
+                        mLeftCheekPosition = landmark.getPosition();
+                        break;
+                    }
+                    case LEFT_EAR: {
+                        mLeftEyePosition = landmark.getPosition();
+                        break;
+                    }
+                    case LEFT_EAR_TIP: {
+                        mLeftEarTipPosition = landmark.getPosition();
+                        break;
+                    }
+                    case LEFT_EYE: {
+                        mLeftEyePosition = landmark.getPosition();
+                        break;
+                    }
+                    case LEFT_MOUTH: {
+                        mLeftMouthPosition = landmark.getPosition();
+                        break;
+                    }
+                    case NOSE_BASE: {
+                        mNoseBasePosition = landmark.getPosition();
+                        break;
+                    }
+                    case RIGHT_CHEEK: {
+                        mRightCheekPosition = landmark.getPosition();
+                        break;
+                    }
+                    case RIGHT_EAR: {
+                        mRightEarPosition = landmark.getPosition();
+                        break;
+                    }
+                    case RIGHT_EAR_TIP: {
+                        mRightEarTipPosition = landmark.getPosition();
+                        break;
+                    }
+                    case RIGHT_EYE: {
+                        mRightEarPosition = landmark.getPosition();
+                        break;
+                    }
+                    case RIGHT_MOUTH: {
+                        mRightMouthPosition = landmark.getPosition();
+                        break;
+                    }
+                    default: {
+                        break;
+                    }
                 }
-                case LEFT_CHEEK:{
-                    mLeftCheekPosition = landmark.getPosition();
-                    break;
-                }
-                case LEFT_EAR:{
-                    mLeftEyePosition = landmark.getPosition();
-                    break;
-                }
-                case LEFT_EAR_TIP:{
-                    mLeftEarTipPosition = landmark.getPosition();
-                    break;
-                }
-                case LEFT_EYE:{
-                    mLeftEyePosition = landmark.getPosition();
-                    break;
-                }
-                case LEFT_MOUTH:{
-                    mLeftMouthPosition = landmark.getPosition();
-                    break;
-                }
-                case NOSE_BASE:{
-                    mNoseBasePosition = landmark.getPosition();
-                    break;
-                }
-                case RIGHT_CHEEK:{
-                    mRightCheekPosition = landmark.getPosition();
-                    break;
-                }
-                case RIGHT_EAR:{
-                    mRightEarPosition = landmark.getPosition();
-                    break;
-                }
-                case RIGHT_EAR_TIP:{
-                    mRightEarTipPosition = landmark.getPosition();
-                    break;
-                }
-                case RIGHT_EYE:{
-                    mRightEarPosition = landmark.getPosition();
-                    break;
-                }
-                case RIGHT_MOUTH:{
-                    mRightMouthPosition = landmark.getPosition();
-                    break;
-                }
-                default:{
-                    break;
-                }
+                canvas.drawRect(left, top, right, bottom, mBoxPaint);
+                mLandmarkX = (int) ( landmark.getPosition().x * 1 );
+                mLandmarkY = (int) ( landmark.getPosition().y * 1 );
+                canvas.drawCircle( mLandmarkX, mLandmarkY, 3, mBoxPaint );
             }
-//            mLandmarkX = (int) ( landmark.getPosition().x * 1 );
-//            mLandmarkY = (int) ( landmark.getPosition().y * 1 );
-//            canvas.drawCircle( mLandmarkX, mLandmarkY, 3, mBoxPaint );
         }
-        myBitmap =  Bitmap.createScaledBitmap(myBitmap, (int) mFace.getWidth(),
-                (int) mFace.getHeight(), false);
-        canvas.drawBitmap(myBitmap, left, top, mBoxPaint);
     }
 
     //Native code C++

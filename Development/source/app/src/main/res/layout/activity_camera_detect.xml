@@ -7,17 +7,30 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     >
-
-    <com.example.wilson.humancharacteristics.ui.camera.CameraSourcePreview
-        android:id="@+id/preview"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-    <com.example.wilson.humancharacteristics.ui.camera.GraphicOverlay
-        android:id="@+id/faceOverlay"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        <com.example.wilson.humancharacteristics.ui.camera.CameraSourcePreview
+            android:id="@+id/preview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
-    </com.example.wilson.humancharacteristics.ui.camera.CameraSourcePreview>
 
+            <com.example.wilson.humancharacteristics.ui.camera.GraphicOverlay
+                android:id="@+id/faceOverlay"
+                android:layout_width="match_parent"
+                android:layout_height="450dp"
+                />
+        </com.example.wilson.humancharacteristics.ui.camera.CameraSourcePreview>
+
+        <Button
+            android:id="@+id/btn_wearMark"
+            android:text="Change"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center"
+            />
+
+    </FrameLayout>
 
 </LinearLayout>
