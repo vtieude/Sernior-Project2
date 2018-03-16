@@ -204,11 +204,6 @@ class FaceGraphic extends TrackedGraphic<Face> {
         }
         myBitmap =  Bitmap.createScaledBitmap(myBitmap, (int) mFace.getWidth(),
                 (int) mFace.getHeight(), false);
-
-        bmp32 = myBitmap.copy(Bitmap.Config.ARGB_8888, true);
-        Utils.bitmapToMat(bmp32, tmpMat);
-        calculateFaceRotation(tmpMat.getNativeObjAddr());
-        Utils.matToBitmap(tmpMat, myBitmap);
         canvas.drawBitmap(myBitmap, left, top, mBoxPaint);
     }
 
