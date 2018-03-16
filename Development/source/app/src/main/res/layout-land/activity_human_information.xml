@@ -6,13 +6,16 @@
     android:layout_width="match_parent"
     android:background="@drawable/background3"
     android:layout_height="match_parent">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:layout_editor_absoluteX="8dp"
         tools:layout_editor_absoluteY="8dp"
+        android:layout_marginTop="10dp"
         android:orientation="vertical"
         tools:ignore="MissingConstraints">
+
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -33,7 +36,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:text="Your name"
+                    android:text="@string/your_name"
                     android:id="@+id/text_name"
                     android:gravity="center"
                     android:padding="10dp" />
@@ -44,20 +47,17 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:padding="10dp"
-                    android:text="Age"
+                    android:text="@string/you_age"
                     android:textAppearance="?android:attr/textAppearanceLarge" />
-
             </LinearLayout>
             <ImageView
-                android:id="@+id/imageView2"
+                android:id="@+id/imageViewPencil"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_gravity="right"
                 android:layout_marginTop="100dp"
-                android:layout_marginRight="50dp"
                 app:srcCompat="@mipmap/pen" />
         </FrameLayout>
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -81,53 +81,47 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_marginTop="13dp"
+                android:textSize="15dp"
                 android:text="@string/text_comment" />
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <TextView
-                    android:id="@+id/titlePhone"
-                    android:layout_width="0dp"
-                    android:layout_weight=".50"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:background="@color/colorTittle"
-                    android:textSize="@dimen/tittle"
-                    android:text="@string/tittle_phone" />
-                <TextView
-                    android:id="@+id/tittleEmail"
-                    android:layout_width="0dp"
-                    android:layout_weight="0.50"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:textSize="@dimen/tittle"
-                    android:background="@color/colorTittle"
-                    android:text="@string/tittle_email" />
 
-            </LinearLayout>
-            <LinearLayout
+            <TextView
+                android:id="@+id/titlePhone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <TextView
-                    android:id="@+id/textViewPhone"
-                    android:layout_width="0dp"
-                    android:layout_weight="0.50"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:layout_marginTop="13dp"
-                    android:text="@string/text_phone" />
-                <TextView
-                    android:id="@+id/textViewEmail"
-                    android:layout_width="0dp"
-                    android:layout_weight="0.50"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:layout_marginTop="13dp"
-                    android:text="@string/text_email" />
-            </LinearLayout>
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="15dp"
+                android:background="@color/colorTittle"
+                android:textSize="@dimen/tittle"
+                android:text="@string/tittle_phone" />
+
+            <TextView
+                android:id="@+id/textViewPhone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="13dp"
+                android:text="@string/text_phone" />
+
+
+            <TextView
+                android:id="@+id/tittleEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="25dp"
+                android:textSize="@dimen/tittle"
+                android:background="@color/colorTittle"
+                android:text="@string/tittle_email" />
+            <TextView
+                android:id="@+id/textViewEmail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="13dp"
+                android:maxLength="20"
+                android:text="@string/text_email" />
         </LinearLayout>
+
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -135,5 +129,4 @@
             android:layout_gravity="center|bottom"
             android:text="@string/save_button" />
     </LinearLayout>
-
 </android.support.constraint.ConstraintLayout>
