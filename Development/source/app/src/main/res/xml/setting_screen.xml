@@ -14,6 +14,7 @@
         android:title="@string/gender_setting"
         android:icon="@mipmap/gender"
         android:key="switch_gender"
+        android:textColor="@color/blackColor"
         android:summaryOff="Off"
         android:summaryOn="On">
     </SwitchPreference>
@@ -22,6 +23,8 @@
         android:key="switch_emotion"
         android:icon="@mipmap/emotion"
         android:summaryOff="Off"
+        android:switchTextAppearance="@color/blackColor"
+        android:textColor="@color/blackColor"
         android:summaryOn="On">
     </SwitchPreference>
     <SwitchPreference
@@ -29,13 +32,15 @@
         android:key="switch_character"
         android:icon="@mipmap/characteristic"
         android:summaryOff="Off"
+        android:textColor="@color/blackColor"
         android:summaryOn="On">
     </SwitchPreference>
     <com.pavelsikun.seekbarpreference.SeekBarPreference
         android:key="amount_face"
         android:title="@string/amount_setting"
+        android:textColor="@color/blackColor"
         android:summary="@string/description_amount"
-        sample:msbp_minValue="1"
+        android:textColorHighlight="@color/blackColor"
         sample:msbp_maxValue="10"
         />
 </PreferenceScreen>

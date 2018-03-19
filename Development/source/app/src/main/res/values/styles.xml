@@ -17,5 +17,13 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:typeface">monospace</item>
     </style>
-
+    <style name="BackgroundTextFont" parent="@android:style/TextAppearance.Medium">
+        <item name="android:background">@drawable/background3</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:typeface">monospace</item>
+    </style>
+    <style name="CustomAppTheme" parent="Theme.AppCompat">
+        <item name="android:textColorPrimaryDisableOnly">#00838f</item>
+        <item name="colorAccent">#e91e63</item>
+    </style>
 </resources>

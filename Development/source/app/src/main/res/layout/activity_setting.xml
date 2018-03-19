@@ -9,6 +9,7 @@
         android:layout_width="match_parent"
         android:background="@drawable/background3"
         android:id="@+id/setting_layout"
+        style="@style/CustomAppTheme"
         android:layout_height="match_parent">
     </RelativeLayout>
 

@@ -21,4 +21,12 @@
     <string name="add">Thêm</string>
     <string name="save_button">Lưu</string>
     <string name="alert_succsess">Thêm thành công</string>
+    <string name="update_Button">Cập nhập</string>
+    <string name="ok">OK</string>
+    <string name="permission_camera_rationale">Cho phép sử dụng camera</string>
+    <string name="no_camera_permission">Ứng dụng không thể khởi chạy, đảm bảo camera đã được bật.</string>
+    <string name="low_storage_error">Dung lượng không đủ.</string>
+    <string name="tittle_email">Email</string>
+    <string name="tittle_phone">Điện Thoại</string>
+    <string name="tittle_comment">Nhận Xét</string>
 </resources>

@@ -99,8 +99,8 @@ public class SettingActivity extends AppCompatActivity {
             switchCharacteristic.setChecked(false);
             switchEmotion.setChecked(false);
             switchGender.setChecked(true);
-            seekBarAmount.setCurrentValue(5);
             seekBarAmount.setDefaultValue(5);
+            seekBarAmount.setCurrentValue(5);
         }
     }
 }

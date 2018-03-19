@@ -18,6 +18,7 @@
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/imageView_flag"
         android:layout_marginStart="45dp"
+        android:textColor="@color/colorPrimary"
         android:layout_toEndOf="@+id/imageView_flag"
         android:text="Name" />
 
@@ -25,6 +26,7 @@
         android:id="@+id/item_age"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@color/colorPrimary"
         android:layout_alignBottom="@+id/imageView_flag"
         android:layout_alignStart="@+id/item_name"
         android:text="Age" />

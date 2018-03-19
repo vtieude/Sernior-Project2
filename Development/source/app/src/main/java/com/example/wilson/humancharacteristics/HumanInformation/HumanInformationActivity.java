@@ -203,10 +203,7 @@ public class HumanInformationActivity extends AppCompatActivity {
             textEmail.setText(humanInfor.getEmail());
             textPhone.setText(humanInfor.getPhone());
             textComment.setText(humanInfor.getComment());
-        }
-        else {
-            accessCamera();
-
+            buttonSave.setText(R.string.update_Button);
         }
     }
     @Override
