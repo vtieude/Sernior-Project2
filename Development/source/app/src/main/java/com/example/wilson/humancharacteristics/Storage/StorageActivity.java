@@ -58,6 +58,7 @@ public class StorageActivity extends AppCompatActivity {
             case R.id.add_storage:
                 Intent intent = new Intent(StorageActivity.this, HumanInformationActivity.class);
                 startActivity(intent);
+                finish();
                 return true;
             case R.id.delete_storage:
                 return true;
@@ -81,6 +82,7 @@ public class StorageActivity extends AppCompatActivity {
 //                        Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(getApplication(), HumanInformationActivity.class).putExtra("human", customListAdaptor.getItem(i));
                 startActivity(intent);
+                finish();
             };
         });
     }

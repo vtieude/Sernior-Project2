@@ -95,6 +95,7 @@ public class SettingActivity extends AppCompatActivity {
             seekBarAmount = (SeekBarPreference) findPreference("amount_face");
         }
         public void defaultValue() {
+            switchAge.setChecked(false);
             switchAge.setChecked(true);
             switchCharacteristic.setChecked(false);
             switchEmotion.setChecked(false);

@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -17,6 +18,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputFilter;
 import android.text.InputType;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -40,7 +42,7 @@ public class HumanInformationActivity extends AppCompatActivity {
     private int REQUEST_CODE = 100;
     private int MAX_LENGTH = 20;
     private Boolean checkItent = false;
-    private ImageView imageView, imagePencil;
+    private ImageView imageAvartaView, imagePencil;
     private TextView textName,textAge, textComment, textEmail, textPhone;
     private Button buttonSave;
     private HumanModel humanInfor;
@@ -50,7 +52,40 @@ public class HumanInformationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_human_information);
         getView();
         checkItent();
+        if (savedInstanceState != null ) {
+            updateTextChangeOrientation(savedInstanceState);
+        }
         viewEvent();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("TextName", textName.getText().toString());
+        outState.putString("TextAge", textAge.getText().toString());
+        outState.putString("TextComment", textComment.getText().toString());
+        outState.putString("TextPhone", textPhone.getText().toString());
+        outState.putString("TextEmail", textEmail.getText().toString());
+
+    }
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event)
+    {
+        if ((keyCode == KeyEvent.KEYCODE_BACK))
+        {
+            Intent intent = new Intent(HumanInformationActivity.this, StorageActivity.class);
+            startActivity(intent);
+            finish();
+            return true; //I have tried here true also
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+    public void updateTextChangeOrientation(Bundle save) {
+        textName.setText(save.getString("TextName").toString());
+        textAge.setText(save.getString("TextAge").toString());
+        textComment.setText(save.getString("TextComment").toString());
+        textEmail.setText(save.getString("TextEmail").toString());
+        textPhone.setText(save.getString("TextPhone").toString());
     }
     public void imagePencilEvent() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -109,7 +144,7 @@ public class HumanInformationActivity extends AppCompatActivity {
     public void getView() {
         textName = (TextView)findViewById(R.id.text_name);
         textAge = (TextView)findViewById(R.id.text_Age);
-        imageView = (ImageView)findViewById(R.id.humanFaceAvatar);
+        imageAvartaView = (ImageView)findViewById(R.id.humanFaceAvatar);
         textComment = (TextView) findViewById(R.id.textViewComment);
         textEmail = (TextView) findViewById(R.id.textViewEmail);
         textPhone = (TextView) findViewById(R.id.textViewPhone);
@@ -118,7 +153,7 @@ public class HumanInformationActivity extends AppCompatActivity {
 
     }
     public void viewEvent() {
-        imageView.setOnClickListener(new View.OnClickListener() {
+        imageAvartaView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 accessCamera();
@@ -162,6 +197,7 @@ public class HumanInformationActivity extends AppCompatActivity {
                 }
                 Intent intent = new Intent(HumanInformationActivity.this, StorageActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
     }
@@ -175,7 +211,7 @@ public class HumanInformationActivity extends AppCompatActivity {
         humanModel.setEmail(textEmail.getText().toString());
         humanModel.setComment(textComment.getText().toString());
         humanModel.setAge(Integer.parseInt(textAge.getText().toString()));
-        humanModel.setImage(ConverttoArrayByte(imageView));
+        humanModel.setImage(ConverttoArrayByte(imageAvartaView));
         return humanModel;
     }
     public void accessCamera() {
@@ -196,7 +232,7 @@ public class HumanInformationActivity extends AppCompatActivity {
             humanInfor = (HumanModel)intent.getSerializableExtra("human");
             if ( humanInfor.getImage() != null) {
                 Bitmap bitmap= BitmapFactory.decodeByteArray(humanInfor.getImage(), 0, humanInfor.getImage().length);
-                imageView.setImageBitmap(bitmap);
+                imageAvartaView.setImageBitmap(bitmap);
             }
             textName.setText(humanInfor.getName());
             textAge.setText(String.valueOf(humanInfor.getAge()));
@@ -211,7 +247,7 @@ public class HumanInformationActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
             Bitmap bitmap = (Bitmap) data.getExtras().get("data");
-            imageView.setImageBitmap(bitmap);
+            imageAvartaView.setImageBitmap(bitmap);
         }
         return;
     }

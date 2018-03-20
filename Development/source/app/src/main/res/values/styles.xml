@@ -23,7 +23,10 @@
         <item name="android:typeface">monospace</item>
     </style>
     <style name="CustomAppTheme" parent="Theme.AppCompat">
-        <item name="android:textColorPrimaryDisableOnly">#00838f</item>
+        <item name="android:textColorPrimaryDisableOnly">@color/colorPrimary</item>
         <item name="colorAccent">#e91e63</item>
-    </style>
+    </style> <style name="TextColor" parent="@android:style/TextAppearance.Medium">
+    <item name="android:textColor">@color/colorPrimary</item>
+</style>
+
 </resources>
