@@ -614,5 +614,6 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
     }
 
     public native void drawLine(long img);
+    public native void detectFace(long img);
 }
 
