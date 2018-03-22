@@ -23,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
         System.loadLibrary("native-lib");
         System.loadLibrary("opencv_java3");
     }
+
     private List<Button> listButton;
     Button btStart, btStorage, btSetting, btCopyright, btExit;
     @Override

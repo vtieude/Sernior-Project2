@@ -6,4 +6,8 @@
     <color name="red">#ffff0000</color>
     <color name="colorTittle">#E3F2FD</color>
     <color name="blackColor">#000000</color>
+
+    <color name="colorBlackOverlay">#44000000</color>
+
 </resources>
+
