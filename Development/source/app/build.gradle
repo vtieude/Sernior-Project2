@@ -21,10 +21,20 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    sourceSets{
+        main{
+            jniLibs.srcDirs = ['libs']
+        }
+    }
     externalNativeBuild {
         cmake {
             path "CMakeLists.txt"
         }
+    }
+}
+allprojects {
+    repositories {
+        jcenter()
     }
 }
 
@@ -34,7 +44,7 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     //noinspection GradleCompatible
     compile 'com.android.support:design:26.1.0'
-
+//    compile 'org.tensorflow:tensorflow-android:+'
     //noinspection GradleCompatible
     implementation 'com.android.support:appcompat-v7:26.1.0'
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'

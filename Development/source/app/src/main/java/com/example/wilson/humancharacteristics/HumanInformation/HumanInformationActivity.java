@@ -27,12 +27,17 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.wilson.Tensorflow.Classifier;
+import com.example.wilson.Tensorflow.TensorFlowImageClassifier;
 import com.example.wilson.humancharacteristics.R;
 import com.example.wilson.humancharacteristics.Storage.StorageActivity;
 import com.example.wilson.humancharacteristics.bean.HumanDatabaseHelper;
 import com.example.wilson.humancharacteristics.bean.HumanModel;
 
 import java.io.ByteArrayOutputStream;
+import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 /**
  * Created by Wilson on 3/7/2018.
@@ -46,6 +51,7 @@ public class HumanInformationActivity extends AppCompatActivity {
     private TextView textName,textAge, textComment, textEmail, textPhone;
     private Button buttonSave;
     private HumanModel humanInfor;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,6 +74,7 @@ public class HumanInformationActivity extends AppCompatActivity {
         outState.putString("TextEmail", textEmail.getText().toString());
 
     }
+
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event)
     {
@@ -151,6 +158,10 @@ public class HumanInformationActivity extends AppCompatActivity {
         imagePencil = (ImageView)findViewById(R.id.imageViewPencil);
         buttonSave = (Button)findViewById(R.id.btSave);
 
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
     public void viewEvent() {
         imageAvartaView.setOnClickListener(new View.OnClickListener() {
