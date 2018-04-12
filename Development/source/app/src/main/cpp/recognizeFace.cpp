@@ -9,13 +9,19 @@
 #include <opencv2/highgui.hpp>
 #include <opencv2/core.hpp>
 #include <iostream>
+#include <fstream>
 
-cv::Ptr<cv::face::EigenFaceRecognizer> model = cv::face::EigenFaceRecognizer::create();
+JavaVM *jvm;       /* denotes a Java VM */
+JNIEnv *env;       /* pointer to native method interface */
+
 // Get the path to your CSV.
 std::string fn_csv;
 // These vectors hold the images and corresponding labels.
 std::vector<cv::Mat> images;
 std::vector<int> labels;
+std::map<int, std::string> keyName;
+static bool trainStatus = false;
+cv::Mat faceMat;
 
 static cv::Mat norm_0_255(cv::InputArray _src) {
     cv::Mat src = _src.getMat();
@@ -34,11 +40,27 @@ static cv::Mat norm_0_255(cv::InputArray _src) {
     }
     return dst;
 }
-static void read_csv(const std::string& filename, std::vector<cv::Mat>& images, std::vector<int>& labels, char separator = ';') {
+
+bool fexists(const char *filename)
+{
+    std::ifstream ifile(filename);
+    return ifile;
+}
+
+
+std::string intToString(int number){
+    std::stringstream ss;
+    ss << number;
+    return ss.str();
+}
+
+
+static void read_csv(const std::string& filename, std::vector<cv::Mat>& images, std::vector<int>& labels, std::map<int, std::string>& keyName, char separator = ';') {
     std::ifstream file(filename.c_str(), std::ifstream::in);
+    std::string nameHuman[3];
     if (!file) {
         std::string error_message = "No valid input file was given, please check the given filename.";
-        CV_Error(cv::Error::StsBadArg, error_message);
+        CV_Error(CV_StsBadArg, error_message);
     }
     std::string line, path, classlabel;
     while (getline(file, line)) {
@@ -46,15 +68,33 @@ static void read_csv(const std::string& filename, std::vector<cv::Mat>& images, 
         getline(liness, path, separator);
         getline(liness, classlabel);
         if(!path.empty() && !classlabel.empty()) {
-            images.push_back(cv::imread(path, 0));
+            cv::Mat img = cv::imread(path, cv::IMREAD_GRAYSCALE);
+            normalize(img, img, 0, 255, cv::NORM_MINMAX);
+            images.push_back(img);
             labels.push_back(atoi(classlabel.c_str()));
+
+            std::size_t pos = path.find('/');      // position of "live" in str
+            std::string str = path.substr (pos+1);     // get from "live" to the end
+            pos = str.find('/');
+            str = str.substr(0,pos);
+            keyName[ atoi(classlabel.c_str())] = str;
         }
     }
 }
 
-void trainModel(){
+void trainModel(cv::face::LBPHFaceRecognizer* model){
     try {
-        read_csv(fn_csv, images, labels);
+            fn_csv = "/sdcard/data/at.txt";
+            read_csv(fn_csv, images, labels, keyName);
+            if (static_cast<int>(images.size())>0 && static_cast<int>(labels.size())>0 && !trainStatus){
+                model->train(images, labels);
+                trainStatus = true;
+            }
+            if (model->empty()){
+                std::cerr << "Error " << std::endl;
+                exit(-1);
+            }
+
     } catch (cv::Exception& e) {
         std::cerr << "Error opening file \"" << fn_csv << "\". Reason: " << e.msg << std::endl;
         // nothing more we can do
@@ -69,13 +109,33 @@ void drawLine(cv::Mat& img){
 }
 
 extern "C" {
-JNIEXPORT int JNICALL
-Java_com_example_wilson_humancharacteristics_recognizer_PersonRecognizer_trainModelLBPH(
+JNIEXPORT void JNICALL
+Java_com_example_wilson_humancharacteristics_CameraDetect_CameraDetectActivity_trainModelLBPH(
         JNIEnv *env,
         jobject /* this */,
-        jlong imgMat) {
-    cv::Mat *img = (cv::Mat*) imgMat;
-    return 0;
+        jlong model) {
+    cv::face::LBPHFaceRecognizer* model_data = (cv::face::LBPHFaceRecognizer*) model;
+    if(!trainStatus){
+        trainModel(model_data);
+        trainStatus = true;
+    }
+}
+
+JNIEXPORT jstring JNICALL
+Java_com_example_wilson_humancharacteristics_CameraDetect_CameraDetectActivity_faceRecognize(
+        JNIEnv *env,
+        jobject /* this */,
+        jlong img,
+        jlong model) {
+//    cv::Mat* image = (cv::Mat*) img;
+//    cv::face::LBPHFaceRecognizer* model_recog = (cv::face::LBPHFaceRecognizer*) model;
+//    cv::Mat gray;
+//    cv::cvtColor(*image, gray, cv::COLOR_BGR2GRAY);
+//    cv::resize(gray, gray, cv::Size(92, 112));
+//    int prediction = model_recog->predict(gray);
+//    std::string box_text = cv::format("Prediction = %s", keyName[prediction].c_str());
+
+    return env->NewStringUTF("");
 }
 
 JNIEXPORT void JNICALL

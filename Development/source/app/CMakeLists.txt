@@ -29,6 +29,7 @@ add_library( # Sets the name of the library.
              src/main/cpp/native-lib.cpp
              src/main/cpp/detectFaceLib.cpp
              src/main/cpp/recognizeFace.cpp
+             src/main/cpp/recognizeCharacter.cpp
              )
 add_library(lib_opencv SHARED IMPORTED)
 

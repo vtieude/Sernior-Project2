@@ -137,6 +137,7 @@ public class ImagePreviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         @Override
         public void onClick(View v) {
             v.setSelected(true);
+
             onItemClickListenerListener.onClick(v, getAdapterPosition());
         }
 

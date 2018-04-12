@@ -2,6 +2,7 @@ package com.example.wilson.humancharacteristics.CameraDetect;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.ImageFormat;
@@ -11,6 +12,7 @@ import android.graphics.RectF;
 import android.graphics.YuvImage;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -37,6 +39,8 @@ import android.view.WindowManager;
 
 import org.opencv.android.Utils;
 import org.opencv.core.Mat;
+import org.opencv.face.FaceRecognizer;
+import org.opencv.face.LBPHFaceRecognizer;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -71,7 +75,7 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
     private final CameraErrorCallback mErrorCallback = new CameraErrorCallback();
 
 
-    private static final int MAX_FACE = 1;
+    private static int MAX_FACE = 1;
     private boolean isThreadWorking = false;
     private Handler handler;
     private FaceDetectThread detectThread = null;
@@ -92,9 +96,12 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
     private ImagePreviewAdapter imagePreviewAdapter;
     private ArrayList<Bitmap> facesBitmap;
 
+    public static LBPHFaceRecognizer faceRecognizer = LBPHFaceRecognizer.create();
+
     //Face use for recognition
     private ArrayList<org.opencv.core.Mat> faceRects;
 
+    private static boolean loadModelStatus = false;
 
 
     //==============================================================================================
@@ -117,13 +124,13 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
         mFaceView = new FaceOverlayView(this);
         addContentView(mFaceView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
-
         // Create and Start the OrientationListener:
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-
+        SharedPreferences setting = PreferenceManager.getDefaultSharedPreferences(this);
+        MAX_FACE = setting.getInt("amount_face", 1);
 
         handler = new Handler();
         faces = new FaceResult[MAX_FACE];
@@ -140,6 +147,8 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
 
         if (icicle != null)
             cameraId = icicle.getInt(BUNDLE_CAMERA_ID, 0);
+        faceRecognizer.read("/sdcard/data/eigenfaces_at.yml");
+//        trainModelLBPH(faceRecognizer.getNativeObjAddr());
     }
 
 
@@ -150,6 +159,7 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
         // permission is not granted yet, request permission.
         SurfaceHolder holder = mView.getHolder();
         holder.addCallback(this);
+        // YCrCb format used for images
         holder.setFormat(ImageFormat.NV21);
     }
 
@@ -158,7 +168,6 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_camera, menu);
-
         return true;
     }
 
@@ -171,7 +180,6 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
                 return true;
 
             case R.id.switchCam:
-
                 if (numberOfCameras == 1) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(this);
                     builder.setTitle("Switch Camera").setMessage("Your device have one camera").setNeutralButton("Close", null);
@@ -179,12 +187,9 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
                     alert.show();
                     return true;
                 }
-
                 cameraId = (cameraId + 1) % numberOfCameras;
                 recreate();
-
                 return true;
-
 
             default:
                 return super.onOptionsItemSelected(item);
@@ -402,7 +407,31 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
     }
 
 
-    // fps detect face (not FPS of camera)
+    private class FaceRecognizeThread extends Thread {
+        private Handler handler;
+        private byte[] data = null;
+        private Context ctx;
+        private Bitmap faceRecognized;
+        public FaceRecognizeThread(Handler handler, Context ctx){
+            this.ctx = ctx;
+            this.handler = handler;
+        }
+
+        public void setData(byte[] data) {
+            this.data = data;
+        }
+
+        @Override
+        public void run() {
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    trainModelLBPH(faceRecognizer.getNativeObjAddr());
+                }
+            });
+        }
+    }
+        // fps detect face (not FPS of camera)
     long start, end;
     int counter = 0;
     double fps;
@@ -410,6 +439,7 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
     /**
      * Do face detect in thread
      */
+
     private class FaceDetectThread extends Thread {
         private Handler handler;
         private byte[] data = null;
@@ -421,13 +451,11 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
             this.handler = handler;
         }
 
-
         public void setData(byte[] data) {
             this.data = data;
         }
 
         public void run() {
-//            Log.i("FaceDetectThread", "running");
 
             float aspect = (float) previewHeight / (float) previewWidth;
             int w = prevSettingWidth;
@@ -487,6 +515,7 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
 
             android.media.FaceDetector.Face[] fullResults = new android.media.FaceDetector.Face[MAX_FACE];
             fdet.findFaces(bmp, fullResults);
+
 
             for (int i = 0; i < MAX_FACE; i++) {
                 if (fullResults[i] == null) {
@@ -559,6 +588,7 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
                                             Bitmap bmp32 = faceCroped.copy(Bitmap.Config.ARGB_8888, true);
                                             Utils.bitmapToMat(bmp32, mat);
                                             drawLine(mat.getNativeObjAddr());
+//                                            String text_img = faceRecognize(mat.getNativeObjAddr(), faceRecognizer.getNativeObjAddr());
                                             Bitmap bmp= Bitmap.createBitmap(mat.width(), mat.height(), Bitmap.Config.ARGB_8888);
                                             Utils.matToBitmap(mat,bmp);
                                             imagePreviewAdapter.add(bmp);
@@ -571,8 +601,13 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
                 }
             }
 
+
+
+
+
             handler.post(new Runnable() {
                 public void run() {
+
                     //send face to FaceView to draw rect
                     mFaceView.setFaces(faces);
 
@@ -594,6 +629,7 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
         }
     }
 
+
     /**
      * Release Memory
      */
@@ -614,6 +650,9 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
     }
 
     public native void drawLine(long img);
-    public native void detectFace(long img);
+    public native void trainModelLBPH(long trainModel);
+    public native String faceRecognize(long img, long trainModel);
 }
+
+
 

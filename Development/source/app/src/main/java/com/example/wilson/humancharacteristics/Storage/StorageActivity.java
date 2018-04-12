@@ -35,8 +35,8 @@ public class StorageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_storage);
         // that get value from setting page
-//        SharedPreferences setting = PreferenceManager.getDefaultSharedPreferences(this);
-//        int a = setting.getInt("amount_face", 0);
+        SharedPreferences setting = PreferenceManager.getDefaultSharedPreferences(this);
+        int a = setting.getInt("amount_face", 0);
         databaseHelper = new HumanDatabaseHelper(this);
 //        databaseHelper.createDefaultValue();
         listHuman = databaseHelper.getListHuman();

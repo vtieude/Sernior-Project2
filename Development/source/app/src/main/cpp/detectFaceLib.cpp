@@ -91,7 +91,6 @@ Java_com_example_wilson_humancharacteristics_CameraDetect_CameraDetectActivity_f
     return env->NewStringUTF(hello.c_str());
 
 }
-
 }
 
 

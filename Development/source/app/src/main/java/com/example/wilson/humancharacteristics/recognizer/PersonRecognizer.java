@@ -33,6 +33,5 @@ public class PersonRecognizer {
         mLabelsFile= new Labels(mPath);
     }
 
-    public native int trainModelLBPH(long image);
 
 }

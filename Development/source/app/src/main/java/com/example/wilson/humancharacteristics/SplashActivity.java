@@ -1,5 +1,6 @@
 package com.example.wilson.humancharacteristics;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
