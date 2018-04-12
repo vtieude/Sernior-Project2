@@ -96,7 +96,6 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
     private ImagePreviewAdapter imagePreviewAdapter;
     private ArrayList<Bitmap> facesBitmap;
 
-    public static LBPHFaceRecognizer faceRecognizer = LBPHFaceRecognizer.create();
 
     //Face use for recognition
     private ArrayList<org.opencv.core.Mat> faceRects;
@@ -147,8 +146,7 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
 
         if (icicle != null)
             cameraId = icicle.getInt(BUNDLE_CAMERA_ID, 0);
-        faceRecognizer.read("/sdcard/data/eigenfaces_at.yml");
-//        trainModelLBPH(faceRecognizer.getNativeObjAddr());
+//        faceRecognizer.read("/sdcard/data/eigenfaces_at.yml");
     }
 
 
@@ -407,30 +405,6 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
     }
 
 
-    private class FaceRecognizeThread extends Thread {
-        private Handler handler;
-        private byte[] data = null;
-        private Context ctx;
-        private Bitmap faceRecognized;
-        public FaceRecognizeThread(Handler handler, Context ctx){
-            this.ctx = ctx;
-            this.handler = handler;
-        }
-
-        public void setData(byte[] data) {
-            this.data = data;
-        }
-
-        @Override
-        public void run() {
-            handler.post(new Runnable() {
-                @Override
-                public void run() {
-                    trainModelLBPH(faceRecognizer.getNativeObjAddr());
-                }
-            });
-        }
-    }
         // fps detect face (not FPS of camera)
     long start, end;
     int counter = 0;
@@ -584,14 +558,14 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
                                 if (faceCroped != null) {
                                     handler.post(new Runnable() {
                                         public void run() {
-                                            Mat mat = new Mat();
+//                                            Mat mat = new Mat();
                                             Bitmap bmp32 = faceCroped.copy(Bitmap.Config.ARGB_8888, true);
-                                            Utils.bitmapToMat(bmp32, mat);
-                                            drawLine(mat.getNativeObjAddr());
-//                                            String text_img = faceRecognize(mat.getNativeObjAddr(), faceRecognizer.getNativeObjAddr());
-                                            Bitmap bmp= Bitmap.createBitmap(mat.width(), mat.height(), Bitmap.Config.ARGB_8888);
-                                            Utils.matToBitmap(mat,bmp);
-                                            imagePreviewAdapter.add(bmp);
+//                                            Utils.bitmapToMat(bmp32, mat);
+//                                            drawLine(mat.getNativeObjAddr());
+//
+//                                            Bitmap bmp= Bitmap.createBitmap(mat.width(), mat.height(), Bitmap.Config.ARGB_8888);
+//                                            Utils.matToBitmap(mat,bmp);
+                                            imagePreviewAdapter.add(bmp32);
                                         }
                                     });
                                 }

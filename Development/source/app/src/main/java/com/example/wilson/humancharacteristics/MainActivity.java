@@ -12,16 +12,18 @@ import com.example.wilson.humancharacteristics.Setting.SettingActivity;
 import com.example.wilson.humancharacteristics.Storage.StorageActivity;
 import com.example.wilson.humancharacteristics.bean.HumanDatabaseHelper;
 
+import org.tensorflow.contrib.android.TensorFlowInferenceInterface;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-
     // Used to load the 'native-lib' library on application startup.
     static {
-        System.loadLibrary("native-lib");
-        System.loadLibrary("opencv_java3");
+//        System.loadLibrary("native-lib");
+//        System.loadLibrary("opencv_java3");
+//        System.loadLibrary("tensorflow_inference");
     }
 
     private List<Button> listButton;

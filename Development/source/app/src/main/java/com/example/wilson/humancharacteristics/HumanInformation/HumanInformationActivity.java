@@ -27,18 +27,37 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.wilson.Tensorflow.Classifier;
+import com.example.wilson.Tensorflow.TensorFlowImageClassifier;
 import com.example.wilson.humancharacteristics.R;
 import com.example.wilson.humancharacteristics.Storage.StorageActivity;
 import com.example.wilson.humancharacteristics.bean.HumanDatabaseHelper;
 import com.example.wilson.humancharacteristics.bean.HumanModel;
 
 import java.io.ByteArrayOutputStream;
+import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 /**
  * Created by Wilson on 3/7/2018.
  */
 
 public class HumanInformationActivity extends AppCompatActivity {
+
+//    private static final int INPUT_SIZE = 224;
+//    private static final int IMAGE_MEAN = 128;
+//    private static final float IMAGE_STD = 128.0f;
+//    private static final String INPUT_NAME = "input";
+//    private static final String OUTPUT_NAME = "final_result";
+//
+//    private static final String MODEL_FILE = "file:///android_asset/rounded_graph.pb";
+//    private static final String LABEL_FILE = "file:///android_asset/retrained_labels.txt";
+//
+//    private Classifier classifier;
+//    private Executor executor = Executors.newSingleThreadExecutor();
+
+
     private int REQUEST_CODE = 100;
     private int MAX_LENGTH = 20;
     private Boolean checkItent = false;
@@ -46,6 +65,7 @@ public class HumanInformationActivity extends AppCompatActivity {
     private TextView textName,textAge, textComment, textEmail, textPhone;
     private Button buttonSave;
     private HumanModel humanInfor;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,8 +76,29 @@ public class HumanInformationActivity extends AppCompatActivity {
             updateTextChangeOrientation(savedInstanceState);
         }
         viewEvent();
+//        initTensorFlowAndLoadModel();
     }
 
+//    private void initTensorFlowAndLoadModel() {
+//        executor.execute(new Runnable() {
+//            @Override
+//            public void run() {
+//                try {
+//                    classifier = TensorFlowImageClassifier.create(
+//                            getAssets(),
+//                            MODEL_FILE,
+//                            LABEL_FILE,
+//                            INPUT_SIZE,
+//                            IMAGE_MEAN,
+//                            IMAGE_STD,
+//                            INPUT_NAME,
+//                            OUTPUT_NAME);
+//                } catch (final Exception e) {
+//                    throw new RuntimeException("Error initializing TensorFlow!", e);
+//                }
+//            }
+//        });
+//    }
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -68,6 +109,7 @@ public class HumanInformationActivity extends AppCompatActivity {
         outState.putString("TextEmail", textEmail.getText().toString());
 
     }
+
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event)
     {
@@ -151,6 +193,16 @@ public class HumanInformationActivity extends AppCompatActivity {
         imagePencil = (ImageView)findViewById(R.id.imageViewPencil);
         buttonSave = (Button)findViewById(R.id.btSave);
 
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+//        executor.execute(new Runnable() {
+//            @Override
+//            public void run() {
+//                classifier.close();
+//            }
+//        });
     }
     public void viewEvent() {
         imageAvartaView.setOnClickListener(new View.OnClickListener() {
@@ -245,9 +297,13 @@ public class HumanInformationActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
         if (requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
             Bitmap bitmap = (Bitmap) data.getExtras().get("data");
+//            bitmap = Bitmap.createScaledBitmap(bitmap, INPUT_SIZE, INPUT_SIZE, false);
+//            final List<Classifier.Recognition> results = classifier.recognizeImage(bitmap);
             imageAvartaView.setImageBitmap(bitmap);
+//            textEmail.setText(results.toString());
         }
         return;
     }
@@ -264,6 +320,7 @@ public class HumanInformationActivity extends AppCompatActivity {
 
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
         if (requestCode == REQUEST_CODE) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
