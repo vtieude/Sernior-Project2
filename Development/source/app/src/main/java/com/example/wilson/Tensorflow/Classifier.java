@@ -72,13 +72,13 @@ public interface Classifier {
                 resultString += title + " ";
             }
 
-//            if (confidence != null) {
-//                resultString += String.format("(%.1f%%) ", confidence * 100.0f);
-//            }
+            if (confidence != null) {
+                resultString += String.format("(%.1f%%) ", confidence * 100.0f);
+            }
 //
-//            if (location != null) {
-//                resultString += location + " ";
-//            }
+            if (location != null) {
+                resultString += location + " ";
+            }
 
             return resultString.trim();
         }

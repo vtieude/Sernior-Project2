@@ -1,0 +1,19 @@
+{
+    "logs": [
+        {
+            "outputFile": "E:\\DATN\\GitCompany\\BC11-Human-Analysis\\Development\\source\\app\\gradleBuild\\intermediates\\incremental\\mergeDebugAndroidTestResources\\merged.dir\\values-w720dp-v13\\values-w720dp-v13.xml",
+            "map": [
+                {
+                    "source": "C:\\Users\\Wilson\\.gradle\\caches\\transforms-1\\files-1.1\\material-seekbar-preference-2.3.0.aar\\dc8b58a3a472a40152cff22f96aeafa3\\res\\values-w720dp-v13\\values-w720dp-v13.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "50",
+                        "endOffsets": "101"
+                    }
+                }
+            ]
+        }
+    ]
+}
