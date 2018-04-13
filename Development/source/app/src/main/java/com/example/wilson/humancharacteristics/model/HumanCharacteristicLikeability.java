@@ -36,7 +36,7 @@ public class HumanCharacteristicLikeability extends BaseHumanCharacteristic {
     }
 
     @Override
-    String recognizeImage(Bitmap bitmap) {
+    public String recognizeImage(Bitmap bitmap) {
         final List<Classifier.Recognition> results = classifier.recognizeImage(bitmap);
         String result = results.toString();
         return result;
@@ -53,7 +53,7 @@ public class HumanCharacteristicLikeability extends BaseHumanCharacteristic {
     }
 
     @Override
-    void onDestroy() {
+    public void onDestroy() {
         classifier.close();
     }
 

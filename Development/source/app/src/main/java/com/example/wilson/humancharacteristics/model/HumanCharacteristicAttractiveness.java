@@ -20,7 +20,6 @@ public class HumanCharacteristicAttractiveness extends BaseHumanCharacteristic {
     private Classifier classifier;
     private static final String MODEL_Attractiveness = "file:///android_asset/attractiveness.pb";
     private static final String Label_Attractiveness = "file:///android_asset/labels.txt";
-    private float Attractiveness;
     private boolean activeMode;
 
     public HumanCharacteristicAttractiveness(final  AssetManager assetManager) {
@@ -28,8 +27,6 @@ public class HumanCharacteristicAttractiveness extends BaseHumanCharacteristic {
         setMode(true);
         setNameModel("Attractiveness");
     }
-    public float getAttractiveness() { return Attractiveness;  }
-    public void setAttractiveness(float acAttractiveness) { Attractiveness = acAttractiveness;}
     public void onDestroy() {
         classifier.close();
     }

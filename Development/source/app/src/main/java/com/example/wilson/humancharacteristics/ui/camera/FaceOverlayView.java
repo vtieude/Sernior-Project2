@@ -101,21 +101,21 @@ public class FaceOverlayView extends View {
                 if (mid.x != 0.0f && mid.y != 0.0f) {
                     float eyesDis = face.eyesDistance();
 
-                    rectF.set(new RectF(
-                            (mid.x - eyesDis * 1.2f) * scaleX,
-                            (mid.y - eyesDis * 0.65f) * scaleY,
-                            (mid.x + eyesDis * 1.2f) * scaleX,
-                            (mid.y + eyesDis * 1.75f) * scaleY));
-                    if (isFront) {
-                        float left = rectF.left;
-                        float right = rectF.right;
-                        rectF.left = getWidth() - right;
-                        rectF.right = getWidth() - left;
-                    }
-                    canvas.drawRect(rectF, mPaint);
-                    canvas.drawText("ID " + face.getId(), rectF.left, rectF.bottom + mTextPaint.getTextSize(), mTextPaint);
-                    canvas.drawText("Confidence " + face.getConfidence(), rectF.left, rectF.bottom + mTextPaint.getTextSize() * 2, mTextPaint);
-                    canvas.drawText("Attractive " + face.getAttractive(), rectF.left, rectF.bottom + mTextPaint.getTextSize() * 3, mTextPaint);
+                rectF.set(new RectF(
+                    (mid.x - eyesDis * 1.2f) * scaleX,
+                    (mid.y - eyesDis * 0.65f) * scaleY,
+                    (mid.x + eyesDis * 1.2f) * scaleX,
+                    (mid.y + eyesDis * 1.75f) * scaleY));
+                if (isFront) {
+                    float left = rectF.left;
+                    float right = rectF.right;
+                    rectF.left = getWidth() - right;
+                    rectF.right = getWidth() - left;
+                }
+                canvas.drawRect(rectF, mPaint);
+                canvas.drawText("ID " + face.getId(), rectF.left, rectF.bottom + mTextPaint.getTextSize(), mTextPaint);
+                canvas.drawText("Confidence " + face.getConfidence(), rectF.left, rectF.bottom + mTextPaint.getTextSize() * 2, mTextPaint);
+                canvas.drawText("Attractive " + face.getAttractive(), rectF.left, rectF.bottom + mTextPaint.getTextSize() * 3, mTextPaint);
                 }
             }
             canvas.restore();
