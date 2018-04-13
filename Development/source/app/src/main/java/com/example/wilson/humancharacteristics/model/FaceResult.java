@@ -14,6 +14,7 @@ public class FaceResult extends Object {
     private float pose;
     private int id;
     private long time;
+    private String attracttiveHuman;
 
     public FaceResult() {
         id = 0;
@@ -22,24 +23,26 @@ public class FaceResult extends Object {
         confidence = 0.4f;
         pose = 0.0f;
         time = System.currentTimeMillis();
+        attracttiveHuman = "";
     }
 
 
-    public void setFace(int id, PointF midEye, float eyeDist, float confidence, float pose, long time) {
-        set(id, midEye, eyeDist, confidence, pose, time);
+    public void setFace(int id, PointF midEye, float eyeDist, float confidence, float pose, long time, String attractive) {
+        set(id, midEye, eyeDist, confidence, pose, time, attractive);
     }
 
     public void clear() {
-        set(0, new PointF(0.0f, 0.0f), 0.0f, 0.4f, 0.0f, System.currentTimeMillis());
+        set(0, new PointF(0.0f, 0.0f), 0.0f, 0.4f, 0.0f, System.currentTimeMillis(), "");
     }
 
-    public synchronized void set(int id, PointF midEye, float eyeDist, float confidence, float pose, long time) {
+    public synchronized void set(int id, PointF midEye, float eyeDist, float confidence, float pose, long time, String attracttiveHuman ) {
         this.id = id;
         this.midEye.set(midEye);
         this.eyeDist = eyeDist;
         this.confidence = confidence;
         this.pose = pose;
         this.time = time;
+        this.attracttiveHuman = attracttiveHuman;
     }
 
     public float eyesDistance() {
@@ -92,5 +95,13 @@ public class FaceResult extends Object {
 
     public void setTime(long time) {
         this.time = time;
+    }
+
+    public String getAttractive(){
+        return this.attracttiveHuman;
+    }
+
+    public void setAttractive(String attracttiveHuman){
+        this.attracttiveHuman = attracttiveHuman;
     }
 }
