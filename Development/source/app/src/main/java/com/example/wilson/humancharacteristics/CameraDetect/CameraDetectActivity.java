@@ -28,6 +28,7 @@ import com.example.wilson.Tensorflow.Classifier;
 import com.example.wilson.Tensorflow.TensorFlowImageClassifier;
 import com.example.wilson.humancharacteristics.R;
 import com.example.wilson.humancharacteristics.model.FaceResult;
+import com.example.wilson.humancharacteristics.model.HumanCharacteristicAttractiveness;
 import com.example.wilson.humancharacteristics.ui.camera.FaceOverlayView;
 import com.example.wilson.humancharacteristics.utils.CameraErrorCallback;
 import com.example.wilson.humancharacteristics.utils.ImageUtils;
@@ -104,18 +105,18 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
 
     private static boolean loadModelStatus = false;
 
-
+    private HumanCharacteristicAttractiveness attractiveHuman;
 
     private static final int INPUT_SIZE = 224;
-    private static final int IMAGE_MEAN = 128;
-    private static final float IMAGE_STD = 128.0f;
-    private static final String INPUT_NAME = "input";
-    private static final String OUTPUT_NAME = "final_result";
+//    private static final int IMAGE_MEAN = 128;
+//    private static final float IMAGE_STD = 128.0f;
+//    private static final String INPUT_NAME = "input";
+//    private static final String OUTPUT_NAME = "final_result";
+//
+//    private static final String MODEL_FILE = "file:///android_asset/rounded_graph.pb";
+//    private static final String LABEL_FILE = "file:///android_asset/retrained_labels.txt";
 
-    private static final String MODEL_FILE = "file:///android_asset/rounded_graph.pb";
-    private static final String LABEL_FILE = "file:///android_asset/retrained_labels.txt";
-
-    private Classifier classifier;
+//    private Classifier classifier;
     private Executor executor = Executors.newSingleThreadExecutor();
 
 
@@ -170,15 +171,7 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
             @Override
             public void run() {
                 try {
-                    classifier = TensorFlowImageClassifier.create(
-                            getAssets(),
-                            MODEL_FILE,
-                            LABEL_FILE,
-                            INPUT_SIZE,
-                            IMAGE_MEAN,
-                            IMAGE_STD,
-                            INPUT_NAME,
-                            OUTPUT_NAME);
+                    attractiveHuman = new HumanCharacteristicAttractiveness(getAssets());
                 } catch (final Exception e) {
                     throw new RuntimeException("Error initializing TensorFlow!", e);
                 }
@@ -262,7 +255,7 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
         executor.execute(new Runnable() {
             @Override
             public void run() {
-                classifier.close();
+                attractiveHuman.onDestroy();
             }
         });
 
@@ -601,8 +594,7 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
                     faceCroped = ImageUtils.cropFace(faces[i], bitmap, rotate);
                     if (faceCroped != null) {
                         Bitmap bmp32 = Bitmap.createScaledBitmap(faceCroped, INPUT_SIZE, INPUT_SIZE, false);
-                        final List<Classifier.Recognition> results = classifier.recognizeImage(bmp32);
-                        faces[i].setAttractive(results.toString());
+                        faces[i].setAttractive(attractiveHuman.recognizeImage(bmp32));
                     }
                 }
             }
