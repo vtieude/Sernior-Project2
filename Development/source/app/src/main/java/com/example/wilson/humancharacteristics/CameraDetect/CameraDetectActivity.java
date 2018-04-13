@@ -24,8 +24,9 @@ import android.view.MenuItem;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import com.example.wilson.Tensorflow.Classifier;
+import com.example.wilson.Tensorflow.TensorFlowImageClassifier;
 import com.example.wilson.humancharacteristics.R;
-import com.example.wilson.humancharacteristics.adapter.ImagePreviewAdapter;
 import com.example.wilson.humancharacteristics.model.FaceResult;
 import com.example.wilson.humancharacteristics.ui.camera.FaceOverlayView;
 import com.example.wilson.humancharacteristics.utils.CameraErrorCallback;
@@ -47,6 +48,8 @@ import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 public final class CameraDetectActivity extends AppCompatActivity implements SurfaceHolder.Callback, Camera.PreviewCallback {
 
@@ -93,7 +96,6 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
     //RecylerView face image
     private HashMap<Integer, Integer> facesCount = new HashMap<>();
     private RecyclerView recyclerView;
-    private ImagePreviewAdapter imagePreviewAdapter;
     private ArrayList<Bitmap> facesBitmap;
 
 
@@ -101,6 +103,20 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
     private ArrayList<org.opencv.core.Mat> faceRects;
 
     private static boolean loadModelStatus = false;
+
+
+
+    private static final int INPUT_SIZE = 224;
+    private static final int IMAGE_MEAN = 128;
+    private static final float IMAGE_STD = 128.0f;
+    private static final String INPUT_NAME = "input";
+    private static final String OUTPUT_NAME = "final_result";
+
+    private static final String MODEL_FILE = "file:///android_asset/rounded_graph.pb";
+    private static final String LABEL_FILE = "file:///android_asset/retrained_labels.txt";
+
+    private Classifier classifier;
+    private Executor executor = Executors.newSingleThreadExecutor();
 
 
     //==============================================================================================
@@ -146,10 +162,29 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
 
         if (icicle != null)
             cameraId = icicle.getInt(BUNDLE_CAMERA_ID, 0);
-//        faceRecognizer.read("/sdcard/data/eigenfaces_at.yml");
+        initTensorFlowAndLoadModel();
     }
 
-
+    private void initTensorFlowAndLoadModel() {
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    classifier = TensorFlowImageClassifier.create(
+                            getAssets(),
+                            MODEL_FILE,
+                            LABEL_FILE,
+                            INPUT_SIZE,
+                            IMAGE_MEAN,
+                            IMAGE_STD,
+                            INPUT_NAME,
+                            OUTPUT_NAME);
+                } catch (final Exception e) {
+                    throw new RuntimeException("Error initializing TensorFlow!", e);
+                }
+            }
+        });
+    }
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
@@ -224,7 +259,13 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        resetData();
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                classifier.close();
+            }
+        });
+
     }
 
 
@@ -236,7 +277,6 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
 
     @Override
     public void surfaceCreated(SurfaceHolder surfaceHolder) {
-        resetData();
 
         //Find the total number of cameras available
         numberOfCameras = Camera.getNumberOfCameras();
@@ -535,9 +575,12 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
 
                         if (idFace == Id) Id++;
 
-                        faces[i].setFace(idFace, mid, eyesDis, confidence, pose, System.currentTimeMillis());
 
-                        faces_previous[i].set(faces[i].getId(), faces[i].getMidEye(), faces[i].eyesDistance(), faces[i].getConfidence(), faces[i].getPose(), faces[i].getTime());
+                        faces[i].setFace(idFace, mid, eyesDis, confidence, pose, System.currentTimeMillis(), "");
+
+                        faces_previous[i].set(faces[i].getId(), faces[i].getMidEye(), faces[i].eyesDistance(), faces[i].getConfidence(), faces[i].getPose(), faces[i].getTime(), faces[i].getAttractive());
+
+
 // 9.16
                         //
                         // if focus in a face 5 frame -> take picture face display in RecyclerView
@@ -549,33 +592,20 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
                             int count = facesCount.get(idFace) + 1;
                             if (count <= 5)
                                 facesCount.put(idFace, count);
-
-                            //
-                            // Crop Face to display in RecylerView
-                            //
-                            if (count == 5) {
-                                faceCroped = ImageUtils.cropFace(faces[i], bitmap, rotate);
-                                if (faceCroped != null) {
-                                    handler.post(new Runnable() {
-                                        public void run() {
-//                                            Mat mat = new Mat();
-                                            Bitmap bmp32 = faceCroped.copy(Bitmap.Config.ARGB_8888, true);
-//                                            Utils.bitmapToMat(bmp32, mat);
-//                                            drawLine(mat.getNativeObjAddr());
-//
-//                                            Bitmap bmp= Bitmap.createBitmap(mat.width(), mat.height(), Bitmap.Config.ARGB_8888);
-//                                            Utils.matToBitmap(mat,bmp);
-                                            imagePreviewAdapter.add(bmp32);
-                                        }
-                                    });
-                                }
-                            }
                         }
+                    }
+                    //
+                    // Crop Face to display in RecylerView
+                    //
+
+                    faceCroped = ImageUtils.cropFace(faces[i], bitmap, rotate);
+                    if (faceCroped != null) {
+                        Bitmap bmp32 = Bitmap.createScaledBitmap(faceCroped, INPUT_SIZE, INPUT_SIZE, false);
+                        final List<Classifier.Recognition> results = classifier.recognizeImage(bmp32);
+                        faces[i].setAttractive(results.toString());
                     }
                 }
             }
-
-
 
 
 
@@ -604,24 +634,6 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
     }
 
 
-    /**
-     * Release Memory
-     */
-    private void resetData() {
-        if (imagePreviewAdapter == null) {
-            facesBitmap = new ArrayList<>();
-            imagePreviewAdapter = new ImagePreviewAdapter(CameraDetectActivity.this, facesBitmap, new ImagePreviewAdapter.ViewHolder.OnItemClickListener() {
-                @Override
-                public void onClick(View v, int position) {
-                    imagePreviewAdapter.setCheck(position);
-                    imagePreviewAdapter.notifyDataSetChanged();
-                }
-            });
-            recyclerView.setAdapter(imagePreviewAdapter);
-        } else {
-            imagePreviewAdapter.clearAll();
-        }
-    }
 
     public native void drawLine(long img);
     public native void trainModelLBPH(long trainModel);
