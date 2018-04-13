@@ -21,9 +21,12 @@ public class HumanCharacteristicAttractiveness extends BaseHumanCharacteristic {
     private static final String MODEL_Attractiveness = "file:///android_asset/rounded_graph.pb";
     private static final String Label_Attractiveness = "file:///android_asset/retrained_labels.txt";
     private float Attractiveness;
+    private boolean activeMode;
 
     public HumanCharacteristicAttractiveness(final  AssetManager assetManager) {
         initTensorFlowAndLoadModel(assetManager);
+        setMode(true);
+        setNameModel("Attractiveness");
     }
     public float getAttractiveness() { return Attractiveness;  }
     public void setAttractiveness(float acAttractiveness) { Attractiveness = acAttractiveness;}
@@ -51,4 +54,21 @@ public class HumanCharacteristicAttractiveness extends BaseHumanCharacteristic {
         String result = results.toString();
         return result;
     }
+
+    @Override boolean getMode(){
+        return this.activeMode;
+    }
+
+    @Override void setMode(boolean mode){
+        this.activeMode = mode;
+    }
+
+    @Override void setNameModel(String nameModel){
+        this.nameModel = nameModel;
+    }
+
+    @Override String getNameModel(){
+        return this.nameModel;
+    }
+
 }

@@ -308,8 +308,7 @@ public class HumanInformationActivity extends AppCompatActivity {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
             } else {
-
-                Toast.makeText(this, "camera permission denied", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Camera permission denied", Toast.LENGTH_LONG).show();
             }
         }
     }

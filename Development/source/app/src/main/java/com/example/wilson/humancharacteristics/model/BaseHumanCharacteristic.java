@@ -15,7 +15,12 @@ public abstract class BaseHumanCharacteristic {
     protected static final float IMAGE_STD = 128.0f;
     protected static final String INPUT_NAME = "input";
     protected static final String OUTPUT_NAME = "final_result";
+    protected String nameModel;
     abstract void initTensorFlowAndLoadModel(AssetManager assetManager);
     abstract String recognizeImage(Bitmap bitmap);
+    abstract void setMode(boolean mode);
+    abstract boolean getMode();
     abstract void onDestroy();
+    abstract void setNameModel(String nameModel);
+    abstract String getNameModel();
 }
