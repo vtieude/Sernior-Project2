@@ -18,8 +18,8 @@ public class HumanCharacteristicAttractiveness extends BaseHumanCharacteristic {
 
 
     private Classifier classifier;
-    private static final String MODEL_Attractiveness = "file:///android_asset/rounded_graph.pb";
-    private static final String Label_Attractiveness = "file:///android_asset/retrained_labels.txt";
+    private static final String MODEL_Attractiveness = "file:///android_asset/attractiveness.pb";
+    private static final String Label_Attractiveness = "file:///android_asset/labels.txt";
     private float Attractiveness;
     private boolean activeMode;
 

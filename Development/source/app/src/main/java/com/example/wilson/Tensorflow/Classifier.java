@@ -64,21 +64,23 @@ public interface Classifier {
         @Override
         public String toString() {
             String resultString = "";
+            float percentConfidence = 1;
             if (id != null) {
-                resultString += "[" + id + "] ";
+                percentConfidence = (float) ((Integer.parseInt(id) + 1) / 7.0);
+//                resultString += id + " " + percentConfidence;
             }
 
-            if (title != null) {
-                resultString += title + " ";
-            }
+//            if (title != null) {
+//                resultString += title + " ";
+//            }
 
             if (confidence != null) {
-                resultString += String.format("(%.1f%%) ", confidence * 100.0f);
+                resultString += String.format(" (%.1f%%) ", percentConfidence*confidence * 100.0f);
             }
 //
-            if (location != null) {
-                resultString += location + " ";
-            }
+//            if (location != null) {
+//                resultString += location + " ";
+//            }
 
             return resultString.trim();
         }

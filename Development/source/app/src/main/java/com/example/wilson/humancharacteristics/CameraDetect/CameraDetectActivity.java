@@ -316,7 +316,6 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
         float aspect = (float) previewHeight / (float) previewWidth;
         fdet = new android.media.FaceDetector(prevSettingWidth, (int) (prevSettingWidth * aspect), MAX_FACE);
 
-
         // Everything is configured! Finally start the camera preview again:
         startPreview();
     }
