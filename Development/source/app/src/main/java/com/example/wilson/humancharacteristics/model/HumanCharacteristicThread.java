@@ -35,34 +35,34 @@ public class HumanCharacteristicThread extends BaseHumanCharacteristic {
     }
 
     @Override
-    String recognizeImage(Bitmap bitmap) {
+    public String recognizeImage(Bitmap bitmap) {
         final List<Classifier.Recognition> results = classifier.recognizeImage(bitmap);
         String result = results.toString();
         return result;
     }
 
     @Override
-    void setMode(boolean mode) {
+    public void setMode(boolean mode) {
         this.activeMode = mode;
     }
 
     @Override
-    boolean getMode() {
+    public boolean getMode() {
         return this.activeMode;
     }
 
     @Override
-    void onDestroy() {
+    public void onDestroy() {
         classifier.close();
     }
 
     @Override
-    void setNameModel(String nameModel) {
+    public void setNameModel(String nameModel) {
         this.nameModel = nameModel;
     }
 
     @Override
-    String getNameModel() {
+    public String getNameModel() {
         return this.nameModel;
     }
 }

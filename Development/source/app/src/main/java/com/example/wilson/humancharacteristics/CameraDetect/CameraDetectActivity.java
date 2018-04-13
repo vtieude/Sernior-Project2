@@ -29,6 +29,7 @@ import com.example.wilson.Tensorflow.TensorFlowImageClassifier;
 import com.example.wilson.humancharacteristics.R;
 import com.example.wilson.humancharacteristics.model.FaceResult;
 import com.example.wilson.humancharacteristics.model.HumanCharacteristicAttractiveness;
+import com.example.wilson.humancharacteristics.model.HumanCharacteristicTrustworthy;
 import com.example.wilson.humancharacteristics.ui.camera.FaceOverlayView;
 import com.example.wilson.humancharacteristics.utils.CameraErrorCallback;
 import com.example.wilson.humancharacteristics.utils.ImageUtils;
@@ -106,7 +107,7 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
     private static boolean loadModelStatus = false;
 
     private HumanCharacteristicAttractiveness attractiveHuman;
-
+    private HumanCharacteristicTrustworthy trustworthyHuman;
     private static final int INPUT_SIZE = 224;
 //    private static final int IMAGE_MEAN = 128;
 //    private static final float IMAGE_STD = 128.0f;
@@ -171,6 +172,7 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
             @Override
             public void run() {
                 try {
+                    trustworthyHuman = new HumanCharacteristicTrustworthy(getAssets());
                     attractiveHuman = new HumanCharacteristicAttractiveness(getAssets());
                 } catch (final Exception e) {
                     throw new RuntimeException("Error initializing TensorFlow!", e);
@@ -593,7 +595,7 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
                     faceCroped = ImageUtils.cropFace(faces[i], bitmap, rotate);
                     if (faceCroped != null) {
                         Bitmap bmp32 = Bitmap.createScaledBitmap(faceCroped, INPUT_SIZE, INPUT_SIZE, false);
-                        faces[i].setAttractive(attractiveHuman.recognizeImage(bmp32));
+                        faces[i].setAttractive(trustworthyHuman.recognizeImage(bmp32));
                     }
                 }
             }
