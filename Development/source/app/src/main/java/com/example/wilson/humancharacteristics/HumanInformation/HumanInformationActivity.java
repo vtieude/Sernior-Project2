@@ -33,6 +33,7 @@ import com.example.wilson.humancharacteristics.R;
 import com.example.wilson.humancharacteristics.Storage.StorageActivity;
 import com.example.wilson.humancharacteristics.bean.HumanDatabaseHelper;
 import com.example.wilson.humancharacteristics.bean.HumanModel;
+import com.example.wilson.humancharacteristics.model.HumanCharacteristicAttractiveness;
 
 import java.io.ByteArrayOutputStream;
 import java.util.List;
@@ -45,19 +46,9 @@ import java.util.concurrent.Executors;
 
 public class HumanInformationActivity extends AppCompatActivity {
 
-//    private static final int INPUT_SIZE = 224;
-//    private static final int IMAGE_MEAN = 128;
-//    private static final float IMAGE_STD = 128.0f;
-//    private static final String INPUT_NAME = "input";
-//    private static final String OUTPUT_NAME = "final_result";
-//
-//    private static final String MODEL_FILE = "file:///android_asset/rounded_graph.pb";
-//    private static final String LABEL_FILE = "file:///android_asset/retrained_labels.txt";
-//
-//    private Classifier classifier;
-//    private Executor executor = Executors.newSingleThreadExecutor();
+    private Executor executor = Executors.newSingleThreadExecutor();
 
-
+    private HumanCharacteristicAttractiveness hahai;
     private int REQUEST_CODE = 100;
     private int MAX_LENGTH = 20;
     private Boolean checkItent = false;
@@ -84,15 +75,7 @@ public class HumanInformationActivity extends AppCompatActivity {
 //            @Override
 //            public void run() {
 //                try {
-//                    classifier = TensorFlowImageClassifier.create(
-//                            getAssets(),
-//                            MODEL_FILE,
-//                            LABEL_FILE,
-//                            INPUT_SIZE,
-//                            IMAGE_MEAN,
-//                            IMAGE_STD,
-//                            INPUT_NAME,
-//                            OUTPUT_NAME);
+//                     hahai = new HumanCharacteristicAttractiveness(getAssets());
 //                } catch (final Exception e) {
 //                    throw new RuntimeException("Error initializing TensorFlow!", e);
 //                }
@@ -197,12 +180,12 @@ public class HumanInformationActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-//        executor.execute(new Runnable() {
-//            @Override
-//            public void run() {
-//                classifier.close();
-//            }
-//        });
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                hahai.onDestroy();
+            }
+        });
     }
     public void viewEvent() {
         imageAvartaView.setOnClickListener(new View.OnClickListener() {
@@ -300,10 +283,10 @@ public class HumanInformationActivity extends AppCompatActivity {
 
         if (requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
             Bitmap bitmap = (Bitmap) data.getExtras().get("data");
+
 //            bitmap = Bitmap.createScaledBitmap(bitmap, INPUT_SIZE, INPUT_SIZE, false);
-//            final List<Classifier.Recognition> results = classifier.recognizeImage(bitmap);
+//            textEmail.setText(hahai.recognizeImage(bitmap));
             imageAvartaView.setImageBitmap(bitmap);
-//            textEmail.setText(results.toString());
         }
         return;
     }
