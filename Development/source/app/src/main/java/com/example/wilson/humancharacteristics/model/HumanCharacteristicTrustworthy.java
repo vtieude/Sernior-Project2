@@ -52,7 +52,7 @@ public class HumanCharacteristicTrustworthy extends BaseHumanCharacteristic {
     }
 
     @Override
-    void onDestroy() {
+    public void onDestroy() {
         classifier.close();
     }
 

@@ -29,6 +29,11 @@ import com.example.wilson.Tensorflow.TensorFlowImageClassifier;
 import com.example.wilson.humancharacteristics.R;
 import com.example.wilson.humancharacteristics.model.FaceResult;
 import com.example.wilson.humancharacteristics.model.HumanCharacteristicAttractiveness;
+import com.example.wilson.humancharacteristics.model.HumanCharacteristicCompetent;
+import com.example.wilson.humancharacteristics.model.HumanCharacteristicDominant;
+import com.example.wilson.humancharacteristics.model.HumanCharacteristicExtroverted;
+import com.example.wilson.humancharacteristics.model.HumanCharacteristicLikeability;
+import com.example.wilson.humancharacteristics.model.HumanCharacteristicThread;
 import com.example.wilson.humancharacteristics.model.HumanCharacteristicTrustworthy;
 import com.example.wilson.humancharacteristics.ui.camera.FaceOverlayView;
 import com.example.wilson.humancharacteristics.utils.CameraErrorCallback;
@@ -95,6 +100,7 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
     private String BUNDLE_CAMERA_ID = "camera";
 
 
+
     //RecylerView face image
     private HashMap<Integer, Integer> facesCount = new HashMap<>();
     private RecyclerView recyclerView;
@@ -108,6 +114,12 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
 
     private HumanCharacteristicAttractiveness attractiveHuman;
     private HumanCharacteristicTrustworthy trustworthyHuman;
+    private HumanCharacteristicCompetent competentHuman;
+    private HumanCharacteristicDominant dominantHuman;
+    private HumanCharacteristicExtroverted extrovertedHuman;
+    private HumanCharacteristicLikeability likeabilityHuman;
+    private HumanCharacteristicThread threadHuman;
+
     private static final int INPUT_SIZE = 224;
 //    private static final int IMAGE_MEAN = 128;
 //    private static final float IMAGE_STD = 128.0f;
@@ -174,6 +186,11 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
                 try {
                     trustworthyHuman = new HumanCharacteristicTrustworthy(getAssets());
                     attractiveHuman = new HumanCharacteristicAttractiveness(getAssets());
+                    dominantHuman = new HumanCharacteristicDominant(getAssets());
+                    competentHuman = new HumanCharacteristicCompetent(getAssets());
+                    extrovertedHuman = new HumanCharacteristicExtroverted(getAssets());
+                    likeabilityHuman = new HumanCharacteristicLikeability(getAssets());
+                    threadHuman = new HumanCharacteristicThread(getAssets());
                 } catch (final Exception e) {
                     throw new RuntimeException("Error initializing TensorFlow!", e);
                 }
@@ -258,6 +275,12 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
             @Override
             public void run() {
                 attractiveHuman.onDestroy();
+                extrovertedHuman.onDestroy();
+                competentHuman.onDestroy();
+                dominantHuman.onDestroy();
+                likeabilityHuman.onDestroy();
+                threadHuman.onDestroy();
+                trustworthyHuman.onDestroy();
             }
         });
 
@@ -591,15 +614,19 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
                     //
                     // Crop Face to display in RecylerView
                     //
-
                     faceCroped = ImageUtils.cropFace(faces[i], bitmap, rotate);
                     if (faceCroped != null) {
                         Bitmap bmp32 = Bitmap.createScaledBitmap(faceCroped, INPUT_SIZE, INPUT_SIZE, false);
                         faces[i].setAttractive(trustworthyHuman.recognizeImage(bmp32));
+//                        faces[i].setDominant(dominantHuman.recognizeImage(bmp32));
+//                        faces[i].setCompetnent(attractiveHuman.recognizeImage(bmp32));
+//                        faces[i].setThread(threadHuman.recognizeImage(bmp32));
+//                        faces[i].setExtroverted(likeabilityHuman.recognizeImage(bmp32));
+//                        faces[i].setLikeability(extrovertedHuman.recognizeImage(bmp32));
+//                        faces[i].setTrustworthy(competentHuman.recognizeImage(bmp32));
                     }
                 }
             }
-
 
 
             handler.post(new Runnable() {

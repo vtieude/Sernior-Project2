@@ -15,6 +15,14 @@ public class FaceResult extends Object {
     private int id;
     private long time;
     private String attracttiveHuman;
+    private String trustworthyHuman;
+    private String dominantHuman;
+    private String threadHuman;
+    private String likeabilityHuman;
+    private String competentHuman;
+    private String extrovertedHuman;
+    private int countCharacters;
+
 
     public FaceResult() {
         id = 0;
@@ -24,7 +32,16 @@ public class FaceResult extends Object {
         pose = 0.0f;
         time = System.currentTimeMillis();
         attracttiveHuman = "";
+        trustworthyHuman = "";
+        dominantHuman = "";
+        threadHuman = "";
+        likeabilityHuman = "";
+        competentHuman = "";
+        extrovertedHuman = "";
+        countCharacters = 0;
     }
+
+
 
 
     public void setFace(int id, PointF midEye, float eyeDist, float confidence, float pose, long time, String attractive) {
@@ -97,11 +114,43 @@ public class FaceResult extends Object {
         this.time = time;
     }
 
+    public void setAttractive(String attracttiveHuman){
+        this.attracttiveHuman = attracttiveHuman;
+    }
+
     public String getAttractive(){
         return this.attracttiveHuman;
     }
 
-    public void setAttractive(String attracttiveHuman){
-        this.attracttiveHuman = attracttiveHuman;
+    public void setCompetnent(String competentHuman){
+        this.competentHuman = competentHuman;
     }
+
+    public String getCompetent(){
+        return this.competentHuman;
+    }
+
+    public void setDominant(String dominantHuman) { this.dominantHuman = dominantHuman; }
+
+    public String getDominant() { return this.dominantHuman; }
+
+    public void setExtroverted( String extrovertedHuman) { this.extrovertedHuman = extrovertedHuman; }
+
+    public String getExtroverted() { return this.extrovertedHuman; }
+
+    public void setLikeability(String likeabilityHuman) {  this.likeabilityHuman = likeabilityHuman; }
+
+    public String getLikeability(){ return this.likeabilityHuman; }
+
+    public void setThread(String threadHuman) { this.threadHuman = threadHuman; }
+
+    public String getThread(){ return this.threadHuman; }
+
+    public void setTrustworthy(String trustworthyHuman) { this.trustworthyHuman = trustworthyHuman; }
+
+    public String getTrustworthy() { return this.trustworthyHuman; }
+
+    public void setCountCharacters(int number){ this.countCharacters = number; }
+
+    public int getCountCharacters(){ return this.countCharacters; };
 }

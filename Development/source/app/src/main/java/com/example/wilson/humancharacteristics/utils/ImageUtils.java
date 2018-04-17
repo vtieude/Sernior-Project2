@@ -74,7 +74,6 @@ public class ImageUtils {
                 b.recycle();
                 b = b2;
             }
-
         }
         return b;
     }
