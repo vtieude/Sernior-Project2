@@ -618,12 +618,12 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
                     if (faceCroped != null) {
                         Bitmap bmp32 = Bitmap.createScaledBitmap(faceCroped, INPUT_SIZE, INPUT_SIZE, false);
                         faces[i].setAttractive(trustworthyHuman.recognizeImage(bmp32));
-                        faces[i].setDominant(dominantHuman.recognizeImage(bmp32));
-                        faces[i].setCompetnent(attractiveHuman.recognizeImage(bmp32));
-                        faces[i].setThread(threadHuman.recognizeImage(bmp32));
-                        faces[i].setExtroverted(likeabilityHuman.recognizeImage(bmp32));
-                        faces[i].setLikeability(extrovertedHuman.recognizeImage(bmp32));
-                        faces[i].setTrustworthy(competentHuman.recognizeImage(bmp32));
+//                        faces[i].setDominant(dominantHuman.recognizeImage(bmp32));
+//                        faces[i].setCompetnent(attractiveHuman.recognizeImage(bmp32));
+//                        faces[i].setThread(threadHuman.recognizeImage(bmp32));
+//                        faces[i].setExtroverted(likeabilityHuman.recognizeImage(bmp32));
+//                        faces[i].setLikeability(extrovertedHuman.recognizeImage(bmp32));
+//                        faces[i].setTrustworthy(competentHuman.recognizeImage(bmp32));
                     }
                 }
             }

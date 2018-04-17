@@ -177,6 +177,7 @@ public class HumanInformationActivity extends AppCompatActivity {
         buttonSave = (Button)findViewById(R.id.btSave);
 
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -187,6 +188,7 @@ public class HumanInformationActivity extends AppCompatActivity {
             }
         });
     }
+
     public void viewEvent() {
         imageAvartaView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -236,6 +238,7 @@ public class HumanInformationActivity extends AppCompatActivity {
             }
         });
     }
+
     public HumanModel getHumanInfor() {
         HumanModel humanModel = new HumanModel();
         if ( checkItent) {
@@ -249,6 +252,7 @@ public class HumanInformationActivity extends AppCompatActivity {
         humanModel.setImage(ConverttoArrayByte(imageAvartaView));
         return humanModel;
     }
+
     public void accessCamera() {
         if (checkSelfPermission(Manifest.permission.CAMERA)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -260,6 +264,7 @@ public class HumanInformationActivity extends AppCompatActivity {
         startActivityForResult(intent1, REQUEST_CODE);
 
     }
+
     public void checkItent(){
         Intent intent = getIntent();
         if (intent.hasExtra("human") ) {
@@ -277,6 +282,7 @@ public class HumanInformationActivity extends AppCompatActivity {
             buttonSave.setText(R.string.update_Button);
         }
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

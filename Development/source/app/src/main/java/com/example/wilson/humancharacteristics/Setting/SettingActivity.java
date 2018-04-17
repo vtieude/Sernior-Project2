@@ -94,6 +94,7 @@ public class SettingActivity extends AppCompatActivity {
             switchCharacteristic = (SwitchPreference) findPreference("switch_character");
             seekBarAmount = (SeekBarPreference) findPreference("amount_face");
         }
+
         public void defaultValue() {
             switchAge.setChecked(false);
             switchAge.setChecked(true);
