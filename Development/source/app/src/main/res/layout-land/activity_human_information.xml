@@ -51,7 +51,7 @@
                                 android:text="@string/your_name"
                                 android:id="@+id/text_name"
                                 android:gravity="center"
-                                android:textColor="@color/colorPrimary"
+                                android:textColor="@color/colorTittle"
                                 android:padding="10dp" />
 
                             <TextView
@@ -60,7 +60,7 @@
                                 android:layout_height="wrap_content"
                                 android:gravity="center"
                                 android:padding="10dp"
-                                android:textColor="@color/colorPrimary"
+                                android:textColor="@color/colorTittle"
                                 android:text="@string/you_age"
                                 android:textAppearance="?android:attr/textAppearanceLarge" />
                         </LinearLayout>
@@ -72,6 +72,7 @@
                         android:layout_gravity="right"
                         android:layout_marginRight="100dp"
                         android:layout_marginTop="20dp"
+                        android:background="@color/colorTittle"
                         app:srcCompat="@mipmap/pen" />
                 </FrameLayout>
             </FrameLayout>
@@ -102,7 +103,7 @@
                     android:layout_alignParentStart="true"
                     android:layout_marginTop="13dp"
                     android:textSize="15dp"
-                    android:textColor="@color/blackColor"
+                    android:textColor="@color/colorTittle"
                     android:text="@string/text_comment" />
 
                 <TextView
@@ -122,7 +123,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
                     android:layout_marginTop="13dp"
-                    android:textColor="@color/blackColor"
+                    android:textColor="@color/colorTittle"
                     android:text="@string/text_phone" />
 
 
@@ -143,7 +144,7 @@
                     android:layout_alignParentStart="true"
                     android:layout_marginTop="13dp"
                     android:maxLength="20"
-                    android:textColor="@color/blackColor"
+                    android:textColor="@color/colorTittle"
                     android:text="@string/text_email" />
             </LinearLayout>
 

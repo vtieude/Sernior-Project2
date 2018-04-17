@@ -39,7 +39,7 @@
                     android:text="@string/your_name"
                     android:id="@+id/text_name"
                     android:gravity="center"
-                    android:textColor="@color/colorPrimary"
+                    android:textColor="@color/colorTittle"
                     android:padding="10dp" />
 
                 <TextView
@@ -48,7 +48,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:padding="10dp"
-                    android:textColor="@color/colorPrimary"
+                    android:textColor="@color/colorTittle"
                     android:text="@string/you_age"
                     android:textAppearance="?android:attr/textAppearanceLarge" />
             </LinearLayout>
@@ -58,6 +58,7 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_gravity="right"
+                android:background="@color/colorTittle"
                 android:layout_marginTop="100dp"
                 app:srcCompat="@mipmap/pen" />
         </FrameLayout>
@@ -76,7 +77,7 @@
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
                 android:textSize="@dimen/tittle"
-                android:textColor="@color/blackColor"
+                android:textColor="@color/colorTittle"
                 android:background="@color/colorTittle"
                 android:text="@string/tittle_comment" />
 
@@ -87,7 +88,7 @@
                 android:layout_alignParentStart="true"
                 android:layout_marginTop="13dp"
                 android:textSize="15dp"
-                android:textColor="@color/blackColor"
+                android:textColor="@color/colorTittle"
                 android:text="@string/text_comment" />
 
             <TextView
@@ -107,7 +108,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_marginTop="13dp"
-                android:textColor="@color/blackColor"
+                android:textColor="@color/colorTittle"
                 android:text="@string/text_phone" />
 
 
@@ -128,7 +129,7 @@
                 android:layout_alignParentStart="true"
                 android:layout_marginTop="13dp"
                 android:maxLength="20"
-                android:textColor="@color/blackColor"
+                android:textColor="@color/colorTittle"
                 android:text="@string/text_email" />
         </LinearLayout>
 

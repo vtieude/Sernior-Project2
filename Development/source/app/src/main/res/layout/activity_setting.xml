@@ -7,7 +7,7 @@
     tools:context="com.example.wilson.humancharacteristics.Setting.SettingActivity">
     <RelativeLayout
         android:layout_width="match_parent"
-        android:background="@drawable/background3"
+        android:background="@drawable/background1704"
         android:id="@+id/setting_layout"
         android:layout_height="match_parent">
     </RelativeLayout>

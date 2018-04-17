@@ -180,12 +180,12 @@ public class HumanInformationActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        executor.execute(new Runnable() {
-            @Override
-            public void run() {
-                hahai.onDestroy();
-            }
-        });
+//        executor.execute(new Runnable() {
+//            @Override
+//            public void run() {
+//                hahai.onDestroy();
+//            }
+//        });
     }
     public void viewEvent() {
         imageAvartaView.setOnClickListener(new View.OnClickListener() {
