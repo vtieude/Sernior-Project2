@@ -13,8 +13,8 @@
     <string name="tittle_comment">Comment</string>
     <string name="delete">Delete</string>
     <string name="your_name">Your name</string>
-    <string name="you_age">18</string>
-    <string name="emotion_setting">Emotion</string>
+    <string name="you_age">Age</string>
+    <string name="emotion_setting">Attractiveness</string>
     <string name="characteristic_setting">Characteristic</string>
     <string name="gender_setting">Gender</string>
     <string name="amount_setting">Amount</string>
@@ -28,4 +28,6 @@
     <string name="no_camera_permission">This application cannot run because it does not have the camera permission.  The application will now exit.</string>
     <string name="low_storage_error">Face detector dependencies cannot be downloaded due to low device storage</string>
     <string name="update_Button">Update</string>
+    <string name="trustworthy_characteristic">Trustworthy</string>
+    <string name="age_setting">Age</string>
 </resources>

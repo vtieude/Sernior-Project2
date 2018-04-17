@@ -3,7 +3,7 @@
     xmlns:sample="http://schemas.android.com/apk/res-auto"
     android:key="setting_pre">
     <SwitchPreference
-        android:title="@string/you_age"
+        android:title="@string/age_setting"
         android:key="switch_age"
         android:icon="@mipmap/age"
         android:summaryOff="Off"
@@ -22,16 +22,16 @@
     <SwitchPreference
         android:title="@string/emotion_setting"
         android:key="switch_emotion"
-        android:icon="@mipmap/emotion"
+        android:icon="@mipmap/characteristic"
         android:summaryOff="Off"
         android:switchTextAppearance="@color/blackColor"
         android:textColor="@color/blackColor"
         android:summaryOn="On">
     </SwitchPreference>
     <SwitchPreference
-        android:title="@string/characteristic_setting"
+        android:title="@string/trustworthy_characteristic"
         android:key="switch_character"
-        android:icon="@mipmap/characteristic"
+        android:icon="@mipmap/oktrusworthy"
         android:summaryOff="Off"
         android:textColor="@color/blackColor"
         android:summaryOn="On">
