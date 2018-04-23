@@ -114,8 +114,14 @@ public class FaceOverlayView extends View {
                 }
                 canvas.drawRect(rectF, mPaint);
                 canvas.drawText("ID " + face.getId(), rectF.left, rectF.bottom + mTextPaint.getTextSize(), mTextPaint);
-                canvas.drawText("Confidence " + face.getConfidence(), rectF.left, rectF.bottom + mTextPaint.getTextSize() * 2, mTextPaint);
-                canvas.drawText("Attractive " + face.getAttractive(), rectF.left, rectF.bottom + mTextPaint.getTextSize() * 3, mTextPaint);
+//                canvas.drawText("Confidence " + face.getConfidence(), rectF.left, rectF.bottom + mTextPaint.getTextSize() * 2, mTextPaint);
+                canvas.drawText("Attractive " + face.getAttractive(), rectF.left, rectF.bottom + mTextPaint.getTextSize() * 2, mTextPaint);
+                canvas.drawText("TrustWorthy " + face.getTrustworthy(), rectF.left, rectF.bottom + mTextPaint.getTextSize() * 3, mTextPaint);
+                canvas.drawText("Dominant " + face.getDominant(), rectF.left, rectF.bottom + mTextPaint.getTextSize() * 4, mTextPaint);
+                canvas.drawText("Thread " + face.getThread(), rectF.left, rectF.bottom + mTextPaint.getTextSize() * 5, mTextPaint);
+                canvas.drawText("Likeability " + face.getLikeability(), rectF.left, rectF.bottom + mTextPaint.getTextSize() * 6, mTextPaint);
+                canvas.drawText("Competent"+ face.getCompetent(), rectF.left, rectF.bottom + mTextPaint.getTextSize() * 7, mTextPaint);
+                canvas.drawText("Extroved"+ face.getExtroverted(), rectF.left, rectF.bottom + mTextPaint.getTextSize() * 8, mTextPaint);
                 }
             }
             canvas.restore();

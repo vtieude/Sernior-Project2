@@ -44,15 +44,24 @@ public class FaceResult extends Object {
 
 
 
-    public void setFace(int id, PointF midEye, float eyeDist, float confidence, float pose, long time, String attractive) {
-        set(id, midEye, eyeDist, confidence, pose, time, attractive);
+    public void setFace(int id, PointF midEye, float eyeDist, float confidence, float pose, long time, String attractive, String trustworthy,
+                        String dominant, String thread, String likeability, String competent, String extroverted) {
+        set(id, midEye, eyeDist, confidence, pose, time, attractive, trustworthy, dominant, thread, likeability, competent, extroverted);
     }
 
     public void clear() {
-        set(0, new PointF(0.0f, 0.0f), 0.0f, 0.4f, 0.0f, System.currentTimeMillis(), "");
+        set(0, new PointF(0.0f, 0.0f), 0.0f, 0.4f, 0.0f, System.currentTimeMillis(),
+                "", "", "","","","","");
     }
 
-    public synchronized void set(int id, PointF midEye, float eyeDist, float confidence, float pose, long time, String attracttiveHuman ) {
+    public synchronized void set(int id, PointF midEye, float eyeDist, float confidence, float pose, long time,
+                                 String attracttiveHuman,
+                                 String trustworthyHuman,
+                                 String dominantHuman,
+                                 String threadHuman,
+                                 String likeabilityHuman,
+                                 String competentHuman,
+                                 String extrovertedHuman) {
         this.id = id;
         this.midEye.set(midEye);
         this.eyeDist = eyeDist;

@@ -71,6 +71,7 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
     // Let's keep track of the display rotation and orientation also:
     private int mDisplayRotation;
     private int mDisplayOrientation;
+    private int mPreDisplayRotation = 0;
 
     private int previewWidth;
     private int previewHeight;
@@ -119,6 +120,8 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
     private HumanCharacteristicExtroverted extrovertedHuman;
     private HumanCharacteristicLikeability likeabilityHuman;
     private HumanCharacteristicThread threadHuman;
+    private boolean checkCreateModel = false;
+    private boolean onCreateFrame = false;
 
     private static final int INPUT_SIZE = 224;
 //    private static final int IMAGE_MEAN = 128;
@@ -176,7 +179,9 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
 
         if (icicle != null)
             cameraId = icicle.getInt(BUNDLE_CAMERA_ID, 0);
-        initTensorFlowAndLoadModel();
+        if(checkCreateModel == false){
+            initTensorFlowAndLoadModel();
+        }
     }
 
     private void initTensorFlowAndLoadModel() {
@@ -191,6 +196,7 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
                     extrovertedHuman = new HumanCharacteristicExtroverted(getAssets());
                     likeabilityHuman = new HumanCharacteristicLikeability(getAssets());
                     threadHuman = new HumanCharacteristicThread(getAssets());
+                    checkCreateModel = true;
                 } catch (final Exception e) {
                     throw new RuntimeException("Error initializing TensorFlow!", e);
                 }
@@ -233,9 +239,12 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
                     return true;
                 }
                 cameraId = (cameraId + 1) % numberOfCameras;
-                recreate();
-                return true;
-
+                if (checkCreateModel == true){
+                    recreate();
+                    checkCreateModel = false;
+                    return true;
+                }
+                else return false;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -274,18 +283,19 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
         executor.execute(new Runnable() {
             @Override
             public void run() {
-                attractiveHuman.onDestroy();
-                extrovertedHuman.onDestroy();
-                competentHuman.onDestroy();
-                dominantHuman.onDestroy();
-                likeabilityHuman.onDestroy();
-                threadHuman.onDestroy();
-                trustworthyHuman.onDestroy();
+                if(checkCreateModel == true){
+                    attractiveHuman.onDestroy();
+                    extrovertedHuman.onDestroy();
+                    competentHuman.onDestroy();
+                    dominantHuman.onDestroy();
+                    likeabilityHuman.onDestroy();
+                    threadHuman.onDestroy();
+                    trustworthyHuman.onDestroy();
+                    checkCreateModel = false;
+                }
             }
         });
-
     }
-
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -313,11 +323,13 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
             mFaceView.setFront(true);
         }
 
+
         try {
             mCamera.setPreviewDisplay(mView.getHolder());
         } catch (Exception e) {
             Log.e(TAG, "Could not preview the image.", e);
         }
+
     }
 
     @Override
@@ -326,6 +338,7 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
         if (surfaceHolder.getSurface() == null) {
             return;
         }
+
         // Try to stop the current preview:
         try {
             mCamera.stopPreview();
@@ -341,7 +354,6 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
         float aspect = (float) previewHeight / (float) previewWidth;
         fdet = new android.media.FaceDetector(prevSettingWidth, (int) (prevSettingWidth * aspect), MAX_FACE);
 
-        // Everything is configured! Finally start the camera preview again:
         startPreview();
     }
 
@@ -354,11 +366,19 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
         mDisplayRotation = Util.getDisplayRotation(CameraDetectActivity.this);
         mDisplayOrientation = Util.getDisplayOrientation(mDisplayRotation, cameraId);
 
-        mCamera.setDisplayOrientation(mDisplayOrientation);
-
-        if (mFaceView != null) {
-            mFaceView.setDisplayOrientation(mDisplayOrientation);
+        if(mDisplayRotation != mPreDisplayRotation && checkCreateModel == false){
+//            mCamera.setDisplayOrientation(Util.getDisplayOrientation(mPreDisplayRotation, cameraId));
+//            if (mFaceView != null) {
+//                mFaceView.setDisplayOrientation(Util.getDisplayOrientation(mPreDisplayRotation, cameraId));
+//            }
         }
+        else{
+            mCamera.setDisplayOrientation(mDisplayOrientation);
+            if (mFaceView != null) {
+                mFaceView.setDisplayOrientation(mDisplayOrientation);
+            }
+        }
+        mPreDisplayRotation = mDisplayRotation;
     }
 
     private void configureCamera(int width, int height) {
@@ -444,6 +464,7 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
             detectThread.start();
         }
     }
+
 
     private void waitForFdetThreadComplete() {
         if (detectThread == null) {
@@ -593,9 +614,12 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
                         if (idFace == Id) Id++;
 
 
-                        faces[i].setFace(idFace, mid, eyesDis, confidence, pose, System.currentTimeMillis(), "");
+                        faces[i].setFace(idFace, mid, eyesDis, confidence, pose, System.currentTimeMillis(),
+                                "", "","","","","","");
 
-                        faces_previous[i].set(faces[i].getId(), faces[i].getMidEye(), faces[i].eyesDistance(), faces[i].getConfidence(), faces[i].getPose(), faces[i].getTime(), faces[i].getAttractive());
+                        faces_previous[i].set(faces[i].getId(), faces[i].getMidEye(), faces[i].eyesDistance(), faces[i].getConfidence(), faces[i].getPose(), faces[i].getTime(),
+                                faces[i].getAttractive(),faces[i].getTrustworthy(),faces[i].getDominant(),faces[i].getThread(),
+                                faces[i].getLikeability(), faces[i].getCompetent(), faces[i].getExtroverted());
 
 
 // 9.16
@@ -617,13 +641,13 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
                     faceCroped = ImageUtils.cropFace(faces[i], bitmap, rotate);
                     if (faceCroped != null) {
                         Bitmap bmp32 = Bitmap.createScaledBitmap(faceCroped, INPUT_SIZE, INPUT_SIZE, false);
-                        faces[i].setAttractive(trustworthyHuman.recognizeImage(bmp32));
-//                        faces[i].setDominant(dominantHuman.recognizeImage(bmp32));
-//                        faces[i].setCompetnent(attractiveHuman.recognizeImage(bmp32));
-//                        faces[i].setThread(threadHuman.recognizeImage(bmp32));
-//                        faces[i].setExtroverted(likeabilityHuman.recognizeImage(bmp32));
-//                        faces[i].setLikeability(extrovertedHuman.recognizeImage(bmp32));
-//                        faces[i].setTrustworthy(competentHuman.recognizeImage(bmp32));
+                        faces[i].setAttractive(attractiveHuman.recognizeImage(bmp32));
+                        faces[i].setTrustworthy(trustworthyHuman.recognizeImage(bmp32));
+                        faces[i].setDominant(dominantHuman.recognizeImage(bmp32));
+                        faces[i].setThread(threadHuman.recognizeImage(bmp32));
+                        faces[i].setLikeability(likeabilityHuman.recognizeImage(bmp32));
+                        faces[i].setCompetnent(competentHuman.recognizeImage(bmp32));
+                        faces[i].setExtroverted(extrovertedHuman.recognizeImage(bmp32));
                     }
                 }
             }
