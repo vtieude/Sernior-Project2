@@ -1,5 +1,7 @@
 package com.example.wilson.humancharacteristics.model;
 
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.PointF;
 
 /**
@@ -14,14 +16,15 @@ public class FaceResult extends Object {
     private float pose;
     private int id;
     private long time;
-    private String attracttiveHuman;
-    private String trustworthyHuman;
-    private String dominantHuman;
-    private String threadHuman;
-    private String likeabilityHuman;
-    private String competentHuman;
-    private String extrovertedHuman;
+    private static String attracttiveHuman;
+    private static String trustworthyHuman;
+    private static String dominantHuman;
+    private static String threadHuman;
+    private static String likeabilityHuman;
+    private static String competentHuman;
+    private static String extrovertedHuman;
     private int countCharacters;
+
 
 
     public FaceResult() {
@@ -38,7 +41,7 @@ public class FaceResult extends Object {
         likeabilityHuman = "";
         competentHuman = "";
         extrovertedHuman = "";
-        countCharacters = 0;
+
     }
 
 

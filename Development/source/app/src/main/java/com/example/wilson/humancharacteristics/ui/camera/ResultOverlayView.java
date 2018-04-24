@@ -19,9 +19,8 @@ import java.text.DecimalFormat;
  * Created by enclaveit on 22/03/2018.
  */
 
-public class FaceOverlayView extends View {
+public class ResultOverlayView extends View {
 
-    private Paint mPaint;
     private Paint mTextPaint;
     private int mDisplayOrientation;
     private int mOrientation;
@@ -40,7 +39,7 @@ public class FaceOverlayView extends View {
             Color.GRAY
     };
 
-    public FaceOverlayView(Context context) {
+    public ResultOverlayView(Context context) {
         super(context);
         initialize();
     }
@@ -49,13 +48,6 @@ public class FaceOverlayView extends View {
         // We want a green box around the face:
         DisplayMetrics metrics = getResources().getDisplayMetrics();
 
-        int stroke = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 2, metrics);
-        mPaint = new Paint();
-        mPaint.setAntiAlias(true);
-        mPaint.setDither(true);
-        mPaint.setColor(Color.GREEN);
-        mPaint.setStrokeWidth(stroke);
-        mPaint.setStyle(Paint.Style.STROKE);
 
         mTextPaint = new Paint();
 
@@ -114,31 +106,28 @@ public class FaceOverlayView extends View {
                 if (mid.x != 0.0f && mid.y != 0.0f) {
                     float eyesDis = face.eyesDistance();
 
-                rectF.set(new RectF(
-                    (mid.x - eyesDis * 1.2f) * scaleX,
-                    (mid.y - eyesDis * 0.65f) * scaleY,
-                    (mid.x + eyesDis * 1.2f) * scaleX,
-                    (mid.y + eyesDis * 1.75f) * scaleY));
-                if (isFront) {
-                    float left = rectF.left;
-                    float right = rectF.right;
-                    rectF.left = getWidth() - right;
-                    rectF.right = getWidth() - left;
-                }
+                    rectF.set(new RectF(
+                            (mid.x - eyesDis * 1.2f) * scaleX,
+                            (mid.y - eyesDis * 0.65f) * scaleY,
+                            (mid.x + eyesDis * 1.2f) * scaleX,
+                            (mid.y + eyesDis * 1.75f) * scaleY));
+                    if (isFront) {
+                        float left = rectF.left;
+                        float right = rectF.right;
+                        rectF.left = getWidth() - right;
+                        rectF.right = getWidth() - left;
+                    }
 
-                mCurrentColorIndex = face.getId()%COLOR_CHOICES.length;
+                    mCurrentColorIndex = face.getId()%COLOR_CHOICES.length;
 
-                mPaint.setColor(COLOR_CHOICES[mCurrentColorIndex]);
-                mTextPaint.setColor(COLOR_CHOICES[mCurrentColorIndex]);
-
-                canvas.drawRect(rectF, mPaint);
-                canvas.drawText("Attractive " + face.getAttractive(), rectF.left, rectF.bottom + mTextPaint.getTextSize() , mTextPaint);
-                canvas.drawText("TrustWorthy " + face.getTrustworthy(), rectF.left, rectF.bottom + mTextPaint.getTextSize() * 2, mTextPaint);
-                canvas.drawText("Dominant " + face.getDominant(), rectF.left, rectF.bottom + mTextPaint.getTextSize() * 3, mTextPaint);
-                canvas.drawText("Thread " + face.getThread(), rectF.left, rectF.bottom + mTextPaint.getTextSize() * 4, mTextPaint);
-                canvas.drawText("Likeability " + face.getLikeability(), rectF.left, rectF.bottom + mTextPaint.getTextSize() * 5, mTextPaint);
-                canvas.drawText("Competent"+ face.getCompetent(), rectF.left, rectF.bottom + mTextPaint.getTextSize() * 6, mTextPaint);
-                canvas.drawText("Extroved"+ face.getExtroverted(), rectF.left, rectF.bottom + mTextPaint.getTextSize() * 7, mTextPaint);
+                    mTextPaint.setColor(COLOR_CHOICES[mCurrentColorIndex]);
+                    canvas.drawText("Attractive " + face.getAttractive(), rectF.left, rectF.bottom + mTextPaint.getTextSize() * 1, mTextPaint);
+                    canvas.drawText("TrustWorthy " + face.getTrustworthy(), rectF.left, rectF.bottom + mTextPaint.getTextSize() * 2, mTextPaint);
+                    canvas.drawText("Dominant " + face.getDominant(), rectF.left, rectF.bottom + mTextPaint.getTextSize() * 3, mTextPaint);
+                    canvas.drawText("Thread " + face.getThread(), rectF.left, rectF.bottom + mTextPaint.getTextSize() * 4, mTextPaint);
+                    canvas.drawText("Likeability " + face.getLikeability(), rectF.left, rectF.bottom + mTextPaint.getTextSize() * 5, mTextPaint);
+                    canvas.drawText("Competent"+ face.getCompetent(), rectF.left, rectF.bottom + mTextPaint.getTextSize() * 6, mTextPaint);
+                    canvas.drawText("Extroved"+ face.getExtroverted(), rectF.left, rectF.bottom + mTextPaint.getTextSize() * 7, mTextPaint);
                 }
             }
             canvas.restore();
