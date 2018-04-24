@@ -27,6 +27,7 @@ import android.view.SurfaceView;
 import com.example.wilson.Tensorflow.Classifier;
 import com.example.wilson.Tensorflow.TensorFlowImageClassifier;
 import com.example.wilson.humancharacteristics.R;
+import com.example.wilson.humancharacteristics.bean.HumanModel;
 import com.example.wilson.humancharacteristics.model.FaceResult;
 import com.example.wilson.humancharacteristics.model.HumanCharacteristicAttractiveness;
 import com.example.wilson.humancharacteristics.model.HumanCharacteristicCompetent;
@@ -44,6 +45,7 @@ import android.hardware.Camera;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.ImageButton;
 
 import org.opencv.android.Utils;
 import org.opencv.core.Mat;
@@ -58,7 +60,7 @@ import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-public final class CameraDetectActivity extends AppCompatActivity implements SurfaceHolder.Callback, Camera.PreviewCallback {
+public final class CameraDetectActivity extends AppCompatActivity implements SurfaceHolder.Callback, Camera.PreviewCallback, View.OnClickListener {
 
     // Number of Cameras in device.
     private int numberOfCameras;
@@ -97,31 +99,31 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
     private FaceResult faces[];
     private FaceResult faces_previous[];
     private int Id = 0;
-
+    private HumanModel humanModel;
     private String BUNDLE_CAMERA_ID = "camera";
 
 
 
     //RecylerView face image
     private HashMap<Integer, Integer> facesCount = new HashMap<>();
-    private RecyclerView recyclerView;
+//    private RecyclerView recyclerView;
     private ArrayList<Bitmap> facesBitmap;
 
 
     //Face use for recognition
     private ArrayList<org.opencv.core.Mat> faceRects;
 
-
-    private HumanCharacteristicAttractiveness attracttiveHuman;
-    private HumanCharacteristicTrustworthy trustworthyHuman;
-    private HumanCharacteristicCompetent competentHuman;
-    private HumanCharacteristicDominant dominantHuman;
-    private HumanCharacteristicExtroverted extrovertedHuman;
-    private HumanCharacteristicLikeability likeabilityHuman;
-    private HumanCharacteristicThread threadHuman;
+//
+//    private HumanCharacteristicAttractiveness attracttiveHuman;
+//    private HumanCharacteristicTrustworthy trustworthyHuman;
+//    private HumanCharacteristicCompetent competentHuman;
+//    private HumanCharacteristicDominant dominantHuman;
+//    private HumanCharacteristicExtroverted extrovertedHuman;
+//    private HumanCharacteristicLikeability likeabilityHuman;
+//    private HumanCharacteristicThread threadHuman;
     private boolean checkCreateModel = false;
     private boolean checkUpdate = true;
-
+    private ImageButton takePhotoCamera;
     private static final int INPUT_SIZE = 224;
 
     private static String attracttiveResult = "";
@@ -164,15 +166,16 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
         // Now create the OverlayView:
         mFaceView = new FaceOverlayView(this);
         addContentView(mFaceView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-
+        takePhotoCamera = findViewById(R.id.takePhoto);
         // Create and Start the OrientationListener:
-        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+//        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
-        recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
+//        recyclerView.setLayoutManager(mLayoutManager);
+//        recyclerView.setItemAnimator(new DefaultItemAnimator());
+
         SharedPreferences setting = PreferenceManager.getDefaultSharedPreferences(this);
         MAX_FACE = setting.getInt("amount_face", 1);
-
+        takePhotoCamera.setOnClickListener(this);
         handler = new Handler();
         faces = new FaceResult[MAX_FACE];
         faces_previous = new FaceResult[MAX_FACE];
@@ -198,14 +201,15 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
             @Override
             public void run() {
                 try {
-                    trustworthyHuman = new HumanCharacteristicTrustworthy(getAssets());
-                    attracttiveHuman = new HumanCharacteristicAttractiveness(getAssets());
-                    dominantHuman = new HumanCharacteristicDominant(getAssets());
-                    competentHuman = new HumanCharacteristicCompetent(getAssets());
-                    extrovertedHuman = new HumanCharacteristicExtroverted(getAssets());
-                    likeabilityHuman = new HumanCharacteristicLikeability(getAssets());
-                    threadHuman = new HumanCharacteristicThread(getAssets());
-                    checkCreateModel = true;
+                    humanModel = new HumanModel(getAssets());
+//                    trustworthyHuman = new HumanCharacteristicTrustworthy(getAssets());
+//                    attracttiveHuman = new HumanCharacteristicAttractiveness(getAssets());
+//                    dominantHuman = new HumanCharacteristicDominant(getAssets());
+//                    competentHuman = new HumanCharacteristicCompetent(getAssets());
+//                    extrovertedHuman = new HumanCharacteristicExtroverted(getAssets());
+//                    likeabilityHuman = new HumanCharacteristicLikeability(getAssets());
+//                    threadHuman = new HumanCharacteristicThread(getAssets());
+//                    checkCreateModel = true;
                 } catch (final Exception e) {
                     throw new RuntimeException("Error initializing TensorFlow!", e);
                 }
@@ -293,13 +297,13 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
             @Override
             public void run() {
                 if(checkCreateModel == true){
-                    attracttiveHuman.onDestroy();
-                    extrovertedHuman.onDestroy();
-                    competentHuman.onDestroy();
-                    dominantHuman.onDestroy();
-                    likeabilityHuman.onDestroy();
-                    threadHuman.onDestroy();
-                    trustworthyHuman.onDestroy();
+                    humanModel.getAttracttiveHuman().onDestroy();
+                    humanModel.getExtrovertedHuman().onDestroy();
+                    humanModel.getCompetentHuman().onDestroy();
+                    humanModel.getDominantHuman().onDestroy();
+                    humanModel.getLikeabilityHuman().onDestroy();
+                    humanModel.getThreadHuman().onDestroy();
+                    humanModel.getTrustworthyHuman().onDestroy();
                     checkCreateModel = false;
                 }
             }
@@ -484,6 +488,21 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
     int counter = 0;
     double fps;
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.takePhoto:
+                try {
+                    MyAsyncTask myAsyncTask = new MyAsyncTask(this);
+                    myAsyncTask.execute(faces);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                break;
+        }
+    }
+
     /**
      * Do face detect in thread
      */
@@ -643,13 +662,13 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
                         faceCroped = ImageUtils.cropFace(faces[i], bitmap, rotate);
                         if (faceCroped != null) {
                             Bitmap bmp32 = Bitmap.createScaledBitmap(faceCroped, INPUT_SIZE, INPUT_SIZE, false);
-                            faces[i].setAttractive(attracttiveHuman.recognizeImage(bmp32));
-                            faces[i].setTrustworthy(trustworthyHuman.recognizeImage(bmp32));
-                            faces[i].setDominant(dominantHuman.recognizeImage(bmp32));
-                            faces[i].setThread(threadHuman.recognizeImage(bmp32));
-                            faces[i].setLikeability(likeabilityHuman.recognizeImage(bmp32));
-                            faces[i].setCompetnent(competentHuman.recognizeImage(bmp32));
-                            faces[i].setExtroverted(extrovertedHuman.recognizeImage(bmp32));
+                            faces[i].setAttractive(humanModel.getAttracttiveHuman().recognizeImage(bmp32));
+                            faces[i].setTrustworthy(humanModel.getTrustworthyHuman().recognizeImage(bmp32));
+                            faces[i].setDominant(humanModel.getDominantHuman().recognizeImage(bmp32));
+                            faces[i].setThread(humanModel.getThreadHuman().recognizeImage(bmp32));
+                            faces[i].setLikeability(humanModel.getLikeabilityHuman().recognizeImage(bmp32));
+                            faces[i].setCompetnent(humanModel.getCompetentHuman().recognizeImage(bmp32));
+                            faces[i].setExtroverted(humanModel.getExtrovertedHuman().recognizeImage(bmp32));
                             checkUpdate = false;
                         }
                     }

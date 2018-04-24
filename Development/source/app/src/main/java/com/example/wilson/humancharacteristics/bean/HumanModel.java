@@ -1,7 +1,16 @@
 package com.example.wilson.humancharacteristics.bean;
 
 import android.content.Context;
+import android.content.res.AssetManager;
 import android.util.Log;
+
+import com.example.wilson.humancharacteristics.model.HumanCharacteristicAttractiveness;
+import com.example.wilson.humancharacteristics.model.HumanCharacteristicCompetent;
+import com.example.wilson.humancharacteristics.model.HumanCharacteristicDominant;
+import com.example.wilson.humancharacteristics.model.HumanCharacteristicExtroverted;
+import com.example.wilson.humancharacteristics.model.HumanCharacteristicLikeability;
+import com.example.wilson.humancharacteristics.model.HumanCharacteristicThread;
+import com.example.wilson.humancharacteristics.model.HumanCharacteristicTrustworthy;
 
 import java.io.Serializable;
 
@@ -14,8 +23,16 @@ public class HumanModel implements Serializable{
     private String email;
     private String flagImage;
     private byte[] image;
+    private HumanCharacteristicAttractiveness attracttiveHuman;
+    private HumanCharacteristicCompetent competentHuman;
+    private HumanCharacteristicDominant dominantHuman;
+    private HumanCharacteristicExtroverted extrovertedHuman;
+    private HumanCharacteristicLikeability likeabilityHuman;
+    private HumanCharacteristicThread threadHuman;
+    private HumanCharacteristicTrustworthy trustworthyHuman;
     public HumanModel() {
         super();
+
     }
     public HumanModel( String name,  int age, String comment, String phone, String email, byte[] image) {
         this.name = name;
@@ -25,12 +42,22 @@ public class HumanModel implements Serializable{
         this.email = email;
         this.image = image;
     }
-    public HumanModel(String name, String flag, int age) {
-        this.name = name;
-        this.flagImage = flag;
-        this.age = age;
+    public HumanModel(AssetManager assetManager) {
+        trustworthyHuman = new HumanCharacteristicTrustworthy(assetManager);
+        attracttiveHuman = new HumanCharacteristicAttractiveness(assetManager);
+        dominantHuman = new HumanCharacteristicDominant(assetManager);
+        competentHuman = new HumanCharacteristicCompetent(assetManager);
+        extrovertedHuman = new HumanCharacteristicExtroverted(assetManager);
+        likeabilityHuman = new HumanCharacteristicLikeability(assetManager);
+        threadHuman = new HumanCharacteristicThread(assetManager);
     }
-
+    public HumanCharacteristicAttractiveness getAttracttiveHuman() {return  attracttiveHuman;}
+    public HumanCharacteristicCompetent getCompetentHuman() {return competentHuman;}
+    public HumanCharacteristicDominant getDominantHuman() {return dominantHuman;}
+    public HumanCharacteristicExtroverted getExtrovertedHuman() {return extrovertedHuman;}
+    public HumanCharacteristicLikeability getLikeabilityHuman() { return likeabilityHuman;}
+    public HumanCharacteristicThread getThreadHuman() {return threadHuman;}
+    public HumanCharacteristicTrustworthy getTrustworthyHuman() {return trustworthyHuman;}
     public int getId() {
         return id;
     }
