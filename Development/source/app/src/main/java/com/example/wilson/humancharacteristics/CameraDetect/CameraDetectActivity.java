@@ -29,13 +29,6 @@ import com.example.wilson.Tensorflow.TensorFlowImageClassifier;
 import com.example.wilson.humancharacteristics.R;
 import com.example.wilson.humancharacteristics.bean.HumanModel;
 import com.example.wilson.humancharacteristics.model.FaceResult;
-import com.example.wilson.humancharacteristics.model.HumanCharacteristicAttractiveness;
-import com.example.wilson.humancharacteristics.model.HumanCharacteristicCompetent;
-import com.example.wilson.humancharacteristics.model.HumanCharacteristicDominant;
-import com.example.wilson.humancharacteristics.model.HumanCharacteristicExtroverted;
-import com.example.wilson.humancharacteristics.model.HumanCharacteristicLikeability;
-import com.example.wilson.humancharacteristics.model.HumanCharacteristicThread;
-import com.example.wilson.humancharacteristics.model.HumanCharacteristicTrustworthy;
 import com.example.wilson.humancharacteristics.ui.camera.FaceOverlayView;
 import com.example.wilson.humancharacteristics.utils.CameraErrorCallback;
 import com.example.wilson.humancharacteristics.utils.ImageUtils;
@@ -90,6 +83,9 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
 
 
     private static int MAX_FACE = 1;
+    private int saveValue = 0;
+    private boolean initValue = false;
+
     private boolean isThreadWorking = false;
     private Handler handler;
     private FaceDetectThread detectThread = null;
@@ -114,37 +110,19 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
     //Face use for recognition
     private ArrayList<org.opencv.core.Mat> faceRects;
 
-//
-//    private HumanCharacteristicAttractiveness attracttiveHuman;
-//    private HumanCharacteristicTrustworthy trustworthyHuman;
-//    private HumanCharacteristicCompetent competentHuman;
-//    private HumanCharacteristicDominant dominantHuman;
-//    private HumanCharacteristicExtroverted extrovertedHuman;
-//    private HumanCharacteristicLikeability likeabilityHuman;
-//    private HumanCharacteristicThread threadHuman;
     private boolean checkCreateModel = false;
     private boolean checkUpdate = true;
     private ImageButton takePhotoCamera;
     private static final int INPUT_SIZE = 224;
 
-    private static String attracttiveResult = "";
-    private static String trustworthyResult = "";
-    private static String dominantResult = "";
-    private static String threadResult = "";
-    private static String likeabilityResult = "";
-    private static String competentResult = "";
-    private static String extrovertedResult = "";
+    private String attracttiveResult = "";
+    private String trustworthyResult = "";
+    private String dominantResult = "";
+    private String threadResult = "";
+    private String likeabilityResult = "";
+    private String competentResult = "";
+    private String extrovertedResult = "";
 
-
-//    private static final int IMAGE_MEAN = 128;
-//    private static final float IMAGE_STD = 128.0f;
-//    private static final String INPUT_NAME = "input";
-//    private static final String OUTPUT_NAME = "final_result";
-//
-//    private static final String MODEL_FILE = "file:///android_asset/rounded_graph.pb";
-//    private static final String LABEL_FILE = "file:///android_asset/retrained_labels.txt";
-
-//    private Classifier classifier;
     private Executor executor = Executors.newSingleThreadExecutor();
 
 
@@ -168,11 +146,10 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
         mFaceView = new FaceOverlayView(this);
         addContentView(mFaceView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         takePhotoCamera = findViewById(R.id.takePhoto);
+
         // Create and Start the OrientationListener:
-//        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
-//        recyclerView.setLayoutManager(mLayoutManager);
-//        recyclerView.setItemAnimator(new DefaultItemAnimator());
+
 
         SharedPreferences setting = PreferenceManager.getDefaultSharedPreferences(this);
         MAX_FACE = setting.getInt("amount_face", 1);
@@ -203,17 +180,10 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
             public void run() {
                 try {
                     humanModel = new HumanModel(getAssets());
-//                    trustworthyHuman = new HumanCharacteristicTrustworthy(getAssets());
-//                    attracttiveHuman = new HumanCharacteristicAttractiveness(getAssets());
-//                    dominantHuman = new HumanCharacteristicDominant(getAssets());
-//                    competentHuman = new HumanCharacteristicCompetent(getAssets());
-//                    extrovertedHuman = new HumanCharacteristicExtroverted(getAssets());
-//                    likeabilityHuman = new HumanCharacteristicLikeability(getAssets());
-//                    threadHuman = new HumanCharacteristicThread(getAssets());
-//                    checkCreateModel = true;
                 } catch (final Exception e) {
                     throw new RuntimeException("Error initializing TensorFlow!", e);
                 }
+                checkCreateModel = true;
             }
         });
     }
@@ -505,6 +475,17 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
         }
     }
 
+
+    int getNumFace(android.media.FaceDetector.Face[] fullResults){
+        int numFace = 0;
+        for (int i = 0; i < MAX_FACE; i++) {
+            if (fullResults[i] != null) {
+                numFace++;
+            }
+        }
+        return numFace;
+    }
+
     /**
      * Do face detect in thread
      */
@@ -585,12 +566,11 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
             android.media.FaceDetector.Face[] fullResults = new android.media.FaceDetector.Face[MAX_FACE];
             fdet.findFaces(bmp, fullResults);
 
-            int countFaces = MAX_FACE;
-            int countBack = 0;
+            int numFace = getNumFace(fullResults);
 
             for (int i = 0; i < MAX_FACE; i++) {
+
                 if (fullResults[i] == null) {
-                    countFaces-- ;
                     faces[i].clear();
                 } else {
                     PointF mid = new PointF();
@@ -625,7 +605,7 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
                                     (midPre.x + eyesDisPre * 1.5f),
                                     (midPre.y + eyesDisPre * 1.85f));
 
-                            if (rectCheck.contains(mid.x, mid.y) && (System.currentTimeMillis() - faces_previous[j].getTime()) < 1000) {
+                            if (rectCheck.contains(mid.x, mid.y) && (System.currentTimeMillis() - faces_previous[j].getTime()) < 2000) {
                                 idFace = faces_previous[j].getId();
                                 break;
                             }
@@ -654,13 +634,10 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
                         }
                     }
 
-                    if (countBack!=countFaces)
-                        checkUpdate = true;
-
                     //
                     // Crop Face to display in RecylerView
                     //
-                    if(checkUpdate == true){
+                    if(saveValue != numFace && checkCreateModel == true || !initValue  && checkCreateModel == true ){
                         faceCroped = ImageUtils.cropFace(faces[i], bitmap, rotate);
                         if (faceCroped != null) {
                             Bitmap bmp32 = Bitmap.createScaledBitmap(faceCroped, INPUT_SIZE, INPUT_SIZE, false);
@@ -673,11 +650,13 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
                             faces[i].setCompetnent(humanModel.getCompetentHuman().recognizeImage(bmp32));
                             faces[i].setExtroverted(humanModel.getExtrovertedHuman().recognizeImage(bmp32));
                             checkUpdate = false;
+                            initValue = true;
                         }
                     }
-                    countBack = countFaces;
                 }
             }
+
+            saveValue = numFace;
 
             handler.post(new Runnable() {
                 public void run() {
@@ -702,6 +681,7 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
             });
         }
     }
+
 
     public native void drawLine(long img);
     public native void trainModelLBPH(long trainModel);

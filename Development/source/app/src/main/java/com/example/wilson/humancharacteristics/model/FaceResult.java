@@ -17,13 +17,13 @@ public class FaceResult extends Object {
     private float pose;
     private int id;
     private long time;
-    private static String attracttiveHuman;
-    private static String trustworthyHuman;
-    private static String dominantHuman;
-    private static String threadHuman;
-    private static String likeabilityHuman;
-    private static String competentHuman;
-    private static String extrovertedHuman;
+    private String attracttiveHuman;
+    private String trustworthyHuman;
+    private String dominantHuman;
+    private String threadHuman;
+    private String likeabilityHuman;
+    private String competentHuman;
+    private String extrovertedHuman;
     private int countCharacters;
     private Bitmap bitmapFaceCrop;
 
