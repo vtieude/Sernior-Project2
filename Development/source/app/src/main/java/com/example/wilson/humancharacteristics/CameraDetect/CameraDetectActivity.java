@@ -46,6 +46,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import org.opencv.android.Utils;
 import org.opencv.core.Mat;
@@ -244,6 +245,7 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
                 return true;
 
             case R.id.switchCam:
+
                 if (numberOfCameras == 1) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(this);
                     builder.setTitle("Switch Camera").setMessage("Your device have one camera").setNeutralButton("Close", null);
@@ -662,6 +664,7 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
                         faceCroped = ImageUtils.cropFace(faces[i], bitmap, rotate);
                         if (faceCroped != null) {
                             Bitmap bmp32 = Bitmap.createScaledBitmap(faceCroped, INPUT_SIZE, INPUT_SIZE, false);
+                            faces[i].setBitmapFaceCrop(bmp32);
                             faces[i].setAttractive(humanModel.getAttracttiveHuman().recognizeImage(bmp32));
                             faces[i].setTrustworthy(humanModel.getTrustworthyHuman().recognizeImage(bmp32));
                             faces[i].setDominant(humanModel.getDominantHuman().recognizeImage(bmp32));

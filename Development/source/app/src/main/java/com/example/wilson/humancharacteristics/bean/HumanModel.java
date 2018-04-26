@@ -23,6 +23,13 @@ public class HumanModel implements Serializable{
     private String email;
     private String flagImage;
     private byte[] image;
+    private String attracttive;
+    private String competent;
+    private String dominant;
+    private String extroverted;
+    private String likeability;
+    private String thread;
+    private String trustworthy;
     private HumanCharacteristicAttractiveness attracttiveHuman;
     private HumanCharacteristicCompetent competentHuman;
     private HumanCharacteristicDominant dominantHuman;
@@ -34,13 +41,22 @@ public class HumanModel implements Serializable{
         super();
 
     }
-    public HumanModel( String name,  int age, String comment, String phone, String email, byte[] image) {
+    public HumanModel( String name,  int age, String comment, String phone, String email, byte[] image, String attracttiveString,
+                       String competentString, String dominantString,String extrovertedString, String likeabilityString,
+                       String threadString, String trustworthyString) {
         this.name = name;
         this.age = age;
         this.comment = comment;
         this.phone = phone;
         this.email = email;
         this.image = image;
+        this.attracttive = attracttiveString;
+        this.competent = competentString;
+        this.dominant = dominantString;
+        this.extroverted = extrovertedString;
+        this.likeability = likeabilityString;
+        this.thread = threadString;
+        this.trustworthy = trustworthyString;
     }
     public HumanModel(AssetManager assetManager) {
         trustworthyHuman = new HumanCharacteristicTrustworthy(assetManager);
@@ -51,6 +67,20 @@ public class HumanModel implements Serializable{
         likeabilityHuman = new HumanCharacteristicLikeability(assetManager);
         threadHuman = new HumanCharacteristicThread(assetManager);
     }
+    public String getAttracttive() {return  attracttive;}
+    public String getCompetent() {return competent;}
+    public String getDominant() {return dominant;}
+    public String getExtroverted() {return extroverted;}
+    public String getLikeability() { return likeability;}
+    public String getThreadCharacteristic() {return thread;}
+    public String getTrustworthy() { return trustworthy;}
+    public void setAttracttive(String attrac) { attracttive = attrac;}
+    public void setCompetent(String com) {competent = com;}
+    public void setDominant(String domi) {dominant = domi;}
+    public void setExtroverted(String extro) {extroverted = extro;}
+    public void setLikeability(String like) { likeability = like;}
+    public void setThreadCharacteristic(String threadString) {thread = threadString;}
+    public void setTrustworthy(String trust) {trustworthy = trust;}
     public HumanCharacteristicAttractiveness getAttracttiveHuman() {return  attracttiveHuman;}
     public HumanCharacteristicCompetent getCompetentHuman() {return competentHuman;}
     public HumanCharacteristicDominant getDominantHuman() {return dominantHuman;}

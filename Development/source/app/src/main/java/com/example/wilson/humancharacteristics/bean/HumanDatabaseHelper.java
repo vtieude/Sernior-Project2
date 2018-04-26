@@ -35,6 +35,13 @@ public class HumanDatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_HUMAN_EMAIL = "Email";
     private static final String COLUMN_HUMAN_IMAGE = "Image";
     private static final String COLUMN_IMAGE = "Image";
+    private static final String COLUMN_ATTRACTIVENESS = "Atractiveness";
+    private static final String COLUMN_COMPETENT = "Competent";
+    private static final String COLUMN_DOMINANT = "Dominant";
+    private static final String COLUMN_Extroverted = "Extroverted";
+    private static final String COLUMN_LIKEABILITY = "Likeability";
+    private static final String COLUMN_THREAD = "Thread";
+    private static final String COLUMN_TRUSTWORTHY = "Trustworthy";
     private static final String COLUMN_IMAGE_ID_HUMAN = "IdHuman";
     private static final String COLUMN_IMAGE_ID = "Id";
 
@@ -47,7 +54,14 @@ public class HumanDatabaseHelper extends SQLiteOpenHelper {
         String scriptHuman = "CREATE TABLE " + TABLE_HUMAN + "("
                 + COLUMN_HUMAN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + COLUMN_HUMAN_NAME + " TEXT,"
                 + COLUMN_HUMAN_AGE + " INTEGER,"+ COLUMN_HUMAN_PHONE + " TEXT," + COLUMN_HUMAN_EMAIL
-                + " TEXT," + COLUMN_HUMAN_COMMENT + " TEXT," + COLUMN_HUMAN_IMAGE + " BLOB" + ")";
+                + " TEXT," + COLUMN_HUMAN_COMMENT + " TEXT,"+ COLUMN_ATTRACTIVENESS+" TEXT,"
+                + COLUMN_COMPETENT+" TEXT,"
+                + COLUMN_DOMINANT+" TEXT,"
+                + COLUMN_Extroverted+" TEXT,"
+                + COLUMN_LIKEABILITY+" TEXT,"
+                + COLUMN_THREAD+" TEXT,"
+                + COLUMN_TRUSTWORTHY+" TEXT,"
+                + COLUMN_HUMAN_IMAGE + " BLOB" + ")";
         String scriptImage = "CREATE TABLE " + TABLE_IMAGE + "("
                 + COLUMN_IMAGE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + COLUMN_IMAGE + " BLOB,"
                 + COLUMN_IMAGE_ID_HUMAN + " INTEGER" + ")";
@@ -90,6 +104,14 @@ public class HumanDatabaseHelper extends SQLiteOpenHelper {
         values.put(COLUMN_HUMAN_EMAIL, human.getEmail());
         values.put(COLUMN_HUMAN_COMMENT, human.getComment());
         values.put(COLUMN_HUMAN_IMAGE, human.getImage());
+        values.put(COLUMN_ATTRACTIVENESS, human.getAttracttive());
+        values.put(COLUMN_COMPETENT, human.getCompetent());
+        values.put(COLUMN_LIKEABILITY, human.getLikeability());
+        values.put(COLUMN_DOMINANT, human.getDominant());
+        values.put(COLUMN_TRUSTWORTHY, human.getTrustworthy());
+        values.put(COLUMN_THREAD, human.getThreadCharacteristic());
+        values.put(COLUMN_Extroverted, human.getExtroverted());
+
         db.insert(TABLE_HUMAN,null, values);
         db.close();
     }
@@ -105,7 +127,14 @@ public class HumanDatabaseHelper extends SQLiteOpenHelper {
                 cursor.getString(cursor.getColumnIndex(COLUMN_HUMAN_COMMENT)),
                 cursor.getString(cursor.getColumnIndex(COLUMN_HUMAN_PHONE)),
                 cursor.getString(cursor.getColumnIndex(COLUMN_HUMAN_EMAIL)),
-                cursor.getBlob(cursor.getColumnIndex(COLUMN_HUMAN_IMAGE))
+                cursor.getBlob(cursor.getColumnIndex(COLUMN_HUMAN_IMAGE)),
+                cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_ATTRACTIVENESS)),
+                cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_COMPETENT)),
+                cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_DOMINANT)),
+                cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_Extroverted)),
+                cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_LIKEABILITY)),
+                cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_THREAD)),
+                cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_TRUSTWORTHY))
         );
         humanModel.setId(cursor.getInt(cursor.getColumnIndex(COLUMN_HUMAN_ID)));
         return humanModel;
@@ -127,6 +156,13 @@ public class HumanDatabaseHelper extends SQLiteOpenHelper {
                 humanModel.setEmail(cursor.getString(cursor.getColumnIndex(COLUMN_HUMAN_EMAIL)));
                 humanModel.setComment(cursor.getString(cursor.getColumnIndex(COLUMN_HUMAN_COMMENT)));
                 humanModel.setImage(cursor.getBlob(cursor.getColumnIndex(COLUMN_HUMAN_IMAGE)));
+                humanModel.setAttracttive(cursor.getString(cursor.getColumnIndex(COLUMN_ATTRACTIVENESS)));
+                humanModel.setCompetent(cursor.getString(cursor.getColumnIndex(COLUMN_COMPETENT)));
+                humanModel.setDominant(cursor.getString(cursor.getColumnIndex(COLUMN_DOMINANT)));
+                humanModel.setExtroverted(cursor.getString(cursor.getColumnIndex(COLUMN_Extroverted)));
+                humanModel.setLikeability(cursor.getString(cursor.getColumnIndex(COLUMN_LIKEABILITY)));
+                humanModel.setThreadCharacteristic(cursor.getString(cursor.getColumnIndex(COLUMN_THREAD)));
+                humanModel.setTrustworthy(cursor.getString(cursor.getColumnIndex(COLUMN_TRUSTWORTHY)));
                 list.add(humanModel);
             } while (cursor.moveToNext());
         }
@@ -143,6 +179,13 @@ public class HumanDatabaseHelper extends SQLiteOpenHelper {
         values.put(COLUMN_HUMAN_EMAIL, human.getEmail());
         values.put(COLUMN_HUMAN_COMMENT, human.getComment());
         values.put(COLUMN_HUMAN_IMAGE,human.getImage());
+        values.put(COLUMN_ATTRACTIVENESS, human.getAttracttive());
+        values.put(COLUMN_COMPETENT, human.getCompetent());
+        values.put(COLUMN_DOMINANT, human.getDominant());
+        values.put(COLUMN_Extroverted, human.getExtroverted());
+        values.put(COLUMN_LIKEABILITY, human.getLikeability());
+        values.put(COLUMN_THREAD, human.getThreadCharacteristic());
+        values.put(COLUMN_TRUSTWORTHY, human.getTrustworthy());
         return db.update(TABLE_HUMAN, values, COLUMN_HUMAN_ID + " = ? ", new String[] { Integer.toString(human.getId()) } );
     }
     public void deleteHuman (int id)

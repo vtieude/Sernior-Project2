@@ -8,6 +8,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.wilson.humancharacteristics.R;
+import com.example.wilson.humancharacteristics.bean.HumanDatabaseHelper;
 import com.example.wilson.humancharacteristics.model.FaceResult;
 
 /**
@@ -33,6 +34,7 @@ public class MyAsyncTask extends AsyncTask<FaceResult, FaceResult, FaceResult[]>
         for (int i = 0; i < faceResults.length; i++) {
             SystemClock.sleep(100);
             if (faceResults[i].getId() != 0) {
+                HumanDatabaseHelper database = new HumanDatabaseHelper(activityScren);
 
             }
         }

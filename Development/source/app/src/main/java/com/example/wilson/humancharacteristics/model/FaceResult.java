@@ -1,5 +1,6 @@
 package com.example.wilson.humancharacteristics.model;
 
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
@@ -24,6 +25,7 @@ public class FaceResult extends Object {
     private static String competentHuman;
     private static String extrovertedHuman;
     private int countCharacters;
+    private Bitmap bitmapFaceCrop;
 
 
 
@@ -41,6 +43,7 @@ public class FaceResult extends Object {
         likeabilityHuman = "";
         competentHuman = "";
         extrovertedHuman = "";
+        bitmapFaceCrop = null;
 
     }
 
@@ -73,7 +76,10 @@ public class FaceResult extends Object {
         this.time = time;
         this.attracttiveHuman = attracttiveHuman;
     }
-
+    public Bitmap getBitmapFaceCrop() {return  bitmapFaceCrop;}
+    public void setBitmapFaceCrop(Bitmap bitmap) {
+        this.bitmapFaceCrop = bitmap;
+    }
     public float eyesDistance() {
         return eyeDist;
     }
