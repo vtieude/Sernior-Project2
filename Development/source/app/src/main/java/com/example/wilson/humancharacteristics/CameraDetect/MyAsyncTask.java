@@ -40,7 +40,7 @@ public class MyAsyncTask extends AsyncTask<FaceResult, FaceResult, FaceResult[]>
         super.onPreExecute();
         progress = (ProgressBar)activityScren.findViewById(R.id.progressBarCamera);
         imageButton = activityScren.findViewById(R.id.takePhoto);
-        imageButton.setVisibility(View.INVISIBLE);
+        imageButton.setEnabled(false);
         progress.setVisibility(View.VISIBLE);
     }
 
@@ -49,7 +49,7 @@ public class MyAsyncTask extends AsyncTask<FaceResult, FaceResult, FaceResult[]>
         for (int i = 0; i < faceResults.length; i++) {
             SystemClock.sleep(100);
             check = false;
-            if (faceResults[i].getId() != 0) {
+            if (faceResults[i].getDominant().equals("")) {
                 HumanDatabaseHelper database = new HumanDatabaseHelper(activityScren);
                 HumanModel humanModel = new HumanModel();
                 humanModel.setAttracttive(faceResults[i].getAttractive());
@@ -67,62 +67,28 @@ public class MyAsyncTask extends AsyncTask<FaceResult, FaceResult, FaceResult[]>
                 database.addHuman(humanModel);
                 publishProgress(faceResults[0]);
                 check = true;
-                SystemClock.sleep(1000);
             }
 //            publishProgress(check);
         }
-
         return faceResults;
     }
 
     @Override
     protected void onProgressUpdate(FaceResult... values) {
         super.onProgressUpdate(values);
-            Toast.makeText(activityScren, "Saving:" + values[0].getAttractive() ,
+            Toast.makeText(activityScren, "Saving:" + values[0].getLikeability() ,
                     Toast.LENGTH_SHORT).show();
 
     }
 
     public byte[] ConverttoArrayByte(Bitmap bitmapConvert)
     {
-        int chunkNumbers = 10;
-        int bitmapSize = bitmapConvert.getRowBytes() * bitmapConvert.getHeight();
-        byte[] imageBytes = new byte[bitmapSize];
-        int rows, cols;
-        int chunkHeight, chunkWidth;
-        rows = cols = (int) Math.sqrt(chunkNumbers);
-        chunkHeight = bitmapConvert.getHeight() / rows;
-        chunkWidth = bitmapConvert.getWidth() / cols;
-
-        int yCoord = 0;
-        int bitmapsSizes = 0;
-
-        for (int x = 0; x < rows; x++)
-        {
-            int xCoord = 0;
-            for (int y = 0; y < cols; y++)
-            {
-                Bitmap bitmapChunk = Bitmap.createBitmap(bitmapConvert, xCoord, yCoord, chunkWidth, chunkHeight);
-                byte[] bitmapArray = getBytesFromBitmapChunk(bitmapChunk);
-                System.arraycopy(bitmapArray, 0, imageBytes, bitmapsSizes, bitmapArray.length);
-                bitmapsSizes = bitmapsSizes + bitmapArray.length;
-                xCoord += chunkWidth;
-
-                bitmapChunk.recycle();
-                bitmapChunk = null;
-            }
-            yCoord += chunkHeight;
+        if (bitmapConvert == null) {
+            return null;
         }
-
-        return imageBytes;
-    }
-    private byte[] getBytesFromBitmapChunk(Bitmap bitmap)
-    {
-        int bitmapSize = bitmap.getRowBytes() * bitmap.getHeight();
-        ByteBuffer byteBuffer = ByteBuffer.allocate(bitmapSize);
-        bitmap.copyPixelsToBuffer(byteBuffer);
-        byteBuffer.rewind();
-        return byteBuffer.array();
+        ByteArrayOutputStream bos = new ByteArrayOutputStream(bitmapConvert.getWidth() * bitmapConvert.getHeight());
+        bitmapConvert.compress(Bitmap.CompressFormat.PNG, 100, bos);
+        return bos.toByteArray();
     }
 
 
@@ -133,6 +99,6 @@ public class MyAsyncTask extends AsyncTask<FaceResult, FaceResult, FaceResult[]>
         Toast.makeText(activityScren, "Save Success!" + faceResults.length,
                 Toast.LENGTH_SHORT).show();
         progress.setVisibility(View.INVISIBLE);
-        imageButton.setVisibility(View.VISIBLE);
+        imageButton.setEnabled(true);
     }
 }
