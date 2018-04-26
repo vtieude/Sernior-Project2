@@ -660,23 +660,25 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
 
             handler.post(new Runnable() {
                 public void run() {
-
-                    //send face to FaceView to draw rect
-                    mFaceView.setFaces(faces);
-
-                    //calculate FPS
-                    end = System.currentTimeMillis();
-                    counter++;
-                    double time = (double) (end - start) / 1000;
-                    if (time != 0)
-                        fps = counter / time;
-
-                    mFaceView.setFPS(fps);
-
-                    if (counter == (Integer.MAX_VALUE - 1000))
-                        counter = 0;
-
                     isThreadWorking = false;
+                    if(checkCreateModel == true){
+                        //send face to FaceView to draw rect
+                        mFaceView.setFaces(faces);
+
+                        //calculate FPS
+                        end = System.currentTimeMillis();
+                        counter++;
+                        double time = (double) (end - start) / 1000;
+                        if (time != 0)
+                            fps = counter / time;
+
+                        mFaceView.setFPS(fps);
+
+                        if (counter == (Integer.MAX_VALUE - 1000))
+                            counter = 0;
+
+                        isThreadWorking = false;
+                    }
                 }
             });
         }
