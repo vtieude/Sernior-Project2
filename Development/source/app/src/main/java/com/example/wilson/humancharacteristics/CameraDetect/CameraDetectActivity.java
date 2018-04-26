@@ -281,7 +281,6 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
             }
         });
     }
-
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -641,7 +640,7 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
                         faceCroped = ImageUtils.cropFace(faces[i], bitmap, rotate);
                         if (faceCroped != null) {
                             Bitmap bmp32 = Bitmap.createScaledBitmap(faceCroped, INPUT_SIZE, INPUT_SIZE, false);
-                            faces[i].setBitmapFaceCrop(bmp32);
+                            faces[i].setBitmapFaceCrop(faceCroped);
                             faces[i].setAttractive(humanModel.getAttracttiveHuman().recognizeImage(bmp32));
                             faces[i].setTrustworthy(humanModel.getTrustworthyHuman().recognizeImage(bmp32));
                             faces[i].setDominant(humanModel.getDominantHuman().recognizeImage(bmp32));
