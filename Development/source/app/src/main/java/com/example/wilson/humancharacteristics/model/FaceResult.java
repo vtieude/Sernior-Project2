@@ -74,7 +74,13 @@ public class FaceResult extends Object {
         this.confidence = confidence;
         this.pose = pose;
         this.time = time;
-        this.attracttiveHuman = attracttiveHuman;
+//        this.attracttiveHuman = attracttiveHuman;
+//        this.trustworthyHuman = trustworthyHuman;
+//        this.dominantHuman = dominantHuman;
+//        this.threadHuman = threadHuman;
+//        this.likeabilityHuman = likeabilityHuman;
+//        this.competentHuman = competentHuman;
+//        this.extrovertedHuman = extrovertedHuman;
     }
     public Bitmap getBitmapFaceCrop() {return  bitmapFaceCrop;}
     public void setBitmapFaceCrop(Bitmap bitmap) {
