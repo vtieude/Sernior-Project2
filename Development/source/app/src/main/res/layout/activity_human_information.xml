@@ -32,7 +32,6 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
-                    android:background="@drawable/circle"
                     app:srcCompat="@mipmap/so1" />
                 <TextView
                     android:layout_width="fill_parent"

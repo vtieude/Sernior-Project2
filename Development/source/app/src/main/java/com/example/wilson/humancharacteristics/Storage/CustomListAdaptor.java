@@ -61,8 +61,8 @@ public class CustomListAdaptor extends BaseAdapter{
             holder = (ViewHolder)view.getTag();
         }
         HumanModel human = this.listHuman.get(i);
-        holder.nameView.setText(R.string.name+ ": " +human.getName());
-        holder.ageView.setText(R.string.age + ": " + human.getAttracttive());
+        holder.nameView.setText(context.getString(R.string.name)+ ": " +human.getName());
+        holder.ageView.setText(context.getString(R.string.attractiveness) + ": " + human.getAttracttive());
         if (human.getImage() != null) {
             Bitmap bitmap= BitmapFactory.decodeByteArray(human.getImage(), 0, human.getImage().length);
             holder.flagView.setImageBitmap(bitmap);
