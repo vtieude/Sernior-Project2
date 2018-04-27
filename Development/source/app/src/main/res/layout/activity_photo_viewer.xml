@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.example.wilson.humancharacteristics.PhotoDetect.FaceView
+        android:id="@+id/faceView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="200dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:id="@+id/text_recognize"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="80dp"
+        />
+    <Button
+        android:id="@+id/btn_recognize"
+        android:text="Recognize"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:layout_gravity="bottom|left"
+        android:layout_marginLeft="80dp"
+    />
+
+    <Button
+        android:id="@+id/btn_save"
+        android:text="Save"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:layout_gravity="bottom|right"
+        android:layout_marginRight="80dp"
+        />
+
+
+</FrameLayout>
