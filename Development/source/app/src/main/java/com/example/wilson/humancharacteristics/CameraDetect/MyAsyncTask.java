@@ -57,32 +57,54 @@ public class MyAsyncTask extends AsyncTask<FaceResult, FaceResult, FaceResult[]>
         SystemClock.sleep(1000);
 
     }
-    public void getNameHuman() {
+    public void getNameHuman(final FaceResult faceResult) {
+        final int id = faceResult.getId();
+        final HumanDatabaseHelper database = new HumanDatabaseHelper(activityScren);
         AlertDialog.Builder builder = new AlertDialog.Builder(activityScren);
-        builder.setTitle("Type name");
+        builder.setTitle("Save");
         Context context = activityScren.getApplicationContext();
         LinearLayout layout = new LinearLayout(context);
         layout.setOrientation(LinearLayout.VERTICAL);
-
+        final ImageView imageView = new ImageView(context);
+        Bitmap bmp32 = Bitmap.createScaledBitmap(faceResult.getBitmapFaceCrop(), 200, 200, false);
+        imageView.setImageBitmap(bmp32);
+        layout.addView(imageView);
         final EditText editName = new EditText(context);
         editName.setFilters(new InputFilter[]{new InputFilter.LengthFilter(MAX_LENGTH)});
+        editName.setText(activityScren.getString(R.string.type_name_here));
+        editName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editName.setText("");
+            }
+        });
         layout.addView(editName);
         builder.setView(layout);
+        builder.setCancelable(false);
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
                 nameHuman = editName.getText().toString();
+                if (nameHuman.equals("")){
+                    nameHuman = activityScren.getString(R.string.default_name);
+                }
+                database.updateNameHuman(nameHuman, id);
+                Toast.makeText(activityScren, activityScren.getString(R.string.saved) + ": "+ nameHuman ,
+                        Toast.LENGTH_SHORT).show();
+                dialog.dismiss();
+
+
 //                textName.setText(editName.getText().toString());
 //                textAge.setText(editAge.getText().toString());
             }
         });
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
+
+//        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                dialog.cancel();
+//            }
+//        });
         builder.show();
     }
     @Override
@@ -105,9 +127,10 @@ public class MyAsyncTask extends AsyncTask<FaceResult, FaceResult, FaceResult[]>
                     humanModel.setAge(18);
                     humanModel.setEmail("");
                     humanModel.setPhone("");
-                    publishProgress(faceResults[0]);
                     database.addHuman(humanModel);
-                    SystemClock.sleep(1500);
+                    faceResults[i].setId(database.getLastHumanRow());
+                    publishProgress(faceResults[i]);
+
                 }
 //            publishProgress(check);
 
@@ -119,9 +142,9 @@ public class MyAsyncTask extends AsyncTask<FaceResult, FaceResult, FaceResult[]>
     @Override
     protected void onProgressUpdate(FaceResult... values) {
         super.onProgressUpdate(values);
-        if (check) {
-            Toast.makeText(activityScren, "Save " + max_face,
-                    Toast.LENGTH_SHORT).show();
+
+        if (values[0].getBitmapFaceCrop()!= null){
+            getNameHuman(values[0]);
         }
     }
 
@@ -139,15 +162,14 @@ public class MyAsyncTask extends AsyncTask<FaceResult, FaceResult, FaceResult[]>
     @Override
     protected void onPostExecute(FaceResult[] faceResults) {
         super.onPostExecute(faceResults);
-        SystemClock.sleep(500);
 
         if (check) {
-            Toast.makeText(activityScren, "Save Success with " + max_face  +" face",
+            Toast.makeText(activityScren, activityScren.getString(R.string.saving),
                     Toast.LENGTH_SHORT).show();
             check = false;
         }
         else {
-            Toast.makeText(activityScren, "Cannot save!",
+            Toast.makeText(activityScren, "Cannot detect!",
                     Toast.LENGTH_SHORT).show();
         }
         progress.setVisibility(View.INVISIBLE);

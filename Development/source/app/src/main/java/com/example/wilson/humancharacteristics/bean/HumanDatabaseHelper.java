@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.nfc.tech.NfcA;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -139,7 +140,16 @@ public class HumanDatabaseHelper extends SQLiteOpenHelper {
         humanModel.setId(cursor.getInt(cursor.getColumnIndex(COLUMN_HUMAN_ID)));
         return humanModel;
     }
-
+    public int getLastHumanRow() {
+        int id = 0;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select * from " + TABLE_HUMAN, null);
+        if (cursor != null) {
+            cursor.moveToLast();
+            id = cursor.getInt(cursor.getColumnIndex(COLUMN_HUMAN_ID));
+        }
+        return id ;
+    }
     public List<HumanModel> getListHuman(){
         List<HumanModel> list = new ArrayList<HumanModel>();
 
@@ -168,7 +178,12 @@ public class HumanDatabaseHelper extends SQLiteOpenHelper {
         }
         return list;
     }
-
+    public void updateNameHuman(String name, int id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_HUMAN_NAME, name);
+        db.update(TABLE_HUMAN, values, COLUMN_HUMAN_ID + " = ? ", new String[] { Integer.toString(id) } );
+    }
     public int updateHuman (HumanModel human)
     {
         SQLiteDatabase db = this.getWritableDatabase();

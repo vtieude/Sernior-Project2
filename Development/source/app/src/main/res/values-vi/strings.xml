@@ -29,4 +29,9 @@
     <string name="tittle_email">Email</string>
     <string name="tittle_phone">Điện Thoại</string>
     <string name="tittle_comment">Nhận Xét</string>
+    <string name="save">Lưu</string>
+    <string name="saving">Đang Lưu</string>
+    <string name="saved">Đã Lưu</string>
+    <string name="type_name_here">Điền tên ở đây</string>
+    <string name="default_name">Xinchao</string>
 </resources>

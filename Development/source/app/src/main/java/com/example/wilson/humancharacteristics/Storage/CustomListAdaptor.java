@@ -61,10 +61,12 @@ public class CustomListAdaptor extends BaseAdapter{
             holder = (ViewHolder)view.getTag();
         }
         HumanModel human = this.listHuman.get(i);
-        holder.nameView.setText("Name: " +human.getLikeability());
+        holder.nameView.setText("Name: " +human.getName());
         holder.ageView.setText("Age: " + human.getAttracttive());
-        Bitmap bitmap= BitmapFactory.decodeByteArray(human.getImage(), 0, human.getImage().length);
-        holder.flagView.setImageBitmap(bitmap);
+        if (human.getImage() != null) {
+            Bitmap bitmap= BitmapFactory.decodeByteArray(human.getImage(), 0, human.getImage().length);
+            holder.flagView.setImageBitmap(bitmap);
+        }
         return view;
     }
     static class ViewHolder {
