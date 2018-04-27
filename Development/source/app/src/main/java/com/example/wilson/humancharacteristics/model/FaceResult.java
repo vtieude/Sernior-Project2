@@ -50,25 +50,16 @@ public class FaceResult extends Object {
 
 
 
-    public void setFace(int id, PointF midEye, float eyeDist, float confidence, float pose, long time, String attractive, String trustworthy,
-                        String dominant, String thread, String likeability, String competent, String extroverted) {
-        set(id, midEye, eyeDist, confidence, pose, time, attractive, trustworthy, dominant, thread, likeability, competent, extroverted);
+    public void setFace(int id, PointF midEye, float eyeDist, float confidence, float pose, long time) {
+        set(id, midEye, eyeDist, confidence, pose, time);
     }
 
     public void clear() {
-        set(0, new PointF(0.0f, 0.0f), 0.0f, 0.4f, 0.0f, System.currentTimeMillis(),
-                "", "", "","","","","");
+        set(0, new PointF(0.0f, 0.0f), 0.0f, 0.4f, 0.0f, System.currentTimeMillis());
         setBitmapFaceCrop(null);
     }
 
-    public synchronized void set(int id, PointF midEye, float eyeDist, float confidence, float pose, long time,
-                                 String attracttiveHuman,
-                                 String trustworthyHuman,
-                                 String dominantHuman,
-                                 String threadHuman,
-                                 String likeabilityHuman,
-                                 String competentHuman,
-                                 String extrovertedHuman) {
+    public synchronized void set(int id, PointF midEye, float eyeDist, float confidence, float pose, long time) {
         this.id = id;
         this.midEye.set(midEye);
         this.eyeDist = eyeDist;

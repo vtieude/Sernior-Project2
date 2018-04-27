@@ -2,6 +2,7 @@ package com.example.wilson.humancharacteristics.CameraDetect;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -26,6 +27,8 @@ import android.view.SurfaceView;
 
 import com.example.wilson.Tensorflow.Classifier;
 import com.example.wilson.Tensorflow.TensorFlowImageClassifier;
+import com.example.wilson.humancharacteristics.MainActivity;
+import com.example.wilson.humancharacteristics.PhotoDetect.PhotoDetectActivity;
 import com.example.wilson.humancharacteristics.R;
 import com.example.wilson.humancharacteristics.bean.HumanModel;
 import com.example.wilson.humancharacteristics.model.FaceResult;
@@ -113,6 +116,9 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
     private boolean checkCreateModel = false;
     private boolean checkUpdate = true;
     private ImageButton takePhotoCamera;
+    private ImageButton getPhotoCamera;
+
+
     private static final int INPUT_SIZE = 224;
 
     private String attracttiveResult = "";
@@ -146,6 +152,7 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
         mFaceView = new FaceOverlayView(this);
         addContentView(mFaceView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         takePhotoCamera = findViewById(R.id.takePhoto);
+        getPhotoCamera = findViewById(R.id.getPhoto);
 
         // Create and Start the OrientationListener:
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
@@ -154,6 +161,7 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
         SharedPreferences setting = PreferenceManager.getDefaultSharedPreferences(this);
         MAX_FACE = setting.getInt("amount_face", 1);
         takePhotoCamera.setOnClickListener(this);
+        getPhotoCamera.setOnClickListener(this);
         handler = new Handler();
         faces = new FaceResult[MAX_FACE];
         faces_previous = new FaceResult[MAX_FACE];
@@ -268,16 +276,16 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
         executor.execute(new Runnable() {
             @Override
             public void run() {
-                if(checkCreateModel == true){
-                    humanModel.getAttracttiveHuman().onDestroy();
-                    humanModel.getExtrovertedHuman().onDestroy();
-                    humanModel.getCompetentHuman().onDestroy();
-                    humanModel.getDominantHuman().onDestroy();
-                    humanModel.getLikeabilityHuman().onDestroy();
-                    humanModel.getThreadHuman().onDestroy();
-                    humanModel.getTrustworthyHuman().onDestroy();
-                    checkCreateModel = false;
-                }
+            if(checkCreateModel == true){
+                humanModel.getAttracttiveHuman().onDestroy();
+                humanModel.getExtrovertedHuman().onDestroy();
+                humanModel.getCompetentHuman().onDestroy();
+                humanModel.getDominantHuman().onDestroy();
+                humanModel.getLikeabilityHuman().onDestroy();
+                humanModel.getThreadHuman().onDestroy();
+                humanModel.getTrustworthyHuman().onDestroy();
+                checkCreateModel = false;
+            }
             }
         });
     }
@@ -462,6 +470,7 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
 
     @Override
     public void onClick(View v) {
+        Intent mIntent = null;
         switch (v.getId()) {
             case R.id.takePhoto:
                 try {
@@ -472,6 +481,19 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
                     e.printStackTrace();
                 }
                 break;
+
+            case R.id.getPhoto:
+                try {
+                    if(checkCreateModel){
+                        mIntent = new Intent(CameraDetectActivity.this, PhotoDetectActivity.class);
+                        startActivity(mIntent);
+                        finish();
+                        checkCreateModel = false;
+                    }
+                    break;
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
         }
     }
 
@@ -613,12 +635,9 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
 
                         if (idFace == Id) Id++;
 
-                        faces[i].setFace(idFace, mid, eyesDis, confidence, pose, System.currentTimeMillis(),
-                                "", "","","","","","");
+                        faces[i].setFace(idFace, mid, eyesDis, confidence, pose, System.currentTimeMillis());
 
-                        faces_previous[i].set(faces[i].getId(), faces[i].getMidEye(), faces[i].eyesDistance(), faces[i].getConfidence(), faces[i].getPose(), faces[i].getTime(),
-                                faces[i].getAttractive(),faces[i].getTrustworthy(),faces[i].getDominant(),faces[i].getThread(),
-                                faces[i].getLikeability(), faces[i].getCompetent(), faces[i].getExtroverted());
+                        faces_previous[i].set(faces[i].getId(), faces[i].getMidEye(), faces[i].eyesDistance(), faces[i].getConfidence(), faces[i].getPose(), faces[i].getTime());
 
 // 9.16
                         //

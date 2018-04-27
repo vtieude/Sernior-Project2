@@ -26,6 +26,17 @@
         android:clickable="true"
         android:onClick="takePhotoToStore"
         android:layout_height="wrap_content" />
+
+    <ImageButton
+        android:id="@+id/getPhoto"
+        android:layout_width="80dp"
+        android:layout_height="78dp"
+        android:layout_gravity="left|bottom"
+        android:layout_marginLeft="30dp"
+        android:clickable="true"
+        android:onClick="getPhotoToDetect"
+        android:src="@mipmap/get_image" />
+
     <!--<android.support.v7.widget.RecyclerView-->
         <!--android:id="@+id/recycler_view"-->
         <!--android:layout_width="@dimen/image_preview"-->
