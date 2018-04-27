@@ -25,8 +25,14 @@
     <style name="CustomAppTheme" parent="Theme.AppCompat">
         <item name="android:textColorPrimaryDisableOnly">@color/colorPrimary</item>
         <item name="colorAccent">#e91e63</item>
-    </style> <style name="TextColor" parent="@android:style/TextAppearance.Medium">
+    </style>
+    <style name="TextColor" parent="@android:style/TextAppearance.Medium">
     <item name="android:textColor">@color/colorPrimary</item>
-</style>
+    </style>
+    <style name="StyleForListView" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textSize">@dimen/font_size_16</item>
+    </style>
+
 
 </resources>

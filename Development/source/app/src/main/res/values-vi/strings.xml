@@ -34,4 +34,7 @@
     <string name="saved">Đã Lưu</string>
     <string name="type_name_here">Điền tên ở đây</string>
     <string name="default_name">Xinchao</string>
+    <string name="name">Tên</string>
+    <string name="age">Tuổi</string>
+    <string name="attractiveness">"Độ ấn tượng: "</string>
 </resources>
