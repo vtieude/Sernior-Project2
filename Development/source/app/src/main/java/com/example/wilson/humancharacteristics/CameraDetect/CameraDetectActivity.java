@@ -196,6 +196,7 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
                             progress = (ProgressBar)findViewById(R.id.progressBarCamera);
                             textwaitmodel = (TextView)findViewById(R.id.text_wait_model);
                             progress.setVisibility(View.VISIBLE);
+                            textwaitmodel.setVisibility(View.VISIBLE);
                         }
                     });
                     humanModel = new HumanModel(getAssets());

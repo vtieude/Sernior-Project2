@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -47,7 +48,6 @@ public class StorageActivity extends AppCompatActivity {
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Storage");
-
         setOnItemClick();
         setItemLongClick();
     }
@@ -70,6 +70,8 @@ public class StorageActivity extends AppCompatActivity {
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             public boolean onItemLongClick(AdapterView<?> arg0, View v,
                                            int index, long arg3) {
+                customListAdaptor.isLongClick  = !customListAdaptor.isLongClick;
+                customListAdaptor.notifyDataSetChanged();
                 return true;
             }
         });
@@ -80,9 +82,20 @@ public class StorageActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 //                Toast.makeText(StorageActivity.this,  "das" + i,
 //                        Toast.LENGTH_LONG).show();
-                Intent intent = new Intent(getApplication(), HumanInformationActivity.class).putExtra("human", customListAdaptor.getItem(i));
-                startActivity(intent);
-                finish();
+                if (customListAdaptor.isLongClick) {
+                    CheckBox cb = (CheckBox)view.findViewById(R.id.check_delete_item);
+                    boolean isCheck = !cb.isChecked();
+                    cb.setChecked(isCheck);
+                }
+                else
+                {
+                    Intent intent = new Intent(getApplication(), HumanInformationActivity.class).putExtra("human", customListAdaptor.getItem(i));
+                    startActivity(intent);
+
+                    finish();
+                }
+
+
             };
         });
     }
