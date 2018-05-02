@@ -13,8 +13,8 @@
     <dimen name="font_size_13">13dp</dimen>
     <dimen name="text_size_30">30dp</dimen>
     <dimen name="text_size_button_40">30dp</dimen>
-    <dimen name="margin_top">25dp</dimen>
-    <dimen name="land_margin_top">17dp</dimen>
+    <dimen name="margin_top">35dp</dimen>
+    <dimen name="land_margin_top">29dp</dimen>
     <dimen name="layout_width_homepage">300dp</dimen>
-    <dimen name="layout_height_homepage">65dp</dimen>
+    <dimen name="layout_height_homepage">60dp</dimen>
 </resources>

@@ -50,7 +50,7 @@ public class MyAsyncTask extends AsyncTask<FaceResult, FaceResult, FaceResult[]>
     protected void onPreExecute() {
         super.onPreExecute();
         progress = (ProgressBar)activityScren.findViewById(R.id.progressBarCamera);
-        Toast.makeText(activityScren, "Wait!" ,
+        Toast.makeText(activityScren, activityScren.getString(R.string.wait_for_detect) ,
                 Toast.LENGTH_SHORT).show();
         progress.setVisibility(View.VISIBLE);
         imageButton.setVisibility(View.INVISIBLE);

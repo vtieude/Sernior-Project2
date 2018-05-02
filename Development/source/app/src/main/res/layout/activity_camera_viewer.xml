@@ -10,20 +10,35 @@
         android:id="@+id/surfaceview"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
-    <ProgressBar
-        android:id="@+id/progressBarCamera"
-        style="?android:attr/progressBarStyleLarge"
+    <RelativeLayout
         android:layout_width="wrap_content"
-        android:visibility="invisible"
-        android:layout_height="wrap_content"
         android:layout_gravity="center"
-         />
+        android:layout_height="wrap_content">
+        <ProgressBar
+            android:id="@+id/progressBarCamera"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:visibility="invisible"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/progressBarCamera"
+            android:id="@+id/text_wait_model"
+            android:visibility="invisible"
+            android:layout_marginLeft="10dp"
+            android:text="@string/wait_model"/>
+    </RelativeLayout>
+
     <ImageButton
         android:layout_width="wrap_content"
         android:layout_gravity="center|bottom"
         android:src="@mipmap/takecamera"
         android:id="@+id/takePhoto"
         android:clickable="true"
+        android:visibility="invisible"
         android:onClick="takePhotoToStore"
         android:layout_height="wrap_content" />
 

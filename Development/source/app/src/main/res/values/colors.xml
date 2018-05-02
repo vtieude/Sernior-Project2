@@ -6,8 +6,12 @@
     <color name="red">#ffff0000</color>
     <color name="colorTittle">#E3F2FD</color>
     <color name="blackColor">#000000</color>
-
+    <color name="red_500">#F44336</color>
+    <color name="blue_100">#BBDEFB</color>
     <color name="colorBlackOverlay">#44000000</color>
-
+    <color name="light_green_700">#689F38</color>
+    <color name="teal_50">#E0F2F1</color>
+    <color name="teal_100">#B2DFDB</color>
+    <color name="teal_800">#00695C</color>
 </resources>
 

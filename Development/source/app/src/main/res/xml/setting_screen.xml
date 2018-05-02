@@ -8,6 +8,7 @@
         android:icon="@mipmap/age"
         android:summaryOff="Off"
         android:summaryOn="On"
+        android:background="@drawable/customshape"
         android:switchTextAppearance="@style/TextColor"
     >
     </SwitchPreference>

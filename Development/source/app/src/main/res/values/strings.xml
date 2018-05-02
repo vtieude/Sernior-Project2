@@ -29,11 +29,13 @@
     <string name="low_storage_error">Face detector dependencies cannot be downloaded due to low device storage</string>
     <string name="update_Button">Update</string>
     <string name="save">Save</string>
-    <string name="saving">Saving</string>
+    <string name="saving">Type name</string>
     <string name="saved">Saved</string>
     <string name="type_name_here">Type name here</string>
     <string name="default_name">Unknown</string>
     <string name="name">name</string>
     <string name="age">age</string>
     <string name="attractiveness">Attractiveness</string>
+    <string name="wait_model">Loading</string>
+    <string name="wait_for_detect">Wait For Detect</string>
 </resources>

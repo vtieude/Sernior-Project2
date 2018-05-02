@@ -43,6 +43,11 @@ public class StorageActivity extends AppCompatActivity {
         listView = (ListView) findViewById(R.id.list_human);
         customListAdaptor = new CustomListAdaptor(this,listHuman);
         listView.setAdapter(customListAdaptor);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("Storage");
+
         setOnItemClick();
         setItemLongClick();
     }
@@ -55,11 +60,6 @@ public class StorageActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.add_storage:
-                Intent intent = new Intent(StorageActivity.this, HumanInformationActivity.class);
-                startActivity(intent);
-                finish();
-                return true;
             case R.id.delete_storage:
                 return true;
             default:

@@ -42,6 +42,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.opencv.android.Utils;
@@ -88,7 +90,7 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
     private static int MAX_FACE = 1;
     private int saveValue = 0;
     private boolean initValue = false;
-
+    MyAsyncTask myAsyncTask;
     private boolean isThreadWorking = false;
     private Handler handler;
     private FaceDetectThread detectThread = null;
@@ -118,7 +120,7 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
     private ImageButton takePhotoCamera;
     private ImageButton getPhotoCamera;
 
-
+    private ImageButton image;
     private static final int INPUT_SIZE = 224;
 
     private String attracttiveResult = "";
@@ -128,7 +130,8 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
     private String likeabilityResult = "";
     private String competentResult = "";
     private String extrovertedResult = "";
-
+    public ProgressBar progress;
+    public TextView textwaitmodel;
     private Executor executor = Executors.newSingleThreadExecutor();
 
 
@@ -153,7 +156,7 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
         addContentView(mFaceView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         takePhotoCamera = findViewById(R.id.takePhoto);
         getPhotoCamera = findViewById(R.id.getPhoto);
-
+        image = findViewById(R.id.takePhoto);
         // Create and Start the OrientationListener:
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
 
@@ -187,7 +190,22 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
             @Override
             public void run() {
                 try {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            progress = (ProgressBar)findViewById(R.id.progressBarCamera);
+                            textwaitmodel = (TextView)findViewById(R.id.text_wait_model);
+                            progress.setVisibility(View.VISIBLE);
+                        }
+                    });
                     humanModel = new HumanModel(getAssets());
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            progress.setVisibility(View.INVISIBLE);
+                            textwaitmodel.setVisibility(View.INVISIBLE);
+                        }
+                    });
                 } catch (final Exception e) {
                     throw new RuntimeException("Error initializing TensorFlow!", e);
                 }
@@ -276,16 +294,16 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
         executor.execute(new Runnable() {
             @Override
             public void run() {
-            if(checkCreateModel == true){
-                humanModel.getAttracttiveHuman().onDestroy();
-                humanModel.getExtrovertedHuman().onDestroy();
-                humanModel.getCompetentHuman().onDestroy();
-                humanModel.getDominantHuman().onDestroy();
-                humanModel.getLikeabilityHuman().onDestroy();
-                humanModel.getThreadHuman().onDestroy();
-                humanModel.getTrustworthyHuman().onDestroy();
-                checkCreateModel = false;
-            }
+                if(checkCreateModel == true){
+                    humanModel.getAttracttiveHuman().onDestroy();
+                    humanModel.getExtrovertedHuman().onDestroy();
+                    humanModel.getCompetentHuman().onDestroy();
+                    humanModel.getDominantHuman().onDestroy();
+                    humanModel.getLikeabilityHuman().onDestroy();
+                    humanModel.getThreadHuman().onDestroy();
+                    humanModel.getTrustworthyHuman().onDestroy();
+                    checkCreateModel = false;
+                }
             }
         });
     }
@@ -469,12 +487,12 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
     double fps;
 
     @Override
-    public void onClick(View v) {
+    public  void onClick(View v) {
         Intent mIntent = null;
         switch (v.getId()) {
             case R.id.takePhoto:
                 try {
-                    MyAsyncTask myAsyncTask = new MyAsyncTask(this);
+                    myAsyncTask = new MyAsyncTask(this);
                     myAsyncTask.execute(faces);
 
                 } catch (Exception e) {
@@ -668,6 +686,15 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
                             faces[i].setLikeability(humanModel.getLikeabilityHuman().recognizeImage(bmp32));
                             faces[i].setCompetnent(humanModel.getCompetentHuman().recognizeImage(bmp32));
                             faces[i].setExtroverted(humanModel.getExtrovertedHuman().recognizeImage(bmp32));
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    if (image.getVisibility() == View.INVISIBLE) {
+                                        image.setVisibility(View.VISIBLE);
+                                    }
+                                }
+                            });
+
                             checkUpdate = false;
                             initValue = true;
                         }
