@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/update_information"
+    android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/teal_50"
+        android:layout_marginBottom="@dimen/margin_top_5dp"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="Name: "
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/font_size_13"/>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorPrimary"
+            android:id="@+id/input_name_alert"
+            />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/teal_50"
+        android:layout_marginBottom="@dimen/margin_top_5dp"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorPrimary"
+            android:text="@string/age"/>
+        <EditText
+            android:layout_width="match_parent"
+            android:id="@+id/input_age_alert"
+            android:textColor="@color/colorPrimary"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/teal_50"
+        android:layout_marginBottom="@dimen/margin_top_5dp"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorPrimary"
+            android:text="@string/tittle_comment"/>
+        <EditText
+            android:layout_width="match_parent"
+            android:id="@+id/input_commend_alert"
+            android:textColor="@color/colorPrimary"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/teal_50"
+        android:layout_marginBottom="@dimen/margin_top_5dp"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorPrimary"
+            android:text="@string/tittle_phone"/>
+        <EditText
+            android:layout_width="match_parent"
+            android:id="@+id/input_phone_alert"
+            android:textColor="@color/colorPrimary"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/teal_50"
+        android:layout_marginBottom="@dimen/margin_top_5dp"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorPrimary"
+            android:text="@string/tittle_email"/>
+        <EditText
+            android:layout_width="match_parent"
+            android:id="@+id/input_email_alert"
+            android:textColor="@color/colorPrimary"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+</LinearLayout>
+</android.support.constraint.ConstraintLayout>

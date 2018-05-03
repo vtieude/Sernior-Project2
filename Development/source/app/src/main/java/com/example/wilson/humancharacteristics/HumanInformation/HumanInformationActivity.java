@@ -19,6 +19,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -51,9 +52,11 @@ public class HumanInformationActivity extends AppCompatActivity {
     private int MAX_LENGTH = 20;
     private Boolean checkItent = false;
     private ImageView imageAvartaView, imagePencil;
-    private TextView textName,textAge, textComment;
-    private Button buttonSave;
+    private TextView textName,textAge, textComment, textPhone, textEmail, textAtractiveness, textCompetent, textDominant;
+    private TextView textExtroverted, textLikeability, textThread, textTrustworthy;
+    private Button buttonSave, buttonBack;
     private HumanModel humanInfor;
+    private String titlePhone, titleEmail, titleComment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,8 +89,8 @@ public class HumanInformationActivity extends AppCompatActivity {
         outState.putString("TextName", textName.getText().toString());
         outState.putString("TextAge", textAge.getText().toString());
         outState.putString("TextComment", textComment.getText().toString());
-//        outState.putString("TextPhone", textPhone.getText().toString());
-//        outState.putString("TextEmail", textEmail.getText().toString());
+        outState.putString("TextPhone", textPhone.getText().toString());
+        outState.putString("TextEmail", textEmail.getText().toString());
 
     }
 
@@ -107,53 +110,140 @@ public class HumanInformationActivity extends AppCompatActivity {
         textName.setText(save.getString("TextName").toString());
         textAge.setText(save.getString("TextAge").toString());
         textComment.setText(save.getString("TextComment").toString());
-//        textEmail.setText(save.getString("TextEmail").toString());
-//        textPhone.setText(save.getString("TextPhone").toString());
+        textEmail.setText(save.getString("TextEmail").toString());
+        textPhone.setText(save.getString("TextPhone").toString());
     }
-    public void imagePencilEvent() {
+//    public void imagePencilEvent() {
+//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//        builder.setTitle("Update");
+//        Context context = getApplicationContext();
+//        LinearLayout layout = new LinearLayout(context);
+//        layout.setOrientation(LinearLayout.VERTICAL);
+//
+//        final EditText editName = new EditText(context);
+//        editName.setText(textName.getText().toString());
+//        editName.setFilters(new InputFilter[]{new InputFilter.LengthFilter(MAX_LENGTH)});
+//        layout.addView(editName);
+//
+//        final EditText editAge = new EditText(context);
+//        editAge.setText(textAge.getText().toString());
+//        editAge.setFilters(new InputFilter[]{new InputFilter.LengthFilter(8)});
+//        editAge.setInputType(InputType.TYPE_CLASS_NUMBER);
+//        layout.addView(editAge);
+//        builder.setView(layout);
+//        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                dialog.dismiss();
+//                textName.setText(editName.getText().toString());
+//                textAge.setText(editAge.getText().toString());
+//            }
+//        });
+//        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                dialog.cancel();
+//            }
+//        });
+//        builder.show();
+//    }
+    public void editInformationEvent(String tittle) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Update");
+        builder.setTitle(tittle);
         Context context = getApplicationContext();
-        LinearLayout layout = new LinearLayout(context);
-        layout.setOrientation(LinearLayout.VERTICAL);
+        LayoutInflater inflater = getLayoutInflater();
+        View layout =(View) inflater.inflate(R.layout.alert_update_information,null) ;
+        final EditText editName = layout.findViewById(R.id.input_name_alert);
+        final EditText editAge = layout.findViewById(R.id.input_age_alert);
+        final EditText editCommend = layout.findViewById(R.id.input_commend_alert);
+        final EditText editPhone = layout.findViewById(R.id.input_phone_alert);
+        final EditText editEmail = layout.findViewById(R.id.input_email_alert);
+        editName.setText(humanInfor.getName());
+        editAge.setText(String.valueOf(humanInfor.getAge()));
+        editCommend.setText(humanInfor.getComment());
+        editPhone.setText(humanInfor.getPhone());
+        editEmail.setText(humanInfor.getEmail());
+//        LinearLayout layout = new LinearLayout(context);
+//        layout.setOrientation(LinearLayout.VERTICAL);
+//        layout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
+//
+//        LinearLayout layoutName = new LinearLayout(context);
+//        layout.setOrientation(LinearLayout.HORIZONTAL);
+//
+//        LinearLayout layoutAge = new LinearLayout(context);
+//        layout.setOrientation(LinearLayout.HORIZONTAL);
+//
+//        LinearLayout layoutCommend = new LinearLayout(context);
+//        layout.setOrientation(LinearLayout.HORIZONTAL);
+//
+//        LinearLayout layoutPhone = new LinearLayout(context);
+//        layout.setOrientation(LinearLayout.HORIZONTAL);
+//
+//        LinearLayout layoutEmail = new LinearLayout(context);
+//        layout.setOrientation(LinearLayout.HORIZONTAL);
+//
+//        TextView textName = new TextView(this);
+//        textName.setText("Name: ");
+//        final EditText inputName = new EditText(this);
+//        inputName.setText(humanInfor.getName());
+//        layoutName.addView(textName);
+//        layoutName.addView(inputName);
+//        layout.addView(layoutName);
+//
+//        TextView textAge = new TextView(this);
+//        textAge.setText("Age: ");
+//        final EditText inputAge = new EditText(this);
+//        inputAge.setText(String.valueOf(humanInfor.getAge()));
+//        TextView textCommend = new TextView(this);
+//        textCommend.setText(getString(R.string.tittle_comment) + ": ");
+//        final EditText inputCommend = new EditText(this);
+//        inputCommend.setText(humanInfor.getComment());
+//        TextView textPhone = new TextView(this);
+//        textPhone.setText(getString(R.string.tittle_phone) + ": ");
+//        final EditText inputPhone = new EditText(this);
+//        inputPhone.setText(humanInfor.getPhone());
+//        TextView textEmail = new TextView(this);
+//        textEmail.setText(getString(R.string.tittle_email) + ": ");
+//        final EditText inputEmail = new EditText(this);
+//        inputEmail.setText(humanInfor.getEmail());
+//
+//        layoutAge.addView(textAge);
+//        layoutAge.addView(inputAge);
+//        layout.addView(layoutAge);
+//        layoutCommend.addView(textCommend);
+//        layoutCommend.addView(inputCommend);
+//        layout.addView(layoutCommend);
+//        layoutPhone.addView(textPhone);
+//        layoutPhone.addView(inputPhone);
+//        layout.addView(layoutPhone);
+//        layoutEmail.addView(textEmail);
+//        layoutEmail.addView(inputEmail);
+//        layout.addView(layoutEmail);
 
-        final EditText editName = new EditText(context);
-        editName.setText(textName.getText().toString());
-        editName.setFilters(new InputFilter[]{new InputFilter.LengthFilter(MAX_LENGTH)});
-        layout.addView(editName);
-
-        final EditText editAge = new EditText(context);
-        editAge.setText(textAge.getText().toString());
-        editAge.setFilters(new InputFilter[]{new InputFilter.LengthFilter(8)});
-        editAge.setInputType(InputType.TYPE_CLASS_NUMBER);
-        layout.addView(editAge);
         builder.setView(layout);
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
+                HumanDatabaseHelper database = new HumanDatabaseHelper(getApplicationContext());
+                HumanModel humanModel = new HumanModel();
+                if ( checkItent) {
+                    humanModel.setId(humanInfor.getId());
+                }
+                humanModel.setName(editName.getText().toString());
+                humanModel.setPhone(editPhone.getText().toString());
+                humanModel.setEmail(editEmail.getText().toString());
+                humanModel.setComment(editCommend.getText().toString());
+                humanModel.setAge(Integer.parseInt(editAge.getText().toString()));
+                database.updateHuman(humanModel);
                 textName.setText(editName.getText().toString());
                 textAge.setText(editAge.getText().toString());
-            }
-        });
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
-        builder.show();
-    }
-    public void editInformationEvent(String tittle, final TextView text) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(tittle);
-        final EditText input = new EditText(this);
-        input.setText(text.getText().toString());
-        builder.setView(input);
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                text.setText(input.getText().toString());
+                textComment.setText(editCommend.getText().toString());
+                textPhone.setText(titlePhone+ ": "+ editPhone.getText().toString());
+                textEmail.setText(titleEmail+ ": " +editEmail.getText().toString());
+                database.close();
+//                Intent intent = new Intent(HumanInformationActivity.this, StorageActivity.class);
+//                startActivity(intent);
+//                finish();
             }
         });
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -169,10 +259,20 @@ public class HumanInformationActivity extends AppCompatActivity {
         textAge = (TextView)findViewById(R.id.text_Age);
         imageAvartaView = (ImageView)findViewById(R.id.humanFaceAvatar);
         textComment = (TextView) findViewById(R.id.textViewComment);
-//        textEmail = (TextView) findViewById(R.id.textViewEmail);
-//        textPhone = (TextView) findViewById(R.id.textViewPhone);
-        imagePencil = (ImageView)findViewById(R.id.imageViewPencil);
+        textEmail = (TextView) findViewById(R.id.tittleEmail);
+        textPhone = (TextView) findViewById(R.id.titlePhone);
         buttonSave = (Button)findViewById(R.id.btSave);
+        buttonBack = (Button)findViewById(R.id.back_screen);
+        textAtractiveness = findViewById(R.id.tittleAttactiveness);
+        textCompetent = findViewById(R.id.tittleCompetent);
+        textDominant = findViewById(R.id.tittleDominant);
+        textExtroverted = findViewById(R.id.tittleExtroverted);
+        textLikeability = findViewById(R.id.tittleLikeability);
+        textThread = findViewById(R.id.tittleThread);
+        textTrustworthy = findViewById(R.id.tittleTrustworthy);
+        titleComment = textComment.getText().toString();
+        titleEmail = textEmail.getText().toString();
+        titlePhone = textPhone.getText().toString();
 
     }
 
@@ -182,18 +282,18 @@ public class HumanInformationActivity extends AppCompatActivity {
     }
 
     public void viewEvent() {
-        imagePencil.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                imagePencilEvent();
-            }
-        });
-        textComment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                editInformationEvent("Comment", textComment);
-            }
-        });
+//        imagePencil.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                imagePencilEvent();
+//            }
+//        });
+//        textComment.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                editInformationEvent("Comment", textComment);
+//            }
+//        });
 //        textPhone.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
@@ -209,15 +309,13 @@ public class HumanInformationActivity extends AppCompatActivity {
         buttonSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                HumanDatabaseHelper database = new HumanDatabaseHelper(getApplicationContext());
-                if (!checkItent) {
+                editInformationEvent(getString(R.string.updated_inforhuman).toString());
 
-                    database.addHuman(getHumanInfor());
-                    Toast.makeText(getApplicationContext(), R.string.alert_succsess, Toast.LENGTH_LONG).show();
-                }
-                else {
-                    database.updateHuman(getHumanInfor());
-                }
+            }
+        });
+        buttonBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 Intent intent = new Intent(HumanInformationActivity.this, StorageActivity.class);
                 startActivity(intent);
                 finish();
@@ -231,8 +329,8 @@ public class HumanInformationActivity extends AppCompatActivity {
             humanModel.setId(humanInfor.getId());
         }
         humanModel.setName(textName.getText().toString());
-//        humanModel.setPhone(textPhone.getText().toString());
-//        humanModel.setEmail(textEmail.getText().toString());
+        humanModel.setPhone(textPhone.getText().toString());
+        humanModel.setEmail(textEmail.getText().toString());
         humanModel.setComment(textComment.getText().toString());
         humanModel.setAge(Integer.parseInt(textAge.getText().toString()));
         humanModel.setImage(ConverttoArrayByte(imageAvartaView));
@@ -262,9 +360,21 @@ public class HumanInformationActivity extends AppCompatActivity {
             }
             textName.setText(humanInfor.getName());
             textAge.setText(String.valueOf(humanInfor.getAge()));
-//            textEmail.setText(humanInfor.getEmail());
-//            textPhone.setText(humanInfor.getPhone());
-            textComment.setText(humanInfor.getComment());
+            textEmail.setText(titleEmail+": "+humanInfor.getEmail());
+            textPhone.setText(titlePhone+": "+humanInfor.getPhone());
+            if (humanInfor.getComment() == "") {
+                textComment.setText(getString(R.string.tittle_comment));
+            }
+            else {
+                textComment.setText(humanInfor.getComment());
+            }
+            textAtractiveness.setText(textAtractiveness.getText() + humanInfor.getAttracttive());
+            textCompetent.setText(textCompetent.getText() + humanInfor.getCompetent());
+            textDominant.setText(textDominant.getText() + humanInfor.getDominant());
+            textExtroverted.setText(textExtroverted.getText()+ humanInfor.getExtroverted());
+            textLikeability.setText(textLikeability.getText()+ humanInfor.getLikeability());
+            textThread.setText(textThread.getText()+ humanInfor.getThreadCharacteristic());
+            textTrustworthy.setText(textTrustworthy.getText()+ humanInfor.getTrustworthy());
             buttonSave.setText(R.string.update_Button);
         }
     }

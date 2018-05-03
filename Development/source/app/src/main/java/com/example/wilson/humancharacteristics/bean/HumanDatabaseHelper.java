@@ -155,7 +155,7 @@ public class HumanDatabaseHelper extends SQLiteOpenHelper {
     public List<HumanModel> getListHuman(){
         List<HumanModel> list = new ArrayList<HumanModel>();
 
-        String selectQuery = "SELECT * FROM "+ TABLE_HUMAN + " Limit 0,5";
+        String selectQuery = "SELECT * FROM "+ TABLE_HUMAN ; //+ " Limit 0,5"
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor;
         cursor = db.rawQuery(selectQuery,null);
@@ -199,14 +199,14 @@ public class HumanDatabaseHelper extends SQLiteOpenHelper {
         values.put(COLUMN_HUMAN_PHONE, human.getPhone());
         values.put(COLUMN_HUMAN_EMAIL, human.getEmail());
         values.put(COLUMN_HUMAN_COMMENT, human.getComment());
-        values.put(COLUMN_HUMAN_IMAGE,human.getImage());
-        values.put(COLUMN_ATTRACTIVENESS, human.getAttracttive());
-        values.put(COLUMN_COMPETENT, human.getCompetent());
-        values.put(COLUMN_DOMINANT, human.getDominant());
-        values.put(COLUMN_Extroverted, human.getExtroverted());
-        values.put(COLUMN_LIKEABILITY, human.getLikeability());
-        values.put(COLUMN_THREAD, human.getThreadCharacteristic());
-        values.put(COLUMN_TRUSTWORTHY, human.getTrustworthy());
+//        values.put(COLUMN_HUMAN_IMAGE,human.getImage());
+//        values.put(COLUMN_ATTRACTIVENESS, human.getAttracttive());
+//        values.put(COLUMN_COMPETENT, human.getCompetent());
+//        values.put(COLUMN_DOMINANT, human.getDominant());
+//        values.put(COLUMN_Extroverted, human.getExtroverted());
+//        values.put(COLUMN_LIKEABILITY, human.getLikeability());
+//        values.put(COLUMN_THREAD, human.getThreadCharacteristic());
+//        values.put(COLUMN_TRUSTWORTHY, human.getTrustworthy());
         db.update(TABLE_HUMAN, values, COLUMN_HUMAN_ID + " = ? ", new String[] { Integer.toString(human.getId()) } );
         db.close();
         return 0;

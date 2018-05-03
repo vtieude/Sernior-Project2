@@ -126,10 +126,12 @@ public class MyAsyncTask extends AsyncTask<FaceResult, FaceResult, FaceResult[]>
                     humanModel.setImage(ConverttoArrayByte(bmp32));
                     humanModel.setName(nameHuman);
                     humanModel.setAge(18);
+                    humanModel.setComment("Type");
                     humanModel.setEmail("Type");
                     humanModel.setPhone("Type");
                     database.addHuman(humanModel);
                     faceResults[i].setId(database.getLastHumanRow());
+                    database.close();
                     publishProgress(faceResults[i]);
 
                 }
@@ -143,7 +145,8 @@ public class MyAsyncTask extends AsyncTask<FaceResult, FaceResult, FaceResult[]>
     @Override
     protected void onProgressUpdate(FaceResult... values) {
         super.onProgressUpdate(values);
-
+        Toast.makeText(activityScren, values[0].getAttractive()+  " attrac " + values[0].getThread()+ " trurst " + values[0].getLikeability(),
+                Toast.LENGTH_SHORT).show();
         if (values[0].getBitmapFaceCrop()!= null){
             getNameHuman(values[0]);
         }
