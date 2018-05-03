@@ -21,6 +21,7 @@ std::vector<cv::Mat> images;
 std::vector<int> labels;
 std::map<int, std::string> keyName;
 static bool trainStatus = false;
+static bool loadModel = false;
 cv::Mat faceMat;
 
 static cv::Mat norm_0_255(cv::InputArray _src) {
@@ -118,6 +119,47 @@ Java_com_example_wilson_humancharacteristics_CameraDetect_CameraDetectActivity_t
     if(!trainStatus){
         trainModel(model_data);
         trainStatus = true;
+    }
+}
+
+
+JNIEXPORT void JNICALL
+Java_com_example_wilson_humancharacteristics_CameraDetect_CameraDetectActivity_findLandmark(
+        JNIEnv *env,
+        jobject /* this */,
+        jlong imgMat) {
+    cv::Mat *frame = (cv::Mat*) imgMat;
+
+    if(loadModel == false){
+        // Create an instance of Facemark
+        cv::Ptr<cv::face::Facemark> facemark = cv::face::FacemarkLBF::create();
+
+        // Load landmark detector
+        facemark->loadModel("/sdcard/data/lbfmodel.yaml");
+
+
+        // Find face
+        std::vector<cv::Rect> rect_face;
+        rect_face.push_back(cv::Rect(0, 0, (*frame).rows-1, (*frame).cols-1));
+
+        // Variable for landmarks.
+        // Landmarks for one face is a vector of points
+        // There can be more than one face in the image. Hence, we
+        // use a vector of vector of points.
+        std::vector <std::vector <cv::Point2f> > landmarks;
+
+        // Run landmark detector
+        bool success = facemark->fit((*frame),rect_face,landmarks);
+
+        if(success)
+        {
+            // If successful, render the landmarks on the face
+            for(int i = 0; i < landmarks.size(); i++)
+            {
+                cv::face::drawFacemarks((*frame), landmarks[i], cv::Scalar(0,0,255,255));
+            }
+        }
+        loadModel = true;
     }
 }
 

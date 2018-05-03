@@ -75,14 +75,15 @@ public interface Classifier {
 //            }
 
             if (confidence != null) {
-                resultString += String.format(" (%.1f%%) ", percentConfidence*confidence * 100.0f);
+                resultString += String.valueOf(id);
             }
 //
 //            if (location != null) {
 //                resultString += location + " ";
 //            }
+            return id;
 
-            return resultString.trim();
+//            return resultString.trim();
         }
     }
 

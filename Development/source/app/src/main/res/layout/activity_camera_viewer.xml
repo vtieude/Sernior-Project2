@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:keepScreenOn="true">
-
     <SurfaceView
         android:id="@+id/surfaceview"
         android:layout_width="match_parent"
@@ -30,7 +29,18 @@
             android:visibility="invisible"
             android:layout_marginLeft="10dp"
             android:text="@string/wait_model"/>
+
+
     </RelativeLayout>
+
+    <TextView
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:id="@+id/text_characteristic"
+        android:text="Hello, I'm Dave"
+        android:layout_gravity="right"
+
+        />
 
     <ImageButton
         android:layout_width="wrap_content"

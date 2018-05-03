@@ -38,4 +38,25 @@
     <string name="attractiveness">Attractiveness</string>
     <string name="wait_model">Loading</string>
     <string name="wait_for_detect">Wait For Detect</string>
+    <string name="attractive_am3_am2">The attractive is low</string>
+    <string name="attractive_am1_1">The attractive is normal</string>
+    <string name="attractive_2_3">The attractive is high</string>
+    <string name="competent_am3_am2">The competent is low</string>
+    <string name="competent_am1_1">The competent is normal</string>
+    <string name="competent_2_3">The competent is high</string>
+    <string name="dominant_am3_am2">The dominant is low</string>
+    <string name="dominant_am1_1">The dominant is normal</string>
+    <string name="dominant_2_3">The dominant is high</string>
+    <string name="extroverted_am3_am2">The extroverted is low</string>
+    <string name="extroverted_am1_1">The extroverted is normal</string>
+    <string name="extroverted_2_3">The extroverted is high</string>
+    <string name="likeability_am3_am2">The likeability is low</string>
+    <string name="likeability_am1_1">The likeability is normal</string>
+    <string name="likeability_2_3">The likeability is high</string>
+    <string name="thread_am3_am2">The thread is low</string>
+    <string name="thread_am1_1">The thread is normal</string>
+    <string name="thread_2_3">The thread is high</string>
+    <string name="trustworthy_am3_am2">The trustworthy is low</string>
+    <string name="trustworthy_am1_1">The trustworthy is normal</string>
+    <string name="trustworthy_2_3">The trustworthy is high</string>
 </resources>

@@ -39,4 +39,25 @@
     <string name="attractiveness">"Độ ấn tượng: "</string>
     <string name="wait_model">Loading</string>
     <string name="wait_for_detect">Vui lòng chờ</string>
+    <string name="attractive_am3_am2">Độ hấp dẫn thấp</string>
+    <string name="attractive_am1_1">Độ hấp dẫn trung bình</string>
+    <string name="attractive_2_3">Độ hấp dẫn cao</string>
+    <string name="competent_am3_am2">Không có tài năng</string>
+    <string name="competent_am1_1">Tài năng bình thường</string>
+    <string name="competent_2_3">Rất tài năng</string>
+    <string name="dominant_am3_am2">Không nổi bật</string>
+    <string name="dominant_am1_1">Nổi bật bình thường</string>
+    <string name="dominant_2_3">Rất nổi bật</string>
+    <string name="extroverted_am3_am2">Là người hướng nội</string>
+    <string name="extroverted_am1_1">Quan hệ bình thường</string>
+    <string name="extroverted_2_3">Là người hướng ngoại</string>
+    <string name="likeability_am3_am2">Không thoải mái</string>
+    <string name="likeability_am1_1">Thoải mái</string>
+    <string name="likeability_2_3">Vô cùng thoải mái</string>
+    <string name="thread_am3_am2">Người hiền lành</string>
+    <string name="thread_am1_1">Ít nóng tính</string>
+    <string name="thread_2_3">Nóng tính</string>
+    <string name="trustworthy_am3_am2">Kiểu dối trá</string>
+    <string name="trustworthy_am1_1">Có thể tin được</string>
+    <string name="trustworthy_2_3">Cực kỳ đáng tin cậy</string>
 </resources>

@@ -132,6 +132,7 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
     private String extrovertedResult = "";
     public ProgressBar progress;
     public TextView textwaitmodel;
+    public TextView textcharacterRecognize;
     private Executor executor = Executors.newSingleThreadExecutor();
 
 
@@ -157,6 +158,7 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
         takePhotoCamera = findViewById(R.id.takePhoto);
         getPhotoCamera = findViewById(R.id.getPhoto);
         image = findViewById(R.id.takePhoto);
+        textcharacterRecognize = findViewById(R.id.text_characteristic);
         // Create and Start the OrientationListener:
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
 
@@ -676,7 +678,16 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
                     // Crop Face to display in RecylerView
                     //
                     faceCroped = ImageUtils.cropFace(faces[i], bitmap, rotate);
+
+//                    Mat mat = new Mat();
+//                    Bitmap bmp_crop = faceCroped.copy(Bitmap.Config.ARGB_8888, true);
+//                    Utils.bitmapToMat(bmp_crop, mat);
+////                    drawLine(mat.getNativeObjAddr());
+//                    findLandmark(mat.getNativeObjAddr());
+//                    Utils.matToBitmap(mat, bmp_crop);
+//                    mat.release();
                     faces[i].setBitmapFaceCrop(faceCroped);
+
                     if(saveValue != numFace && checkCreateModel == true || !initValue  && checkCreateModel == true ){
 
                         if (faceCroped != null) {
@@ -688,13 +699,21 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
                             faces[i].setLikeability(humanModel.getLikeabilityHuman().recognizeImage(bmp32));
                             faces[i].setCompetnent(humanModel.getCompetentHuman().recognizeImage(bmp32));
                             faces[i].setExtroverted(humanModel.getExtrovertedHuman().recognizeImage(bmp32));
+                            final int finalI = i;
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
                                     if (image.getVisibility() == View.INVISIBLE) {
                                         image.setVisibility(View.VISIBLE);
                                     }
-//                                    image.setEnabled(true);
+                                    textcharacterRecognize.setText(
+                                                    faces[finalI].getAttracttiveDescription()+","+faces[finalI].getTrustworthyDescription()+","+
+                                                    faces[finalI].getDominantDescription()   +","+faces[finalI].getThreadDescription()+","+
+                                                    faces[finalI].getLikeabilityDescription()+","+faces[finalI].getCompetentDescription()+","+
+                                                    faces[finalI].getExtrovertedDescription());
+////                                    image.setEnabled(true);
+//                                    Toast.makeText(getApplicationContext(),  faces[finalI].getAttractive().substring(1,2),
+//                                            Toast.LENGTH_SHORT).show();
                                 }
                             });
 
@@ -737,6 +756,7 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
     public native void drawLine(long img);
     public native void trainModelLBPH(long trainModel);
     public native String faceRecognize(long img, long trainModel);
+    public native void findLandmark(long img);
 }
 
 
