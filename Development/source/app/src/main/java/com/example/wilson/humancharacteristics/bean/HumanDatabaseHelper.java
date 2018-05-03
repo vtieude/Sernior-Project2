@@ -138,6 +138,7 @@ public class HumanDatabaseHelper extends SQLiteOpenHelper {
                 cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_TRUSTWORTHY))
         );
         humanModel.setId(cursor.getInt(cursor.getColumnIndex(COLUMN_HUMAN_ID)));
+        cursor.close();
         return humanModel;
     }
     public int getLastHumanRow() {
@@ -148,6 +149,7 @@ public class HumanDatabaseHelper extends SQLiteOpenHelper {
             cursor.moveToLast();
             id = cursor.getInt(cursor.getColumnIndex(COLUMN_HUMAN_ID));
         }
+        cursor.close();
         return id ;
     }
     public List<HumanModel> getListHuman(){
@@ -155,7 +157,8 @@ public class HumanDatabaseHelper extends SQLiteOpenHelper {
 
         String selectQuery = "SELECT * FROM "+ TABLE_HUMAN;
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery(selectQuery,null);
+        Cursor cursor;
+        cursor = db.rawQuery(selectQuery,null);
         if (cursor.moveToFirst()) {
             do {
                 HumanModel humanModel = new HumanModel();
@@ -176,6 +179,8 @@ public class HumanDatabaseHelper extends SQLiteOpenHelper {
                 list.add(humanModel);
             } while (cursor.moveToNext());
         }
+        cursor.close();
+        db.close();
         return list;
     }
     public void updateNameHuman(String name, int id) {
@@ -183,6 +188,7 @@ public class HumanDatabaseHelper extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(COLUMN_HUMAN_NAME, name);
         db.update(TABLE_HUMAN, values, COLUMN_HUMAN_ID + " = ? ", new String[] { Integer.toString(id) } );
+        db.close();
     }
     public int updateHuman (HumanModel human)
     {
@@ -201,7 +207,9 @@ public class HumanDatabaseHelper extends SQLiteOpenHelper {
         values.put(COLUMN_LIKEABILITY, human.getLikeability());
         values.put(COLUMN_THREAD, human.getThreadCharacteristic());
         values.put(COLUMN_TRUSTWORTHY, human.getTrustworthy());
-        return db.update(TABLE_HUMAN, values, COLUMN_HUMAN_ID + " = ? ", new String[] { Integer.toString(human.getId()) } );
+        db.update(TABLE_HUMAN, values, COLUMN_HUMAN_ID + " = ? ", new String[] { Integer.toString(human.getId()) } );
+        db.close();
+        return 0;
     }
     public void deleteHuman (int id)
     {
@@ -235,6 +243,8 @@ public class HumanDatabaseHelper extends SQLiteOpenHelper {
                 idHuman,
                 cursor.getBlob(cursor.getColumnIndex(COLUMN_IMAGE))
         );
+        cursor.close();
+        db.close();
         return imageModel;
     }
     public List<ImageHumanModel> getListImage(int idHuman){
@@ -250,6 +260,8 @@ public class HumanDatabaseHelper extends SQLiteOpenHelper {
                 list.add(imageModel);
             } while (cursor.moveToNext());
         }
+        cursor.close();
+        db.close();
         return list;
     }
     public void deleteImageById() {

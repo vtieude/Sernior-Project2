@@ -125,8 +125,8 @@ public class MyAsyncTask extends AsyncTask<FaceResult, FaceResult, FaceResult[]>
                     humanModel.setImage(ConverttoArrayByte(faceResults[i].getBitmapFaceCrop()));
                     humanModel.setName(nameHuman);
                     humanModel.setAge(18);
-                    humanModel.setEmail("");
-                    humanModel.setPhone("");
+                    humanModel.setEmail("Type");
+                    humanModel.setPhone("Type");
                     database.addHuman(humanModel);
                     faceResults[i].setId(database.getLastHumanRow());
                     publishProgress(faceResults[i]);
@@ -174,6 +174,7 @@ public class MyAsyncTask extends AsyncTask<FaceResult, FaceResult, FaceResult[]>
         }
         progress.setVisibility(View.INVISIBLE);
         imageButton.setVisibility(View.VISIBLE);
+//        imageButton.setEnabled(false);
         max_face = 0;
     }
 }

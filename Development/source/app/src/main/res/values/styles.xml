@@ -8,7 +8,7 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
     <style name="HomePage">
-        <item name="android:background">@drawable/background3</item>
+        <item name="android:background">@mipmap/background3</item>
         <item name="android:textColor">#FFFFFF</item>
         <item name="android:textSize">40sp</item>
     </style>
@@ -18,7 +18,7 @@
         <item name="android:typeface">monospace</item>
     </style>
     <style name="BackgroundTextFont" parent="@android:style/TextAppearance.Medium">
-        <item name="android:background">@drawable/background3</item>
+        <item name="android:background">@mipmap/background3</item>
         <item name="android:textColor">@color/colorPrimary</item>
         <item name="android:typeface">monospace</item>
     </style>

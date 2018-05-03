@@ -675,11 +675,12 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
                     //
                     // Crop Face to display in RecylerView
                     //
+                    faceCroped = ImageUtils.cropFace(faces[i], bitmap, rotate);
+                    faces[i].setBitmapFaceCrop(faceCroped);
                     if(saveValue != numFace && checkCreateModel == true || !initValue  && checkCreateModel == true ){
-                        faceCroped = ImageUtils.cropFace(faces[i], bitmap, rotate);
+
                         if (faceCroped != null) {
                             Bitmap bmp32 = Bitmap.createScaledBitmap(faceCroped, INPUT_SIZE, INPUT_SIZE, false);
-                            faces[i].setBitmapFaceCrop(faceCroped);
                             faces[i].setAttractive(humanModel.getAttracttiveHuman().recognizeImage(bmp32));
                             faces[i].setTrustworthy(humanModel.getTrustworthyHuman().recognizeImage(bmp32));
                             faces[i].setDominant(humanModel.getDominantHuman().recognizeImage(bmp32));
@@ -693,6 +694,7 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
                                     if (image.getVisibility() == View.INVISIBLE) {
                                         image.setVisibility(View.VISIBLE);
                                     }
+//                                    image.setEnabled(true);
                                 }
                             });
 

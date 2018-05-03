@@ -46,9 +46,7 @@ import java.util.concurrent.Executors;
 
 public class HumanInformationActivity extends AppCompatActivity {
 
-    private Executor executor = Executors.newSingleThreadExecutor();
 
-    private HumanCharacteristicAttractiveness hahai;
     private int REQUEST_CODE = 100;
     private int MAX_LENGTH = 20;
     private Boolean checkItent = false;
@@ -181,21 +179,9 @@ public class HumanInformationActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        executor.execute(new Runnable() {
-            @Override
-            public void run() {
-                hahai.onDestroy();
-            }
-        });
     }
 
     public void viewEvent() {
-        imageAvartaView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                accessCamera();
-            }
-        });
         imagePencil.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -8,7 +8,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:background="@drawable/background3"
+        android:background="@mipmap/background3"
         android:layout_height="match_parent">
         <ProgressBar
             android:id="@+id/progressBar1"

@@ -35,22 +35,31 @@ public class StorageActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_storage);
-        // that get value from setting page
-        SharedPreferences setting = PreferenceManager.getDefaultSharedPreferences(this);
-        int a = setting.getInt("amount_face", 0);
-        databaseHelper = new HumanDatabaseHelper(this);
+//         that get value from setting page
+//        SharedPreferences setting = PreferenceManager.getDefaultSharedPreferences(this);
+////        int a = setting.getInt("amount_face", 0);
+//        databaseHelper = new HumanDatabaseHelper(this);
+        MyasyncListview myasyncListview = new MyasyncListview(this);
 //        databaseHelper.createDefaultValue();
-        listHuman = databaseHelper.getListHuman();
-        listView = (ListView) findViewById(R.id.list_human);
-        customListAdaptor = new CustomListAdaptor(this,listHuman);
-        listView.setAdapter(customListAdaptor);
+        myasyncListview.execute();
+//        listHuman = databaseHelper.getListHuman();
+//        listView = (ListView) findViewById(R.id.list_human);
+//        customListAdaptor = new CustomListAdaptor(this,listHuman);
+//        listView.setAdapter(customListAdaptor);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Storage");
-        setOnItemClick();
-        setItemLongClick();
+//        setOnItemClick();
+//        setItemLongClick();
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+//        databaseHelper.close();
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -70,8 +79,8 @@ public class StorageActivity extends AppCompatActivity {
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             public boolean onItemLongClick(AdapterView<?> arg0, View v,
                                            int index, long arg3) {
-                customListAdaptor.isLongClick  = !customListAdaptor.isLongClick;
-                customListAdaptor.notifyDataSetChanged();
+//                customListAdaptor.isLongClick  = !customListAdaptor.isLongClick;
+//                customListAdaptor.notifyDataSetChanged();
                 return true;
             }
         });
@@ -82,16 +91,15 @@ public class StorageActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 //                Toast.makeText(StorageActivity.this,  "das" + i,
 //                        Toast.LENGTH_LONG).show();
-                if (customListAdaptor.isLongClick) {
-                    CheckBox cb = (CheckBox)view.findViewById(R.id.check_delete_item);
-                    boolean isCheck = !cb.isChecked();
-                    cb.setChecked(isCheck);
-                }
-                else
+//                if (customListAdaptor.isLongClick) {
+//                    CheckBox cb = (CheckBox)view.findViewById(R.id.check_delete_item);
+//                    boolean isCheck = !cb.isChecked();
+//                    cb.setChecked(isCheck);
+//                }
+//                else
                 {
-                    Intent intent = new Intent(getApplication(), HumanInformationActivity.class).putExtra("human", customListAdaptor.getItem(i));
+                    Intent intent = new Intent(StorageActivity.this, HumanInformationActivity.class).putExtra("human", customListAdaptor.getItem(i));
                     startActivity(intent);
-
                     finish();
                 }
 

@@ -7,12 +7,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.wilson.humancharacteristics.R;
 import com.example.wilson.humancharacteristics.bean.HumanModel;
@@ -64,27 +62,28 @@ public class CustomListAdaptor extends BaseAdapter{
             holder.flagView = (ImageView)view.findViewById(R.id.imageView_flag);
             holder.nameView = (TextView)view.findViewById(R.id.item_name);
             holder.ageView = (TextView)view.findViewById(R.id.item_age);
-            holder.isCheckdelete = (CheckBox)view.findViewById(R.id.check_delete_item);
+//            holder.isButtondeleted = (CheckBox)view.findViewById(R.id.check_delete_item);
             view.setTag(holder);
         }
         else {
+
             holder = (ViewHolder)view.getTag();
-            holder.isCheckdelete.setOnCheckedChangeListener(null);
+//            holder.isButtondeleted.setOnCheckedChangeListener(null);
         }
-        if (isLongClick) {
-            holder.isCheckdelete.setVisibility(View.VISIBLE);
-        }
-        else  {
-            holder.isCheckdelete.setVisibility(View.GONE);
-        }
+//        if (isLongClick) {
+//            holder.isButtondeleted.setVisibility(View.VISIBLE);
+//        }
+//        else  {
+//            holder.isButtondeleted.setVisibility(View.GONE);
+//        }
         HumanModel human = this.listHuman.get(i);
-        holder.isCheckdelete.setChecked(positionArray.get(i));
-        holder.isCheckdelete.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                positionArray.set(i,isChecked);
-            }
-        });
+//        holder.isButtondeleted.setChecked(positionArray.get(i));
+//        holder.isButtondeleted.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                positionArray.set(i,isChecked);
+//            }
+//        });
         holder.nameView.setText(context.getString(R.string.name)+ ": " +human.getName());
         holder.ageView.setText(context.getString(R.string.attractiveness) + ": " + human.getAttracttive());
         if (human.getImage() != null) {
@@ -98,6 +97,6 @@ public class CustomListAdaptor extends BaseAdapter{
         ImageView flagView;
         TextView nameView;
         TextView ageView;
-        CheckBox isCheckdelete;
+//        CheckBox isButtondeleted;
     }
 }

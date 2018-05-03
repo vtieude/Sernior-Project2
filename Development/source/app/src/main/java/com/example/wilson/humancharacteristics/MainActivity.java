@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        HumanDatabaseHelper database = new HumanDatabaseHelper(this);
+//        HumanDatabaseHelper database = new HumanDatabaseHelper(this);
         listButton = new ArrayList<Button>();
 
         // Example of a call to a native method
