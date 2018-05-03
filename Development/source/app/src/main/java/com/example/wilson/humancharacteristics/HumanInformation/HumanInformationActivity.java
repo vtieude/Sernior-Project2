@@ -68,6 +68,10 @@ public class HumanInformationActivity extends AppCompatActivity {
             updateTextChangeOrientation(savedInstanceState);
         }
         viewEvent();
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("Information");
 //        initTensorFlowAndLoadModel();
     }
 

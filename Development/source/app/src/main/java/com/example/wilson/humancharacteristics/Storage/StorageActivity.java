@@ -48,7 +48,7 @@ public class StorageActivity extends AppCompatActivity {
         listView.setAdapter(customListAdaptor);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Storage");
         setOnItemClick();
 //        setItemLongClick();
@@ -57,7 +57,7 @@ public class StorageActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-//        databaseHelper.close();
+        databaseHelper.close();
     }
 
     @Override

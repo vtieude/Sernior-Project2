@@ -145,8 +145,7 @@ public class MyAsyncTask extends AsyncTask<FaceResult, FaceResult, FaceResult[]>
     @Override
     protected void onProgressUpdate(FaceResult... values) {
         super.onProgressUpdate(values);
-        Toast.makeText(activityScren, values[0].getAttractive()+  " attrac " + values[0].getThread()+ " trurst " + values[0].getLikeability(),
-                Toast.LENGTH_SHORT).show();
+
         if (values[0].getBitmapFaceCrop()!= null){
             getNameHuman(values[0]);
         }
