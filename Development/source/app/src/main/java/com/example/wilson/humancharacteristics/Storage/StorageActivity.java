@@ -38,19 +38,19 @@ public class StorageActivity extends AppCompatActivity {
 //         that get value from setting page
 //        SharedPreferences setting = PreferenceManager.getDefaultSharedPreferences(this);
 ////        int a = setting.getInt("amount_face", 0);
-//        databaseHelper = new HumanDatabaseHelper(this);
-        MyasyncListview myasyncListview = new MyasyncListview(this);
+        databaseHelper = new HumanDatabaseHelper(this);
+//        MyasyncListview myasyncListview = new MyasyncListview(this);
 //        databaseHelper.createDefaultValue();
-        myasyncListview.execute();
-//        listHuman = databaseHelper.getListHuman();
-//        listView = (ListView) findViewById(R.id.list_human);
-//        customListAdaptor = new CustomListAdaptor(this,listHuman);
-//        listView.setAdapter(customListAdaptor);
+//        myasyncListview.execute();
+        listHuman = databaseHelper.getListHuman();
+        listView = (ListView) findViewById(R.id.list_human);
+        customListAdaptor = new CustomListAdaptor(this,listHuman);
+        listView.setAdapter(customListAdaptor);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Storage");
-//        setOnItemClick();
+        setOnItemClick();
 //        setItemLongClick();
     }
 

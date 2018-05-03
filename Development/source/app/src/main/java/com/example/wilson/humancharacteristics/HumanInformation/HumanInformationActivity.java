@@ -51,7 +51,7 @@ public class HumanInformationActivity extends AppCompatActivity {
     private int MAX_LENGTH = 20;
     private Boolean checkItent = false;
     private ImageView imageAvartaView, imagePencil;
-    private TextView textName,textAge, textComment, textEmail, textPhone;
+    private TextView textName,textAge, textComment;
     private Button buttonSave;
     private HumanModel humanInfor;
 
@@ -86,8 +86,8 @@ public class HumanInformationActivity extends AppCompatActivity {
         outState.putString("TextName", textName.getText().toString());
         outState.putString("TextAge", textAge.getText().toString());
         outState.putString("TextComment", textComment.getText().toString());
-        outState.putString("TextPhone", textPhone.getText().toString());
-        outState.putString("TextEmail", textEmail.getText().toString());
+//        outState.putString("TextPhone", textPhone.getText().toString());
+//        outState.putString("TextEmail", textEmail.getText().toString());
 
     }
 
@@ -107,8 +107,8 @@ public class HumanInformationActivity extends AppCompatActivity {
         textName.setText(save.getString("TextName").toString());
         textAge.setText(save.getString("TextAge").toString());
         textComment.setText(save.getString("TextComment").toString());
-        textEmail.setText(save.getString("TextEmail").toString());
-        textPhone.setText(save.getString("TextPhone").toString());
+//        textEmail.setText(save.getString("TextEmail").toString());
+//        textPhone.setText(save.getString("TextPhone").toString());
     }
     public void imagePencilEvent() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -169,8 +169,8 @@ public class HumanInformationActivity extends AppCompatActivity {
         textAge = (TextView)findViewById(R.id.text_Age);
         imageAvartaView = (ImageView)findViewById(R.id.humanFaceAvatar);
         textComment = (TextView) findViewById(R.id.textViewComment);
-        textEmail = (TextView) findViewById(R.id.textViewEmail);
-        textPhone = (TextView) findViewById(R.id.textViewPhone);
+//        textEmail = (TextView) findViewById(R.id.textViewEmail);
+//        textPhone = (TextView) findViewById(R.id.textViewPhone);
         imagePencil = (ImageView)findViewById(R.id.imageViewPencil);
         buttonSave = (Button)findViewById(R.id.btSave);
 
@@ -194,18 +194,18 @@ public class HumanInformationActivity extends AppCompatActivity {
                 editInformationEvent("Comment", textComment);
             }
         });
-        textPhone.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                editInformationEvent("Phone", textPhone);
-            }
-        });
-        textEmail.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                editInformationEvent("Email", textEmail);
-            }
-        });
+//        textPhone.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                editInformationEvent("Phone", textPhone);
+//            }
+//        });
+//        textEmail.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                editInformationEvent("Email", textEmail);
+//            }
+//        });
         buttonSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -231,8 +231,8 @@ public class HumanInformationActivity extends AppCompatActivity {
             humanModel.setId(humanInfor.getId());
         }
         humanModel.setName(textName.getText().toString());
-        humanModel.setPhone(textPhone.getText().toString());
-        humanModel.setEmail(textEmail.getText().toString());
+//        humanModel.setPhone(textPhone.getText().toString());
+//        humanModel.setEmail(textEmail.getText().toString());
         humanModel.setComment(textComment.getText().toString());
         humanModel.setAge(Integer.parseInt(textAge.getText().toString()));
         humanModel.setImage(ConverttoArrayByte(imageAvartaView));
@@ -262,8 +262,8 @@ public class HumanInformationActivity extends AppCompatActivity {
             }
             textName.setText(humanInfor.getName());
             textAge.setText(String.valueOf(humanInfor.getAge()));
-            textEmail.setText(humanInfor.getEmail());
-            textPhone.setText(humanInfor.getPhone());
+//            textEmail.setText(humanInfor.getEmail());
+//            textPhone.setText(humanInfor.getPhone());
             textComment.setText(humanInfor.getComment());
             buttonSave.setText(R.string.update_Button);
         }
