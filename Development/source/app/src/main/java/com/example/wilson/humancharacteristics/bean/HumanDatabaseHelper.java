@@ -155,7 +155,7 @@ public class HumanDatabaseHelper extends SQLiteOpenHelper {
     public List<HumanModel> getListHuman(){
         List<HumanModel> list = new ArrayList<HumanModel>();
 
-        String selectQuery = "SELECT * FROM "+ TABLE_HUMAN;
+        String selectQuery = "SELECT * FROM "+ TABLE_HUMAN + " Limit 0,5";
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor;
         cursor = db.rawQuery(selectQuery,null);

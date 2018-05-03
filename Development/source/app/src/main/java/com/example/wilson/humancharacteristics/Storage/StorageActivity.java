@@ -69,6 +69,9 @@ public class StorageActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.home:
+                super.onBackPressed();
+                return true;
             case R.id.delete_storage:
                 return true;
             default:

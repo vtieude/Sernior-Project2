@@ -3,6 +3,7 @@ package com.example.wilson.humancharacteristics.Storage;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.SystemClock;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -23,7 +24,7 @@ import java.util.List;
  * Created by Wilson on 5/2/2018.
  */
 
-public class MyasyncListview extends AsyncTask<Void, List<HumanModel>, Void> {
+public class MyasyncListview extends AsyncTask<Void, HumanModel, Void> {
     private Activity myactivity;
     private List<HumanModel> listHuman = new ArrayList<HumanModel>();
     private ListView listView;
@@ -37,26 +38,44 @@ public class MyasyncListview extends AsyncTask<Void, List<HumanModel>, Void> {
     protected void onPreExecute() {
         super.onPreExecute();
         listView = myactivity.findViewById(R.id.list_human);
+        customListAdaptor = new CustomListAdaptor(myactivity,listHuman);
+    }
+
+    @Override
+    protected void onPostExecute(Void aVoid) {
+        super.onPostExecute(aVoid);
+        setOnItemClick();
     }
 
     @Override
     protected Void doInBackground(Void... voids) {
         HumanDatabaseHelper humanDatabaseHelper = new HumanDatabaseHelper(myactivity);
-        listHuman = humanDatabaseHelper.getListHuman();
+        List<HumanModel> listHumanLayout = new ArrayList<HumanModel>();
+        listHumanLayout = humanDatabaseHelper.getListHuman();
+        for (int i = 0; i < listHumanLayout.size(); i++) {
+            publishProgress(listHumanLayout.get(i));
+            SystemClock.sleep(10);
+        }
 
-        publishProgress(listHuman);
         humanDatabaseHelper.close();
         return null;
     }
 
     @Override
-    protected void onProgressUpdate(List<HumanModel>[] values) {
+    protected void onProgressUpdate(HumanModel... values) {
         super.onProgressUpdate(values);
-        customListAdaptor = new CustomListAdaptor(myactivity,values[0]);
+        listHuman.add(values[0]);
         listView.setAdapter(customListAdaptor);
-//        setItemLongClick();
-        setOnItemClick();
+        customListAdaptor.notifyDataSetInvalidated();
     }
+    //    @Override
+//    protected void onProgressUpdate(HumanModel values) {
+//        super.onProgressUpdate(values);
+//
+//        listView.setAdapter(customListAdaptor);
+////        setItemLongClick();
+//
+//    }
     //    @Override
 //    protected Void doInBackground() {
 //
@@ -89,11 +108,11 @@ public class MyasyncListview extends AsyncTask<Void, List<HumanModel>, Void> {
 //                    cb.setChecked(isCheck);
 //                }
 //                else
-//                {
+////                {
                     Intent intent = new Intent(myactivity, HumanInformationActivity.class).putExtra("human", customListAdaptor.getItem(i));
                     myactivity.startActivity(intent);
                     myactivity.finish();
-//                }
+////                }
             };
         });
     }

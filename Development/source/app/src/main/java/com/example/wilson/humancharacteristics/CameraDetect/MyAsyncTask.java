@@ -122,7 +122,8 @@ public class MyAsyncTask extends AsyncTask<FaceResult, FaceResult, FaceResult[]>
                     humanModel.setLikeability(faceResults[i].getLikeability());
                     humanModel.setThreadCharacteristic(faceResults[i].getThread());
                     humanModel.setTrustworthy(faceResults[i].getTrustworthy());
-                    humanModel.setImage(ConverttoArrayByte(faceResults[i].getBitmapFaceCrop()));
+                    Bitmap bmp32 = Bitmap.createScaledBitmap(faceResults[i].getBitmapFaceCrop(), 100, 100, false);
+                    humanModel.setImage(ConverttoArrayByte(bmp32));
                     humanModel.setName(nameHuman);
                     humanModel.setAge(18);
                     humanModel.setEmail("Type");
