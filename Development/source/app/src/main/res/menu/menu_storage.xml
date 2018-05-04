@@ -8,4 +8,7 @@
         android:title="@string/delete"
         app:showAsAction="never"
         />
+    <item android:id="@+id/get_information_human"
+        android:title="View"
+        />
 </menu>

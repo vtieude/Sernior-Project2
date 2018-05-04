@@ -157,6 +157,7 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
         takePhotoCamera = findViewById(R.id.takePhoto);
         getPhotoCamera = findViewById(R.id.getPhoto);
         image = findViewById(R.id.takePhoto);
+        image.setEnabled(false);
         // Create and Start the OrientationListener:
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
 
@@ -694,7 +695,7 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
                                     if (image.getVisibility() == View.INVISIBLE) {
                                         image.setVisibility(View.VISIBLE);
                                     }
-//                                    image.setEnabled(true);
+                                    image.setEnabled(true);
                                 }
                             });
 

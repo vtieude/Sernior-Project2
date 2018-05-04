@@ -37,8 +37,7 @@
                 android:layout_marginTop="@dimen/margin_top_5dp"
                 android:layout_marginStart="@dimen/layout_storage_margin_left"
                 android:textColor="@color/colorPrimary"
-                android:textSize="@dimen/font_size_16"
-                style="@style/CodeFont"
+                style="@style/TextColor"
                 android:textAllCaps="false"
                 android:textStyle="bold"
                 android:layout_marginBottom="@dimen/margin_top_5dp"
@@ -50,10 +49,10 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/colorPrimary"
                 android:layout_marginStart="@dimen/layout_storage_margin_left"
-                style="@style/TextColor"
                 android:layout_alignBottom="@+id/imageView_flag"
                 android:layout_alignStart="@+id/item_name"
                 android:text="@string/attractiveness" />
+
         </LinearLayout>
 
     </LinearLayout>

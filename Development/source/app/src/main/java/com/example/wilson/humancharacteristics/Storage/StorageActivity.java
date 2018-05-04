@@ -88,7 +88,7 @@ public class StorageActivity extends AppCompatActivity {
                 return true;
             case R.id.delete_storage:
                 for (int i =0 ; i < myasyncListview.customListAdaptor.positionArray.size(); i ++) {
-                    if (myasyncListview.customListAdaptor.positionArray.get(i)) {
+                    if (myasyncListview.customListAdaptor.positionArray.get(i) && myasyncListview.customListAdaptor.isLongClick) {
                         myasyncListview.deleteItemCheckbox();
                         return  true;
                     }
