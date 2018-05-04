@@ -40,4 +40,5 @@
     <string name="wait_for_detect">Wait For Detect</string>
     <string name="updated_inforhuman">Update</string>
     <string name="back_screen">Back</string>
+    <string name="search_name">Search Name Here</string>
 </resources>
