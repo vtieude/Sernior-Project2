@@ -50,6 +50,8 @@ public class MyasyncListview extends AsyncTask<Void, HumanModel, Void> implement
             public void onClick(DialogInterface dialog, int which) {
                 for (int i = 0 ; i < customListAdaptor.positionArray.size(); i++) {
                     if (customListAdaptor.positionArray.get(i)) {
+                        HumanDatabaseHelper humanDatabaseHelper = new HumanDatabaseHelper(myactivity);
+                        humanDatabaseHelper.deleteHuman(listHuman.get(i).getId());
                         listHuman.remove(i);
                         customListAdaptor.positionArray.remove(i);
                         customListAdaptor.notifyDataSetChanged();
@@ -75,7 +77,7 @@ public class MyasyncListview extends AsyncTask<Void, HumanModel, Void> implement
     }
     private void setupSearchView()
     {
-        searchNameHuman.setIconifiedByDefault(false);
+//        searchNameHuman.setIconifiedByDefault(false);
         searchNameHuman.setOnQueryTextListener(this);
         searchNameHuman.setSubmitButtonEnabled(true);
         searchNameHuman.setQueryHint(myactivity.getString(R.string.search_name));
@@ -149,8 +151,6 @@ public class MyasyncListview extends AsyncTask<Void, HumanModel, Void> implement
                     CheckBox cb = (CheckBox)view.findViewById(R.id.check_delete_item);
                     boolean isCheck = !cb.isChecked();
                     cb.setChecked(isCheck);
-                    Toast.makeText(myactivity,  " item delete",
-                            Toast.LENGTH_LONG).show();
                 }
                 else
                 {
@@ -169,9 +169,12 @@ public class MyasyncListview extends AsyncTask<Void, HumanModel, Void> implement
 
     @Override
     public boolean onQueryTextChange(String newText) {
+        if (newText.length() == 0) {
+            searchNameHuman.setIconifiedByDefault(true);
+        }
+        else searchNameHuman.setIconifiedByDefault(false);
         customListAdaptor.filter(newText.toString().trim());
         listView.invalidate();
-
         return false;
     }
 }
