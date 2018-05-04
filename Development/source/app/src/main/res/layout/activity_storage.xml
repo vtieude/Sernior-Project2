@@ -14,11 +14,10 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             tools:ignore="MissingConstraints">
-            <android.support.v7.widget.SearchView
+            <SearchView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/search_view_name">
-            </android.support.v7.widget.SearchView>
+                android:id="@+id/search_view_name"
+                android:layout_height="wrap_content"></SearchView>
             <ListView
                 android:id="@+id/list_human"
                 android:layout_width="match_parent"

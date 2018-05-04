@@ -14,7 +14,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.CheckBox;
 import android.widget.ListView;
-import android.support.v7.widget.SearchView;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.example.wilson.humancharacteristics.HumanInformation.HumanInformationActivity;
@@ -93,6 +93,7 @@ public class MyasyncListview extends AsyncTask<Void, HumanModel, Void> implement
         HumanDatabaseHelper humanDatabaseHelper = new HumanDatabaseHelper(myactivity);
         List<HumanModel> listHumanLayout = new ArrayList<HumanModel>();
         listHumanLayout = humanDatabaseHelper.getListHuman();
+        customListAdaptor.containResult.addAll(listHumanLayout);
         for (int i = 0; i < listHumanLayout.size(); i++) {
             publishProgress(listHumanLayout.get(i));
             SystemClock.sleep(10);
@@ -163,16 +164,14 @@ public class MyasyncListview extends AsyncTask<Void, HumanModel, Void> implement
 
     @Override
     public boolean onQueryTextSubmit(String query) {
-        if (TextUtils.isEmpty(query)) {
-            listView.clearTextFilter();
-        } else {
-            listView.setFilterText(query);
-        }
         return true;
     }
 
     @Override
     public boolean onQueryTextChange(String newText) {
+        customListAdaptor.filter(newText.toString().trim());
+        listView.invalidate();
+
         return false;
     }
 }

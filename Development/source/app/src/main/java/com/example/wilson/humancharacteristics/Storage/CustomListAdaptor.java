@@ -13,18 +13,20 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.wilson.humancharacteristics.R;
 import com.example.wilson.humancharacteristics.bean.HumanModel;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by Wilson on 3/5/2018.
  */
 
-public class CustomListAdaptor extends BaseAdapter implements Filterable{
+public class CustomListAdaptor extends BaseAdapter{
     private List<HumanModel> listHuman;
     private LayoutInflater layoutInflater;
     private Context context;
@@ -33,9 +35,11 @@ public class CustomListAdaptor extends BaseAdapter implements Filterable{
     public List<HumanModel> containResult;
     public CustomListAdaptor(Context context,List<HumanModel> listHuman) {
         this.listHuman = listHuman;
+        containResult = new ArrayList<HumanModel>();
         this.context = context;
         layoutInflater = LayoutInflater.from(context);
         positionArray = new ArrayList<Boolean>(listHuman.size());
+
         for(int i =0;i<listHuman.size();i++){
             positionArray.add(false);
         }
@@ -95,36 +99,22 @@ public class CustomListAdaptor extends BaseAdapter implements Filterable{
 
         return view;
     }
+    public void filter(String charText) {
 
-    @Override
-    public Filter getFilter() {
-        return new Filter() {
-            @Override
-            protected FilterResults performFiltering(CharSequence constraint) {
-                final FilterResults oReturn = new FilterResults();
-                final List<HumanModel> results = new ArrayList<HumanModel>();
-                if (containResult == null) {
-                    containResult = listHuman;
-                }
-                if (constraint != null) {
-                    if (containResult !=null && containResult.size() >0 ){
-                        for (final HumanModel g:containResult) {
-                            if (g.getName().toLowerCase().contains(constraint.toString()))results.add(g);
-                        }
-                    }
-                    oReturn.values = results;
-                }
-                return oReturn;
-            }
+        charText = charText.toLowerCase(Locale.getDefault());
+        listHuman.clear();
+        if (charText.length() == 0) {
+            listHuman.addAll(containResult);
 
-            @Override
-            protected void publishResults(CharSequence constraint, FilterResults results) {
-                listHuman = (ArrayList<HumanModel>)results.values;
-                notifyDataSetChanged();
+        } else {
+            for (HumanModel postDetail : containResult) {
+                if (charText.length() != 0 && postDetail.getName().toLowerCase(Locale.getDefault()).contains(charText)) {
+                    listHuman.add(postDetail);
+                }
             }
-        };
+        }
+        notifyDataSetChanged();
     }
-
     static class ViewHolder {
         ImageView flagView;
         TextView nameView;
