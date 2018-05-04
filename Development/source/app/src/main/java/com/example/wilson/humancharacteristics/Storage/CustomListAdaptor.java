@@ -27,7 +27,7 @@ import java.util.Locale;
  */
 
 public class CustomListAdaptor extends BaseAdapter{
-    private List<HumanModel> listHuman;
+    public List<HumanModel> listHuman;
     private LayoutInflater layoutInflater;
     private Context context;
     public ArrayList<Boolean> positionArray;

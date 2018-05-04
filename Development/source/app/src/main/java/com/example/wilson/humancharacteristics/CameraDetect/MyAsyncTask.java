@@ -70,6 +70,10 @@ public class MyAsyncTask extends AsyncTask<FaceResult, FaceResult, FaceResult[]>
         imageView.setImageBitmap(bmp32);
         layout.addView(imageView);
         final EditText editName = new EditText(context);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT);
+        editName.setLayoutParams(lp);
         editName.setFilters(new InputFilter[]{new InputFilter.LengthFilter(MAX_LENGTH)});
         editName.setText(activityScren.getString(R.string.type_name_here));
         editName.setOnClickListener(new View.OnClickListener() {
@@ -105,7 +109,9 @@ public class MyAsyncTask extends AsyncTask<FaceResult, FaceResult, FaceResult[]>
 //                dialog.cancel();
 //            }
 //        });
+//        builder.getContext().setTheme(R.style.StyleForAlertDialgo);
         builder.show();
+
     }
     @Override
     protected FaceResult[] doInBackground(FaceResult... faceResults) {

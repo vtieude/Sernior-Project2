@@ -53,7 +53,10 @@ public class MyasyncListview extends AsyncTask<Void, HumanModel, Void> implement
                         HumanDatabaseHelper humanDatabaseHelper = new HumanDatabaseHelper(myactivity);
                         humanDatabaseHelper.deleteHuman(listHuman.get(i).getId());
                         listHuman.remove(i);
+                        customListAdaptor.listHuman.clear();
+                        customListAdaptor.containResult.remove(i);
                         customListAdaptor.positionArray.remove(i);
+                        customListAdaptor.listHuman.addAll(customListAdaptor.containResult);
                         customListAdaptor.notifyDataSetChanged();
                     }
                 }
