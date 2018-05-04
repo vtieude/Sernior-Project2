@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -30,6 +31,7 @@ public class StorageActivity extends AppCompatActivity {
     private ListView listView;
     public CustomListAdaptor customListAdaptor;
     public HumanDatabaseHelper databaseHelper;
+    private MyasyncListview myasyncListview;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,21 +41,33 @@ public class StorageActivity extends AppCompatActivity {
 //        SharedPreferences setting = PreferenceManager.getDefaultSharedPreferences(this);
 ////        int a = setting.getInt("amount_face", 0);
 //        databaseHelper = new HumanDatabaseHelper(this);
-        MyasyncListview myasyncListview = new MyasyncListview(this);
+//        getSupportActionBar().setDisplayShowTitleEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("Storage");
+        myasyncListview = new MyasyncListview(this);
 //        databaseHelper.createDefaultValue();
         myasyncListview.execute();
 //        listHuman = databaseHelper.getListHuman();
 //        listView = (ListView) findViewById(R.id.list_human);
 //        customListAdaptor = new CustomListAdaptor(this,listHuman);
 //        listView.setAdapter(customListAdaptor);
-        getSupportActionBar().setDisplayShowTitleEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Storage");
+
 //        setOnItemClick();
 //        setItemLongClick();
     }
-
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event)
+    {
+        if ((keyCode == KeyEvent.KEYCODE_BACK))
+        {
+            super.onBackPressed();
+            finish();
+            return true; //I have tried here true also
+        }
+        return super.onKeyDown(keyCode, event);
+    }
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -69,8 +83,18 @@ public class StorageActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.delete_storage:
+            case R.id.home:
+                super.onBackPressed();
                 return true;
+            case R.id.delete_storage:
+                for (int i =0 ; i < myasyncListview.customListAdaptor.positionArray.size(); i ++) {
+                    if (myasyncListview.customListAdaptor.positionArray.get(i) && myasyncListview.customListAdaptor.isLongClick) {
+                        myasyncListview.deleteItemCheckbox();
+                        return  true;
+                    }
+                }
+                Toast.makeText(StorageActivity.this,  "Please select item delete",
+                        Toast.LENGTH_LONG).show();
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -89,14 +113,14 @@ public class StorageActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-//                Toast.makeText(StorageActivity.this,  "das" + i,
-//                        Toast.LENGTH_LONG).show();
-//                if (customListAdaptor.isLongClick) {
-//                    CheckBox cb = (CheckBox)view.findViewById(R.id.check_delete_item);
-//                    boolean isCheck = !cb.isChecked();
-//                    cb.setChecked(isCheck);
-//                }
-//                else
+                Toast.makeText(StorageActivity.this,  "das" + i,
+                        Toast.LENGTH_LONG).show();
+                if (customListAdaptor.isLongClick) {
+                    CheckBox cb = (CheckBox)view.findViewById(R.id.check_delete_item);
+                    boolean isCheck = !cb.isChecked();
+                    cb.setChecked(isCheck);
+                }
+                else
                 {
                     Intent intent = new Intent(StorageActivity.this, HumanInformationActivity.class).putExtra("human", customListAdaptor.getItem(i));
                     startActivity(intent);

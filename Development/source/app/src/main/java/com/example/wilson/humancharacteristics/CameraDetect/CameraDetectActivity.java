@@ -163,6 +163,7 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
         getPhotoCamera = findViewById(R.id.getPhoto);
         image = findViewById(R.id.takePhoto);
         textcharacterRecognize = findViewById(R.id.text_characteristic);
+        image.setEnabled(false);
         // Create and Start the OrientationListener:
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
 
@@ -730,6 +731,7 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
 //                                      Toast.makeText(getApplicationContext(),  faces[finalI].getAttractive().substring(1,2),
 //                                            Toast.LENGTH_SHORT).show();
 
+                                    image.setEnabled(true);
                                 }
                             });
 

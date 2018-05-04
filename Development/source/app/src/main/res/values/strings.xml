@@ -10,7 +10,7 @@
     <string name="text_email">Type email</string>
     <string name="tittle_email">Email</string>
     <string name="tittle_phone">Phone</string>
-    <string name="tittle_comment">Comment</string>
+    <string name="tittle_comment">"Comment: "</string>
     <string name="delete">Delete</string>
     <string name="your_name">Your name</string>
     <string name="you_age">18</string>
@@ -59,4 +59,7 @@
     <string name="trustworthy_am3_am2">The trustworthy is low</string>
     <string name="trustworthy_am1_1">The trustworthy is normal</string>
     <string name="trustworthy_2_3">The trustworthy is high</string>
+    <string name="updated_inforhuman">Update</string>
+    <string name="back_screen">Back</string>
+    <string name="search_name">Search Name Here</string>
 </resources>

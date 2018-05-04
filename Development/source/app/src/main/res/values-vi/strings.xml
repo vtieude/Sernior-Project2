@@ -28,7 +28,7 @@
     <string name="low_storage_error">Dung lượng không đủ.</string>
     <string name="tittle_email">Email</string>
     <string name="tittle_phone">Điện Thoại</string>
-    <string name="tittle_comment">Nhận Xét</string>
+    <string name="tittle_comment">"Nhận Xét: "</string>
     <string name="save">Lưu</string>
     <string name="saving">Vui lòng nhập tên</string>
     <string name="saved">Đã Lưu</string>
@@ -60,4 +60,7 @@
     <string name="trustworthy_am3_am2">Kiểu dối trá</string>
     <string name="trustworthy_am1_1">Có thể tin được</string>
     <string name="trustworthy_2_3">Cực kỳ đáng tin cậy</string>
+    <string name="updated_inforhuman">Cập nhập thông tin</string>
+    <string name="back_screen">Quay lại</string>
+    <string name="search_name">Tìm tên ở đây</string>
 </resources>

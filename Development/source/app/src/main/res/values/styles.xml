@@ -34,5 +34,8 @@
         <item name="android:textSize">@dimen/font_size_16</item>
     </style>
 
+    <style name="StyleForAlertDialgo" parent="@android:style/TextAppearance.Medium">
+        <item name="android:background">@color/blue_100</item>
+    </style>
 
 </resources>
