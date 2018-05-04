@@ -165,14 +165,14 @@ public class FaceResult extends Object {
         int value = Integer.parseInt(this.attracttiveHuman.substring(1,2));
         String description = "";
         if( value >= 0 && value <= 2 ){
-            description = String.valueOf(R.string.attractive_am3_am2);
+            description = context.getString(R.string.attractive_am3_am2);
         }
         else if( value == 3){
-            description = String.valueOf(R.string.attractive_am1_1);
+            description = context.getString(R.string.attractive_am1_1);
         }
         else
         {
-            description = String.valueOf(R.string.attractive_2_3);
+            description = context.getString(R.string.attractive_2_3);
         }
         return description;
     }
@@ -190,14 +190,14 @@ public class FaceResult extends Object {
         int value = Integer.parseInt(this.competentHuman.substring(1,2));
         String description = "";
         if( value >= 0 && value <= 2 ){
-            description = String.valueOf(R.string.competent_am3_am2);
+            description = context.getString(R.string.competent_am3_am2);
         }
         else if( value == 3){
-            description = String.valueOf(R.string.competent_am1_1);
+            description = context.getString(R.string.competent_am1_1);
         }
         else
         {
-            description = String.valueOf(R.string.competent_2_3);
+            description = context.getString(R.string.competent_2_3);
         }
         return description;
     }
@@ -211,14 +211,14 @@ public class FaceResult extends Object {
         int value = Integer.parseInt(this.dominantHuman.substring(1,2));
         String description = "";
         if( value >= 0 && value <= 2 ){
-            description = String.valueOf(R.string.dominant_am3_am2);
+            description = context.getString(R.string.dominant_am3_am2);
         }
         else if( value == 3){
-            description = String.valueOf(R.string.dominant_am1_1);
+            description = context.getString(R.string.dominant_am1_1);
         }
         else
         {
-            description = String.valueOf(R.string.dominant_2_3);
+            description = context.getString(R.string.dominant_2_3);
         }
         return description;
     }
@@ -232,14 +232,14 @@ public class FaceResult extends Object {
         int value = Integer.parseInt(this.extrovertedHuman.substring(1,2));
         String description = "";
         if( value >= 0 && value <= 2 ){
-            description = String.valueOf(R.string.extroverted_am3_am2);
+            description = context.getString(R.string.extroverted_am3_am2);
         }
         else if( value == 3){
-            description = String.valueOf(R.string.extroverted_am1_1);
+            description = context.getString(R.string.extroverted_am1_1);
         }
         else
         {
-            description = String.valueOf(R.string.extroverted_2_3);
+            description = context.getString(R.string.extroverted_2_3);
         }
         return description;
     }
@@ -253,14 +253,14 @@ public class FaceResult extends Object {
         int value = Integer.parseInt(this.likeabilityHuman.substring(1,2));
         String description = "";
         if( value >= 0 && value <= 2 ){
-            description = String.valueOf(R.string.likeability_am3_am2);
+            description = context.getString(R.string.likeability_am3_am2);
         }
         else if( value == 3){
-            description = String.valueOf(R.string.likeability_am1_1);
+            description = context.getString(R.string.likeability_am1_1);
         }
         else
         {
-            description = String.valueOf(R.string.likeability_2_3);
+            description = context.getString(R.string.likeability_2_3);
         }
         return description;
     }
@@ -274,14 +274,14 @@ public class FaceResult extends Object {
         int value = Integer.parseInt(this.threadHuman.substring(1,2));
         String description = "";
         if( value >= 0 && value <= 2 ){
-            description = String.valueOf(R.string.thread_am3_am2);
+            description = context.getString(R.string.thread_am3_am2);
         }
         else if( value == 3){
-            description = String.valueOf(R.string.thread_am1_1);
+            description = context.getString(R.string.thread_am1_1);
         }
         else
         {
-            description = String.valueOf(R.string.thread_2_3);
+            description = context.getString(R.string.thread_2_3);
         }
         return description;
     }
@@ -295,14 +295,14 @@ public class FaceResult extends Object {
         int value = Integer.parseInt(this.trustworthyHuman.substring(1,2));
         String description = "";
         if( value >= 0 && value <= 2 ){
-            description = String.valueOf(R.string.trustworthy_am3_am2);
+            description = context.getString(R.string.trustworthy_am3_am2);
         }
         else if( value == 3){
-            description = String.valueOf(R.string.trustworthy_am1_1);
+            description = context.getString(R.string.trustworthy_am1_1);
         }
         else
         {
-            description = String.valueOf(R.string.trustworthy_2_3);
+            description = context.getString(R.string.trustworthy_2_3);
         }
         return description;
     }

@@ -32,6 +32,7 @@ import com.example.wilson.humancharacteristics.PhotoDetect.PhotoDetectActivity;
 import com.example.wilson.humancharacteristics.R;
 import com.example.wilson.humancharacteristics.bean.HumanModel;
 import com.example.wilson.humancharacteristics.model.FaceResult;
+import com.example.wilson.humancharacteristics.ui.camera.FaceDetectView;
 import com.example.wilson.humancharacteristics.ui.camera.FaceOverlayView;
 import com.example.wilson.humancharacteristics.utils.CameraErrorCallback;
 import com.example.wilson.humancharacteristics.utils.ImageUtils;
@@ -86,6 +87,7 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
     // Log all errors:
     private final CameraErrorCallback mErrorCallback = new CameraErrorCallback();
 
+    private FaceDetectView mFaceDetectView;
 
     private static int MAX_FACE = 1;
     private int saveValue = 0;
@@ -154,7 +156,9 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
 
         // Now create the OverlayView:
         mFaceView = new FaceOverlayView(this);
+        mFaceDetectView = new FaceDetectView(this);
         addContentView(mFaceView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        addContentView(mFaceDetectView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         takePhotoCamera = findViewById(R.id.takePhoto);
         getPhotoCamera = findViewById(R.id.getPhoto);
         image = findViewById(R.id.takePhoto);
@@ -171,8 +175,8 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
         faces = new FaceResult[MAX_FACE];
         faces_previous = new FaceResult[MAX_FACE];
         for (int i = 0; i < MAX_FACE; i++) {
-            faces[i] = new FaceResult();
-            faces_previous[i] = new FaceResult();
+            faces[i] = new FaceResult(this.getApplicationContext());
+            faces_previous[i] = new FaceResult(this.getApplicationContext());
         }
 
         getSupportActionBar().setDisplayShowTitleEnabled(true);
@@ -334,6 +338,7 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
         Camera.getCameraInfo(cameraId, cameraInfo);
         if (cameraInfo.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
             mFaceView.setFront(true);
+            mFaceDetectView.setFront(true);
         }
 
 
@@ -384,6 +389,9 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
         if (mFaceView != null) {
             mFaceView.setDisplayOrientation(mDisplayOrientation);
         }
+        if (mFaceDetectView != null) {
+            mFaceDetectView.setDisplayOrientation(mDisplayOrientation);
+        }
 
     }
 
@@ -430,6 +438,8 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
 
         mFaceView.setPreviewWidth(previewWidth);
         mFaceView.setPreviewHeight(previewHeight);
+        mFaceDetectView.setPreviewWidth(previewWidth);
+        mFaceDetectView.setPreviewHeight(previewHeight);
     }
 
     private void setAutoFocus(Camera.Parameters cameraParameters) {
@@ -673,7 +683,6 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
                                 facesCount.put(idFace, count);
                         }
                     }
-
                     //
                     // Crop Face to display in RecylerView
                     //
@@ -687,9 +696,15 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
 //                    Utils.matToBitmap(mat, bmp_crop);
 //                    mat.release();
                     faces[i].setBitmapFaceCrop(faceCroped);
+                    final int finalI1 = i;
+//                    runOnUiThread(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            mFaceDetectView.setFace(faces[finalI1]);
+//                        }
+//                    });
 
                     if(saveValue != numFace && checkCreateModel == true || !initValue  && checkCreateModel == true ){
-
                         if (faceCroped != null) {
                             Bitmap bmp32 = Bitmap.createScaledBitmap(faceCroped, INPUT_SIZE, INPUT_SIZE, false);
                             faces[i].setAttractive(humanModel.getAttracttiveHuman().recognizeImage(bmp32));
@@ -707,13 +722,14 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
                                         image.setVisibility(View.VISIBLE);
                                     }
                                     textcharacterRecognize.setText(
-                                                    faces[finalI].getAttracttiveDescription()+","+faces[finalI].getTrustworthyDescription()+","+
-                                                    faces[finalI].getDominantDescription()   +","+faces[finalI].getThreadDescription()+","+
-                                                    faces[finalI].getLikeabilityDescription()+","+faces[finalI].getCompetentDescription()+","+
-                                                    faces[finalI].getExtrovertedDescription());
+                                        faces[finalI].getAttracttiveDescription()+". "+faces[finalI].getTrustworthyDescription()+"\n"+
+                                        faces[finalI].getDominantDescription()   +". "+faces[finalI].getThreadDescription()+"\n"+
+                                        faces[finalI].getLikeabilityDescription()+". "+faces[finalI].getCompetentDescription()+"\n"+
+                                        faces[finalI].getExtrovertedDescription());
 ////                                    image.setEnabled(true);
-//                                    Toast.makeText(getApplicationContext(),  faces[finalI].getAttractive().substring(1,2),
+//                                      Toast.makeText(getApplicationContext(),  faces[finalI].getAttractive().substring(1,2),
 //                                            Toast.LENGTH_SHORT).show();
+
                                 }
                             });
 
@@ -728,10 +744,10 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
 
             handler.post(new Runnable() {
                 public void run() {
-                    isThreadWorking = false;
-                    if(checkCreateModel == true){
+//                    isThreadWorking = false;
+//                    if(checkCreateModel == true){
                         //send face to FaceView to draw rect
-                        mFaceView.setFaces(faces);
+                        mFaceView.setFaces(faces, checkCreateModel);
 
                         //calculate FPS
                         end = System.currentTimeMillis();
@@ -746,17 +762,17 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
                             counter = 0;
 
                         isThreadWorking = false;
-                    }
+//                    }
                 }
             });
         }
     }
 
-
-    public native void drawLine(long img);
-    public native void trainModelLBPH(long trainModel);
-    public native String faceRecognize(long img, long trainModel);
-    public native void findLandmark(long img);
+//
+//    public native void drawLine(long img);
+//    public native void trainModelLBPH(long trainModel);
+//    public native String faceRecognize(long img, long trainModel);
+//    public native void findLandmark(long img);
 }
 
 

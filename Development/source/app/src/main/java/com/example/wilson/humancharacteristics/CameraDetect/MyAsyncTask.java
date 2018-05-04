@@ -142,7 +142,6 @@ public class MyAsyncTask extends AsyncTask<FaceResult, FaceResult, FaceResult[]>
     @Override
     protected void onProgressUpdate(FaceResult... values) {
         super.onProgressUpdate(values);
-
         if (values[0].getBitmapFaceCrop()!= null){
             getNameHuman(values[0]);
         }
