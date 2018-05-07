@@ -12,17 +12,21 @@
     <ImageView
         android:layout_width="100dp"
         android:layout_height="100dp"
+        android:layout_gravity="center_horizontal"
         android:src="@drawable/human_characteris"
         />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="8dp"
+        android:layout_gravity="center_horizontal"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:text="@string/characteristic_setting"/>
+        android:text="Human Characteristics Anylysic"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:paddingLeft="8dp"
         android:text="levietvu1995@gmail.com"/>
 
 </LinearLayout>

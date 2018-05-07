@@ -17,6 +17,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.wilson.humancharacteristics.R;
@@ -41,6 +42,7 @@ public class MyAsyncTask extends AsyncTask<FaceResult, FaceResult, FaceResult[]>
     Boolean check = false;
     private int max_face = 0;
     public String nameHuman = "";
+    public TextView textcharacterRecognize;
     public MyAsyncTask(Activity activity) {
         activityScren = activity;
         imageButton = activityScren.findViewById(R.id.takePhoto);
@@ -50,6 +52,7 @@ public class MyAsyncTask extends AsyncTask<FaceResult, FaceResult, FaceResult[]>
     protected void onPreExecute() {
         super.onPreExecute();
         progress = (ProgressBar)activityScren.findViewById(R.id.progressBarCamera);
+        textcharacterRecognize = activityScren.findViewById(R.id.text_characteristic);
         Toast.makeText(activityScren, activityScren.getString(R.string.wait_for_detect) ,
                 Toast.LENGTH_SHORT).show();
         progress.setVisibility(View.VISIBLE);
@@ -132,7 +135,7 @@ public class MyAsyncTask extends AsyncTask<FaceResult, FaceResult, FaceResult[]>
                     humanModel.setImage(ConverttoArrayByte(bmp32));
                     humanModel.setName(nameHuman);
                     humanModel.setAge(18);
-                    humanModel.setComment("Type");
+                    humanModel.setComment(textcharacterRecognize.getText().toString());
                     humanModel.setEmail("Type");
                     humanModel.setPhone("Type");
                     database.addHuman(humanModel);

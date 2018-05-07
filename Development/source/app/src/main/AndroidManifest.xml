@@ -32,13 +32,21 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"/>
 
-        <activity android:name=".Setting.SettingActivity" />
+        <activity android:name=".Setting.SettingActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"/>
 
-        <activity android:name=".Storage.StorageActivity" />
+        <activity android:name=".Storage.StorageActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"/>
 
-        <activity android:name=".HumanInformation.HumanInformationActivity" />
+        <activity android:name=".HumanInformation.HumanInformationActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"/>
 
-        <activity android:name=".Author.AuthorInformationActivity" />
+        <activity android:name=".Author.AuthorInformationActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"/>
 
         <activity android:name=".MainActivity"/>
 

@@ -208,6 +208,9 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
         if(checkCreateModel == false){
             initTensorFlowAndLoadModel();
         }
+        Menu menuNav = navigationView.getMenu();
+        MenuItem navitem= menuNav.findItem(R.id.camera_start);
+        navitem.setEnabled(false);
     }
 
     @Override
@@ -565,6 +568,14 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
                 numFace++;
             }
         }
+        if (numFace == 0) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    textcharacterRecognize.setText("");
+                }
+            });
+        }
         return numFace;
     }
 
@@ -573,7 +584,7 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
         Intent myIntent = null;
         switch (item.getItemId()) {
             case R.id.camera_start:
-
+                break;
             case R.id.storage_homepage:
                 myIntent = new Intent(this, StorageActivity.class);
                 break;
@@ -674,7 +685,7 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
             android.media.FaceDetector.Face[] fullResults = new android.media.FaceDetector.Face[MAX_FACE];
             fdet.findFaces(bmp, fullResults);
 
-            int numFace = getNumFace(fullResults);
+            final int numFace = getNumFace(fullResults);
 
             for (int i = 0; i < MAX_FACE; i++) {
 
@@ -760,6 +771,7 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
 //                    });
 
                     if(saveValue != numFace && checkCreateModel == true || !initValue  && checkCreateModel == true ){
+
                         if (faceCroped != null) {
                             Bitmap bmp32 = Bitmap.createScaledBitmap(faceCroped, INPUT_SIZE, INPUT_SIZE, false);
                             faces[i].setAttractive(humanModel.getAttracttiveHuman().recognizeImage(bmp32));
@@ -780,7 +792,7 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
                                         faces[finalI].getAttracttiveDescription()+". "+faces[finalI].getTrustworthyDescription()+"\n"+
                                         faces[finalI].getDominantDescription()   +". "+faces[finalI].getThreadDescription()+"\n"+
                                         faces[finalI].getLikeabilityDescription()+". "+faces[finalI].getCompetentDescription()+"\n"+
-                                        faces[finalI].getExtrovertedDescription());
+                                        faces[finalI].getExtrovertedDescription() + " " + numFace + " " + saveValue);
 ////                                    image.setEnabled(true);
 //                                      Toast.makeText(getApplicationContext(),  faces[finalI].getAttractive().substring(1,2),
 //                                            Toast.LENGTH_SHORT).show();

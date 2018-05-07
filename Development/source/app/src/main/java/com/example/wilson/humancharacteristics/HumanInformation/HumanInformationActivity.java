@@ -12,15 +12,22 @@ import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -30,7 +37,9 @@ import android.widget.Toast;
 
 import com.example.wilson.Tensorflow.Classifier;
 import com.example.wilson.Tensorflow.TensorFlowImageClassifier;
+import com.example.wilson.humancharacteristics.Author.AuthorInformationActivity;
 import com.example.wilson.humancharacteristics.R;
+import com.example.wilson.humancharacteristics.Setting.SettingActivity;
 import com.example.wilson.humancharacteristics.Storage.StorageActivity;
 import com.example.wilson.humancharacteristics.bean.HumanDatabaseHelper;
 import com.example.wilson.humancharacteristics.bean.HumanModel;
@@ -45,7 +54,7 @@ import java.util.concurrent.Executors;
  * Created by Wilson on 3/7/2018.
  */
 
-public class HumanInformationActivity extends AppCompatActivity {
+public class HumanInformationActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
 
     private int REQUEST_CODE = 100;
@@ -57,6 +66,7 @@ public class HumanInformationActivity extends AppCompatActivity {
     private Button buttonSave, buttonBack;
     private HumanModel humanInfor;
     private String titlePhone, titleEmail, titleComment;
+    private DrawerLayout drawerLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,10 +78,20 @@ public class HumanInformationActivity extends AppCompatActivity {
             updateTextChangeOrientation(savedInstanceState);
         }
         viewEvent();
-        getSupportActionBar().setDisplayShowTitleEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
-//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Information");
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        android.support.v7.widget.Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        drawerLayout = findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_start, R.string.navigation_start);
+        drawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
+//        getSupportActionBar().setDisplayShowTitleEnabled(true);
+//        getSupportActionBar().setHomeButtonEnabled(true);
+////        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        getSupportActionBar().setTitle("Information");
 //        initTensorFlowAndLoadModel();
     }
 
@@ -416,6 +436,46 @@ public class HumanInformationActivity extends AppCompatActivity {
             } else {
                 Toast.makeText(this, "Camera permission denied", Toast.LENGTH_LONG).show();
             }
+        }
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        Intent myIntent = null;
+        switch (item.getItemId()) {
+            case R.id.camera_start:
+                super.onBackPressed();
+                break;
+            case R.id.storage_homepage:
+                myIntent = new Intent(this, StorageActivity.class);
+                this.startActivity(myIntent);
+                finish();
+                break;
+            case R.id.setting_homepage:
+                myIntent = new Intent(this, SettingActivity.class);
+                this.startActivity(myIntent);
+                finish();
+                break;
+            case R.id.exit_homepage:
+                this.finishAffinity(); System.exit(0);
+                break;
+            case R.id.author_homepage:
+                myIntent = new Intent(this, AuthorInformationActivity.class);
+                this.startActivity(myIntent);
+                finish();
+                break;
+            default: break;
+        }
+        drawerLayout.closeDrawer(GravityCompat.START);
+        return true;
+    }
+    @Override
+    public void onBackPressed() {
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START);
+        }
+        else {
+            super.onBackPressed();
         }
     }
 }
