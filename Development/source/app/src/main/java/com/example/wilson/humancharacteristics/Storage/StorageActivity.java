@@ -86,6 +86,10 @@ public class StorageActivity extends AppCompatActivity {
             case R.id.home:
                 super.onBackPressed();
                 return true;
+            case R.id.get_information_human:
+                Intent intent = new Intent(this, HumanInformationActivity.class).putExtra("human", customListAdaptor.getItem(customListAdaptor.itemSelect));
+                    startActivity(intent);
+                    finish();
             case R.id.delete_storage:
                 for (int i =0 ; i < myasyncListview.customListAdaptor.positionArray.size(); i ++) {
                     if (myasyncListview.customListAdaptor.positionArray.get(i) && myasyncListview.customListAdaptor.isLongClick) {

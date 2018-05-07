@@ -13,7 +13,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.PopupMenu;
 import android.widget.SearchView;
 import android.widget.Toast;
 
@@ -34,6 +36,7 @@ public class MyasyncListview extends AsyncTask<Void, HumanModel, Void> implement
     private Activity myactivity;
     private List<HumanModel> listHuman = new ArrayList<HumanModel>();
     private ListView listView;
+    private Boolean checkClickDelete =false;
     public CustomListAdaptor customListAdaptor;
     private SearchView searchNameHuman;
     public MyasyncListview(Activity activity) {
@@ -51,15 +54,18 @@ public class MyasyncListview extends AsyncTask<Void, HumanModel, Void> implement
                 for (int i = 0 ; i < customListAdaptor.positionArray.size(); i++) {
                     if (customListAdaptor.positionArray.get(i)) {
                         HumanDatabaseHelper humanDatabaseHelper = new HumanDatabaseHelper(myactivity);
-                        humanDatabaseHelper.deleteHuman(listHuman.get(i).getId());
-                        listHuman.remove(i);
-                        customListAdaptor.listHuman.clear();
-                        customListAdaptor.containResult.remove(i);
-                        customListAdaptor.positionArray.remove(i);
-                        customListAdaptor.listHuman.addAll(customListAdaptor.containResult);
-                        customListAdaptor.notifyDataSetChanged();
+                        humanDatabaseHelper.deleteHuman(customListAdaptor.listHuman.get(i).getId());
+                        customListAdaptor.containResult.remove(customListAdaptor.listHuman.get(i));
+                        humanDatabaseHelper.close();
                     }
                 }
+                customListAdaptor.positionArray.clear();
+                customListAdaptor.listHuman.clear();
+                customListAdaptor.listHuman.addAll(customListAdaptor.containResult);
+                for (int j =0; j < customListAdaptor.listHuman.size(); j++) {
+                    customListAdaptor.positionArray.add(false);
+                }
+                customListAdaptor.notifyDataSetChanged();
             }
         });
         adb.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -78,6 +84,7 @@ public class MyasyncListview extends AsyncTask<Void, HumanModel, Void> implement
         searchNameHuman = myactivity.findViewById(R.id.search_view_name);
         setupSearchView();
     }
+
     private void setupSearchView()
     {
 //        searchNameHuman.setIconifiedByDefault(false);
@@ -147,7 +154,7 @@ public class MyasyncListview extends AsyncTask<Void, HumanModel, Void> implement
     public void setOnItemClick() {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            public void onItemClick(AdapterView<?> adapterView, View view, final int i, long l) {
 //                Toast.makeText(StorageActivity.this,  "das" + i,
 //                        Toast.LENGTH_LONG).show();
                 if (customListAdaptor.isLongClick) {
@@ -155,8 +162,11 @@ public class MyasyncListview extends AsyncTask<Void, HumanModel, Void> implement
                     boolean isCheck = !cb.isChecked();
                     cb.setChecked(isCheck);
                 }
-                else
-                {
+                else {
+
+//                    customListAdaptor.positionArray.set(i,true);
+//                    deleteItemCheckbox();
+//                    checkClickDelete = true;if( !checkClickDelete){
                     Intent intent = new Intent(myactivity, HumanInformationActivity.class).putExtra("human", customListAdaptor.getItem(i));
                     myactivity.startActivity(intent);
                     myactivity.finish();

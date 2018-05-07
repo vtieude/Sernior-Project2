@@ -14,11 +14,17 @@ import android.graphics.YuvImage;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -27,9 +33,12 @@ import android.view.SurfaceView;
 
 import com.example.wilson.Tensorflow.Classifier;
 import com.example.wilson.Tensorflow.TensorFlowImageClassifier;
+import com.example.wilson.humancharacteristics.Author.AuthorInformationActivity;
 import com.example.wilson.humancharacteristics.MainActivity;
 import com.example.wilson.humancharacteristics.PhotoDetect.PhotoDetectActivity;
 import com.example.wilson.humancharacteristics.R;
+import com.example.wilson.humancharacteristics.Setting.SettingActivity;
+import com.example.wilson.humancharacteristics.Storage.StorageActivity;
 import com.example.wilson.humancharacteristics.bean.HumanModel;
 import com.example.wilson.humancharacteristics.model.FaceResult;
 import com.example.wilson.humancharacteristics.ui.camera.FaceDetectView;
@@ -46,6 +55,7 @@ import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import org.opencv.android.Utils;
 import org.opencv.core.Mat;
@@ -60,7 +70,7 @@ import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-public final class CameraDetectActivity extends AppCompatActivity implements SurfaceHolder.Callback, Camera.PreviewCallback, View.OnClickListener {
+public final class CameraDetectActivity extends AppCompatActivity implements SurfaceHolder.Callback, Camera.PreviewCallback, View.OnClickListener, NavigationView.OnNavigationItemSelectedListener {
 
     // Number of Cameras in device.
     private int numberOfCameras;
@@ -136,6 +146,7 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
     public TextView textwaitmodel;
     public TextView textcharacterRecognize;
     private Executor executor = Executors.newSingleThreadExecutor();
+    private DrawerLayout drawerLayout;
 
 
     //==============================================================================================
@@ -153,7 +164,14 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
 
         mView = (SurfaceView) findViewById(R.id.surfaceview);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-
+        android.support.v7.widget.Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        drawerLayout = findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_start, R.string.navigation_start);
+        drawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
         // Now create the OverlayView:
         mFaceView = new FaceOverlayView(this);
         mFaceDetectView = new FaceDetectView(this);
@@ -180,15 +198,25 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
             faces_previous[i] = new FaceResult(this.getApplicationContext());
         }
 
-        getSupportActionBar().setDisplayShowTitleEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Face Detect RGB");
+//        getSupportActionBar().setDisplayShowTitleEnabled(true);
+//        getSupportActionBar().setHomeButtonEnabled(true);
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        getSupportActionBar().setTitle("Face Detect RGB");
 
         if (icicle != null)
             cameraId = icicle.getInt(BUNDLE_CAMERA_ID, 0);
         if(checkCreateModel == false){
             initTensorFlowAndLoadModel();
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START);
+        }
+        else {
+            super.onBackPressed();
         }
     }
 
@@ -538,6 +566,32 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
             }
         }
         return numFace;
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        Intent myIntent = null;
+        switch (item.getItemId()) {
+            case R.id.camera_start:
+
+            case R.id.storage_homepage:
+                myIntent = new Intent(this, StorageActivity.class);
+                break;
+            case R.id.setting_homepage:
+                myIntent = new Intent(this, SettingActivity.class);
+                break;
+            case R.id.exit_homepage:
+                CameraDetectActivity.this.finishAffinity(); System.exit(0);
+                break;
+            case R.id.author_homepage:
+                myIntent = new Intent(this, AuthorInformationActivity.class);
+                break;
+            default: break;
+        }
+
+        drawerLayout.closeDrawer(GravityCompat.START);
+        this.startActivity(myIntent);
+        return true;
     }
 
     /**

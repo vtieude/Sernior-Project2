@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/camera_start"
+            android:icon="@drawable/ic_camera_alt_black_24dp"
+            android:title="@string/start"></item>
+        <item
+            android:id="@+id/setting_homepage"
+            android:icon="@drawable/ic_build_black_24dp"
+            android:title="@string/setting_name"></item>
+        <item
+            android:id="@+id/storage_homepage"
+            android:icon="@drawable/ic_sd_storage_black_24dp"
+            android:title="@string/storage"></item>
+        <item
+            android:id="@+id/author_homepage"
+            android:icon="@drawable/ic_account_circle_black_24dp"
+            android:title="@string/author"></item>
+        <item
+            android:id="@+id/exit_homepage"
+            android:icon="@drawable/ic_exit_to_app_black_24dp"
+            android:title="@string/exit"></item>
+    </group>
+</menu>

@@ -1,8 +1,10 @@
 package com.example.wilson.humancharacteristics.Storage;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.wilson.humancharacteristics.R;
+import com.example.wilson.humancharacteristics.bean.HumanDatabaseHelper;
 import com.example.wilson.humancharacteristics.bean.HumanModel;
 
 import java.util.ArrayList;
@@ -30,6 +33,7 @@ public class CustomListAdaptor extends BaseAdapter{
     public List<HumanModel> listHuman;
     private LayoutInflater layoutInflater;
     private Context context;
+    public int itemSelect = 0;
     public ArrayList<Boolean> positionArray;
     public Boolean isLongClick = false;
     public List<HumanModel> containResult;
@@ -70,6 +74,40 @@ public class CustomListAdaptor extends BaseAdapter{
             holder.nameView = (TextView)view.findViewById(R.id.item_name);
             holder.ageView = (TextView)view.findViewById(R.id.item_age);
             holder.isButtondeleted = (CheckBox)view.findViewById(R.id.check_delete_item);
+            holder.imageViewDelete = (ImageView)view.findViewById(R.id.item_menu_showup);
+            holder.imageViewDelete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    AlertDialog.Builder adb=new AlertDialog.Builder(context);
+                    adb.setTitle("Delete?");
+                    adb.setMessage("Are you sure you want to delete ");
+                    adb.setNegativeButton("Cancel", null);
+                    adb.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            HumanDatabaseHelper humanDatabaseHelper = new HumanDatabaseHelper(context);
+                            humanDatabaseHelper.deleteHuman(listHuman.get(i).getId());
+                            humanDatabaseHelper.close();
+                            containResult.remove(listHuman.get(i));
+                            listHuman.clear();
+                            listHuman.addAll(containResult);
+                            positionArray.clear();
+                            for (int j =0; j < listHuman.size(); j++) {
+                                positionArray.add(false);
+                            }
+                            notifyDataSetChanged();
+                        }
+                    });
+                    adb.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+                    adb.show();
+
+                }
+            });
             view.setTag(holder);
         }
         else {
@@ -103,13 +141,20 @@ public class CustomListAdaptor extends BaseAdapter{
 
         charText = charText.toLowerCase(Locale.getDefault());
         listHuman.clear();
+        positionArray.clear();
         if (charText.length() == 0) {
             listHuman.addAll(containResult);
+            for (int i = 0; i < listHuman.size(); i++) {
+                positionArray.add(false);
+            }
 
         } else {
             for (HumanModel postDetail : containResult) {
                 if (charText.length() != 0 && postDetail.getName().toLowerCase(Locale.getDefault()).contains(charText)) {
                     listHuman.add(postDetail);
+                    for (int i = 0; i < listHuman.size(); i++) {
+                        positionArray.add(false);
+                    }
                 }
             }
         }
@@ -120,5 +165,6 @@ public class CustomListAdaptor extends BaseAdapter{
         TextView nameView;
         TextView ageView;
         CheckBox isButtondeleted;
+        ImageView imageViewDelete;
     }
 }

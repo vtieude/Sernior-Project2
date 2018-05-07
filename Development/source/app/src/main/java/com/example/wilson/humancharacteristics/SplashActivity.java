@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ProgressBar;
 
+import com.example.wilson.humancharacteristics.CameraDetect.CameraDetectActivity;
+
 public class SplashActivity extends AppCompatActivity {
     private ProgressBar spinner;
     @Override
@@ -19,7 +21,7 @@ public class SplashActivity extends AppCompatActivity {
         spinner.setVisibility(View.VISIBLE);
         new Handler().postDelayed(new Runnable() {
             public void run() {
-                startActivity(new Intent(SplashActivity.this, MainActivity.class));
+                startActivity(new Intent(SplashActivity.this, CameraDetectActivity.class));
                 finish();
             }
         }, secondsDelayed * 1000);
