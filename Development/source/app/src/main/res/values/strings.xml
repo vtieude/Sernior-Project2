@@ -10,7 +10,7 @@
     <string name="text_email">Type email</string>
     <string name="tittle_email">Email</string>
     <string name="tittle_phone">Phone</string>
-    <string name="tittle_comment">"Comment: "</string>
+    <string name="tittle_comment">"Comment : "</string>
     <string name="delete">Delete</string>
     <string name="your_name">Your name</string>
     <string name="you_age">18</string>
@@ -33,8 +33,8 @@
     <string name="saved">Saved</string>
     <string name="type_name_here">Type name here</string>
     <string name="default_name">Unknown</string>
-    <string name="name">name</string>
-    <string name="age">age</string>
+    <string name="name">Name</string>
+    <string name="age">Age</string>
     <string name="attractiveness">Attractiveness</string>
     <string name="wait_model">Loading</string>
     <string name="wait_for_detect">Wait For Detect</string>

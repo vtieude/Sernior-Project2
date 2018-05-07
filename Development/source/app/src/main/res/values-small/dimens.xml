@@ -17,4 +17,6 @@
     <dimen name="land_margin_top">29dp</dimen>
     <dimen name="layout_width_homepage">300dp</dimen>
     <dimen name="layout_height_homepage">60dp</dimen>
+    <dimen name="margin_top_35dp">30dp</dimen>
+
 </resources>

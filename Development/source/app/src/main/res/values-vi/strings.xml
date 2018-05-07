@@ -28,7 +28,7 @@
     <string name="low_storage_error">Dung lượng không đủ.</string>
     <string name="tittle_email">Email</string>
     <string name="tittle_phone">Điện Thoại</string>
-    <string name="tittle_comment">"Nhận Xét: "</string>
+    <string name="tittle_comment">"Nhận Xét : "</string>
     <string name="save">Lưu</string>
     <string name="saving">Vui lòng nhập tên</string>
     <string name="saved">Đã Lưu</string>

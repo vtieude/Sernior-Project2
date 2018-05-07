@@ -43,7 +43,7 @@ dependencies {
     implementation 'com.android.support:design:26.1.0'
 
     implementation 'org.tensorflow:tensorflow-android:1.7.0'
-
+    implementation 'de.hdodenhof:circleimageview:2.2.0'
     //noinspection GradleCompatible
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'

@@ -28,6 +28,7 @@
     </style>
     <style name="TextColor" parent="@android:style/TextAppearance.Medium">
     <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textSize">24dp</item>
     </style>
     <style name="StyleForListView" parent="@android:style/TextAppearance.Medium">
         <item name="android:textColor">@color/colorPrimary</item>
