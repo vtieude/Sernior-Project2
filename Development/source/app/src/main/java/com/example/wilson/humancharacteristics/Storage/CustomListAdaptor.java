@@ -72,7 +72,8 @@ public class CustomListAdaptor extends BaseAdapter{
             holder = new ViewHolder();
             holder.flagView = (ImageView)view.findViewById(R.id.imageView_flag);
             holder.nameView = (TextView)view.findViewById(R.id.item_name);
-            holder.ageView = (TextView)view.findViewById(R.id.item_age);
+            holder.attractive = (TextView)view.findViewById(R.id.item_age);
+            holder.dateTimeCreat = (TextView)view.findViewById(R.id.text_date_time_creat);
             holder.isButtondeleted = (CheckBox)view.findViewById(R.id.check_delete_item);
             holder.imageViewDelete = (ImageView)view.findViewById(R.id.item_menu_showup);
             holder.imageViewDelete.setOnClickListener(new View.OnClickListener() {
@@ -129,7 +130,8 @@ public class CustomListAdaptor extends BaseAdapter{
             }
         });
         holder.nameView.setText(context.getString(R.string.name)+ ": " +human.getName());
-        holder.ageView.setText(context.getString(R.string.attractiveness) + ": " + human.getAttracttive());
+        holder.attractive.setText(context.getString(R.string.attractiveness) + ": " + human.getAttracttive());
+        holder.dateTimeCreat.setText(human.getDateCreatAt());
         if (human.getImage() != null) {
             Bitmap bitmap= BitmapFactory.decodeByteArray(human.getImage(), 0, human.getImage().length);
             holder.flagView.setImageBitmap(bitmap);
@@ -163,7 +165,8 @@ public class CustomListAdaptor extends BaseAdapter{
     static class ViewHolder {
         ImageView flagView;
         TextView nameView;
-        TextView ageView;
+        TextView dateTimeCreat;
+        TextView attractive;
         CheckBox isButtondeleted;
         ImageView imageViewDelete;
     }

@@ -29,6 +29,9 @@ import org.opencv.face.Face;
 
 import java.io.ByteArrayOutputStream;
 import java.nio.ByteBuffer;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Created by Wilson on 4/24/2018.
@@ -135,6 +138,9 @@ public class MyAsyncTask extends AsyncTask<FaceResult, FaceResult, FaceResult[]>
                     humanModel.setImage(ConverttoArrayByte(bmp32));
                     humanModel.setName(nameHuman);
                     humanModel.setAge(18);
+                    Date c = Calendar.getInstance().getTime();
+                    SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+                    humanModel.setDateCreatAt(df.format(c));
                     humanModel.setComment(textcharacterRecognize.getText().toString());
                     humanModel.setEmail("Type");
                     humanModel.setPhone("Type");

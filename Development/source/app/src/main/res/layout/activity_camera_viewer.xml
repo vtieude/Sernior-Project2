@@ -50,6 +50,7 @@
                     android:id="@+id/text_wait_model"
                     android:visibility="invisible"
                     android:layout_marginLeft="10dp"
+                    android:textColor="#E91E63"
                     android:text="@string/wait_model"/>
 
 

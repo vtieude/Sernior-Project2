@@ -29,20 +29,33 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-            <TextView
-                android:id="@+id/item_name"
-                android:layout_width="wrap_content"
+            <FrameLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/imageView_flag"
-                android:layout_marginTop="@dimen/land_margin_top"
-                android:layout_marginStart="@dimen/layout_storage_margin_left"
-                android:textColor="@color/colorPrimary"
-                style="@style/TextColor"
-                android:textAllCaps="false"
-                android:textStyle="bold"
-                android:layout_marginBottom="@dimen/margin_top_5dp"
-                android:layout_toEndOf="@+id/imageView_flag"
-                android:text="@string/name" />
+                >
+                <TextView
+                    android:id="@+id/item_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@+id/imageView_flag"
+                    android:layout_marginTop="@dimen/land_margin_top"
+                    android:layout_marginStart="@dimen/layout_storage_margin_left"
+                    android:textColor="@color/colorPrimary"
+                    style="@style/TextColor"
+                    android:textAllCaps="false"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="@dimen/margin_top_5dp"
+                    android:layout_toEndOf="@+id/imageView_flag"
+                    android:text="@string/name" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:textColor="@color/primaryDark"
+                    android:id="@+id/text_date_time_creat"/>
+
+            </FrameLayout>
+
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -63,7 +76,14 @@
                     android:layout_gravity="right"
                     android:src="@drawable/ic_delete_black_24dp"/>
             </FrameLayout>
-
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_marginStart="@dimen/layout_storage_margin_left"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorPrimary"
+                android:textStyle="italic"
+                android:layout_marginTop="@dimen/margin_top_5dp"
+                android:text="@string/click_to_view_more"/>
 
         </LinearLayout>
 

@@ -42,6 +42,7 @@ public class StorageActivity extends AppCompatActivity implements NavigationView
     public HumanDatabaseHelper databaseHelper;
     private MyasyncListview myasyncListview;
     private DrawerLayout drawerLayout;
+    private Menu menu;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,23 +100,30 @@ public class StorageActivity extends AppCompatActivity implements NavigationView
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_storage, menu);
+        this.menu = menu;
         return super.onCreateOptionsMenu(menu);
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.home:
-                super.onBackPressed();
-                return true;
             case R.id.delete_storage:
-                for (int i =0 ; i < myasyncListview.customListAdaptor.positionArray.size(); i ++) {
-                    if (myasyncListview.customListAdaptor.positionArray.get(i) && myasyncListview.customListAdaptor.isLongClick) {
-                        myasyncListview.deleteItemCheckbox();
-                        return  true;
+                if (myasyncListview.customListAdaptor.isLongClick) {
+
+                    for (int i =0 ; i < myasyncListview.customListAdaptor.positionArray.size(); i ++) {
+                        if (myasyncListview.customListAdaptor.positionArray.get(i) && myasyncListview.customListAdaptor.isLongClick) {
+                            myasyncListview.deleteItemCheckbox(item);
+                            return  true;
+                        }
                     }
+                    Toast.makeText(StorageActivity.this,  "Please select item delete",
+                            Toast.LENGTH_LONG).show();
                 }
-                Toast.makeText(StorageActivity.this,  "Please select item delete",
-                        Toast.LENGTH_LONG).show();
+                else {
+                    item.setTitle(R.string.delete);
+                    myasyncListview.customListAdaptor.isLongClick = true;
+                    myasyncListview.customListAdaptor.notifyDataSetChanged();
+                }
+
             default:
                 return super.onOptionsItemSelected(item);
         }

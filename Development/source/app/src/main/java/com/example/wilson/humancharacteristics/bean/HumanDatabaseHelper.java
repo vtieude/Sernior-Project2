@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.icu.text.SimpleDateFormat;
 import android.nfc.tech.NfcA;
 import android.util.Log;
 import android.widget.Toast;
@@ -14,7 +15,9 @@ import com.example.wilson.humancharacteristics.R;
 import com.example.wilson.humancharacteristics.Storage.StorageActivity;
 import com.example.wilson.humancharacteristics.bean.HumanModel;
 
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -45,7 +48,10 @@ public class HumanDatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_TRUSTWORTHY = "Trustworthy";
     private static final String COLUMN_IMAGE_ID_HUMAN = "IdHuman";
     private static final String COLUMN_IMAGE_ID = "Id";
-
+    private static final String COLUMN_DATE_CREAT = "DateCreat";
+    public static final String DATE_FORMAT = "yyyyMMddHHmm";
+    private static final SimpleDateFormat dateFormat = new
+            SimpleDateFormat(DATE_FORMAT);
     public HumanDatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -62,6 +68,7 @@ public class HumanDatabaseHelper extends SQLiteOpenHelper {
                 + COLUMN_LIKEABILITY+" TEXT,"
                 + COLUMN_THREAD+" TEXT,"
                 + COLUMN_TRUSTWORTHY+" TEXT,"
+                + COLUMN_DATE_CREAT + " TEXT,"
                 + COLUMN_HUMAN_IMAGE + " BLOB" + ")";
         String scriptImage = "CREATE TABLE " + TABLE_IMAGE + "("
                 + COLUMN_IMAGE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + COLUMN_IMAGE + " BLOB,"
@@ -105,6 +112,7 @@ public class HumanDatabaseHelper extends SQLiteOpenHelper {
         values.put(COLUMN_HUMAN_EMAIL, human.getEmail());
         values.put(COLUMN_HUMAN_COMMENT, human.getComment());
         values.put(COLUMN_HUMAN_IMAGE, human.getImage());
+        values.put(COLUMN_DATE_CREAT, human.getDateCreatAt());
         values.put(COLUMN_ATTRACTIVENESS, human.getAttracttive());
         values.put(COLUMN_COMPETENT, human.getCompetent());
         values.put(COLUMN_LIKEABILITY, human.getLikeability());
@@ -169,6 +177,7 @@ public class HumanDatabaseHelper extends SQLiteOpenHelper {
                 humanModel.setEmail(cursor.getString(cursor.getColumnIndex(COLUMN_HUMAN_EMAIL)));
                 humanModel.setComment(cursor.getString(cursor.getColumnIndex(COLUMN_HUMAN_COMMENT)));
                 humanModel.setImage(cursor.getBlob(cursor.getColumnIndex(COLUMN_HUMAN_IMAGE)));
+                humanModel.setDateCreatAt(cursor.getString(cursor.getColumnIndex(COLUMN_DATE_CREAT)));
                 humanModel.setAttracttive(cursor.getString(cursor.getColumnIndex(COLUMN_ATTRACTIVENESS)));
                 humanModel.setCompetent(cursor.getString(cursor.getColumnIndex(COLUMN_COMPETENT)));
                 humanModel.setDominant(cursor.getString(cursor.getColumnIndex(COLUMN_DOMINANT)));

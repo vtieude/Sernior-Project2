@@ -17,6 +17,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -51,6 +52,7 @@ public class PhotoDetectActivity extends AppCompatActivity {
     private TextView textView;
     private Button btnRecognize;
     private Button btnSave;
+    private ProgressBar progressBar;
 
 
     @Override
@@ -62,7 +64,7 @@ public class PhotoDetectActivity extends AppCompatActivity {
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Face Detect Image");
-
+        progressBar = findViewById(R.id.progressBarDetectFaceGalary);
         faceView = (FaceView) findViewById(R.id.faceView);
         textView = (TextView) findViewById(R.id.text_recognize);
         btnRecognize = (Button) findViewById(R.id.btn_recognize);
@@ -83,6 +85,7 @@ public class PhotoDetectActivity extends AppCompatActivity {
                     faces[0].setExtroverted(humanModel.getExtrovertedHuman().recognizeImage(bmp32));
                     setStringRecognize(faces[0].getAttractive(),faces[0].getTrustworthy(),faces[0].getDominant(),
                         faces[0].getThread(),faces[0].getLikeability(),faces[0].getCompetent(),faces[0].getExtroverted());
+                    progressBar.setVisibility(View.INVISIBLE);
                 }
             }
         });

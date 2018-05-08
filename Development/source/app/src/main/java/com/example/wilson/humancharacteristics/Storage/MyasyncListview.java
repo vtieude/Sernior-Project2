@@ -43,7 +43,8 @@ public class MyasyncListview extends AsyncTask<Void, HumanModel, Void> implement
         this.myactivity = activity;
 
     }
-    public void deleteItemCheckbox() {
+    public Boolean deleteItemCheckbox(final MenuItem item) {
+
         AlertDialog.Builder adb=new AlertDialog.Builder(myactivity);
         adb.setTitle("Delete?");
         adb.setMessage("Are you sure you want to delete ");
@@ -65,16 +66,21 @@ public class MyasyncListview extends AsyncTask<Void, HumanModel, Void> implement
                 for (int j =0; j < customListAdaptor.listHuman.size(); j++) {
                     customListAdaptor.positionArray.add(false);
                 }
+                item.setTitle(myactivity.getString(R.string.select_more));
+                customListAdaptor.isLongClick = false;
                 customListAdaptor.notifyDataSetChanged();
+                checkClickDelete = true;
             }
         });
         adb.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                checkClickDelete =false;
                 dialog.cancel();
             }
         });
         adb.show();
+        return checkClickDelete;
     }
     @Override
     protected void onPreExecute() {

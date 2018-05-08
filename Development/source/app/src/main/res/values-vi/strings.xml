@@ -64,4 +64,6 @@
     <string name="back_screen">Quay lại</string>
     <string name="search_name">Tìm tên ở đây</string>
     <string name="navigation_start">Navigation</string>
+    <string name="click_to_view_more">Xem thông tin chi tiết</string>
+    <string name="select_more">Chọn nhiều</string>
 </resources>

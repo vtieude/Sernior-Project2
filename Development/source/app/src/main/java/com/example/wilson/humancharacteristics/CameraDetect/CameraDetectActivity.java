@@ -550,8 +550,7 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
                     if(checkCreateModel){
                         mIntent = new Intent(CameraDetectActivity.this, PhotoDetectActivity.class);
                         startActivity(mIntent);
-                        finish();
-                        checkCreateModel = false;
+                        checkCreateModel = true;
                     }
                     break;
                 }catch (Exception e){
@@ -792,7 +791,7 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
                                         faces[finalI].getAttracttiveDescription()+". "+faces[finalI].getTrustworthyDescription()+"\n"+
                                         faces[finalI].getDominantDescription()   +". "+faces[finalI].getThreadDescription()+"\n"+
                                         faces[finalI].getLikeabilityDescription()+". "+faces[finalI].getCompetentDescription()+"\n"+
-                                        faces[finalI].getExtrovertedDescription() + " " + numFace + " " + saveValue);
+                                        faces[finalI].getExtrovertedDescription());
 ////                                    image.setEnabled(true);
 //                                      Toast.makeText(getApplicationContext(),  faces[finalI].getAttractive().substring(1,2),
 //                                            Toast.LENGTH_SHORT).show();

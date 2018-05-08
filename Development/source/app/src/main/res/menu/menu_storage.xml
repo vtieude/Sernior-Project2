@@ -5,7 +5,7 @@
     android:layout_height="fill_parent"
     android:orientation="vertical">
     <item android:id="@+id/delete_storage"
-        android:title="@string/delete"
+        android:title="@string/select_more"
         app:showAsAction="never"
         />
 </menu>

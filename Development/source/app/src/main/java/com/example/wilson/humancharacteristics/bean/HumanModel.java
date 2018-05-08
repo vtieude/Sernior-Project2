@@ -22,6 +22,7 @@ public class HumanModel implements Serializable{
     private String phone;
     private String email;
     private String flagImage;
+    private String dateCreatAt;
     private byte[] image;
     private String attracttive;
     private String competent;
@@ -37,6 +38,7 @@ public class HumanModel implements Serializable{
     private HumanCharacteristicLikeability likeabilityHuman;
     private HumanCharacteristicThread threadHuman;
     private HumanCharacteristicTrustworthy trustworthyHuman;
+
     public HumanModel() {
         super();
 
@@ -158,5 +160,13 @@ public class HumanModel implements Serializable{
         int resID = context.getResources().getIdentifier(resName , "mipmap", pkgName);
         Log.i("CustomListView", "Res Name: "+ resName+"==> Res ID = "+ resID);
         return resID;
+    }
+
+    public String getDateCreatAt() {
+        return dateCreatAt;
+    }
+
+    public void setDateCreatAt(String dateCreatAt) {
+        this.dateCreatAt = dateCreatAt;
     }
 }
