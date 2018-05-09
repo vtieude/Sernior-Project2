@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.WindowManager;
 
 import com.example.wilson.humancharacteristics.R;
+import com.example.wilson.humancharacteristics.Setting.SettingActivity;
 import com.example.wilson.humancharacteristics.Storage.StorageActivity;
 
 public class AuthorInformationActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
@@ -59,6 +60,9 @@ public class AuthorInformationActivity extends AppCompatActivity implements Navi
                 finish();
                 break;
             case R.id.setting_homepage:
+                myIntent = new Intent(this, SettingActivity.class);
+                this.startActivity(myIntent);
+                finish();
                 break;
             case R.id.exit_homepage:
                 this.finishAffinity(); System.exit(0);

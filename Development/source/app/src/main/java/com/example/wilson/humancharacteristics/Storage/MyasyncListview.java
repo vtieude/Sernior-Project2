@@ -93,7 +93,7 @@ public class MyasyncListview extends AsyncTask<Void, HumanModel, Void> implement
 
     private void setupSearchView()
     {
-//        searchNameHuman.setIconifiedByDefault(false);
+        searchNameHuman.setIconifiedByDefault(false);
         searchNameHuman.setOnQueryTextListener(this);
         searchNameHuman.setSubmitButtonEnabled(true);
         searchNameHuman.setQueryHint(myactivity.getString(R.string.search_name));
@@ -188,10 +188,6 @@ public class MyasyncListview extends AsyncTask<Void, HumanModel, Void> implement
 
     @Override
     public boolean onQueryTextChange(String newText) {
-        if (newText.length() == 0) {
-            searchNameHuman.setIconifiedByDefault(true);
-        }
-        else searchNameHuman.setIconifiedByDefault(false);
         customListAdaptor.filter(newText.toString().trim());
         listView.invalidate();
         return false;

@@ -167,7 +167,7 @@ public class HumanDatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor;
         cursor = db.rawQuery(selectQuery,null);
-        if (cursor.moveToFirst()) {
+        if (cursor.moveToLast()) {
             do {
                 HumanModel humanModel = new HumanModel();
                 humanModel.setId(cursor.getInt(cursor.getColumnIndex(COLUMN_HUMAN_ID)));
@@ -186,7 +186,7 @@ public class HumanDatabaseHelper extends SQLiteOpenHelper {
                 humanModel.setThreadCharacteristic(cursor.getString(cursor.getColumnIndex(COLUMN_THREAD)));
                 humanModel.setTrustworthy(cursor.getString(cursor.getColumnIndex(COLUMN_TRUSTWORTHY)));
                 list.add(humanModel);
-            } while (cursor.moveToNext());
+            } while (cursor.moveToPrevious());
         }
         cursor.close();
         db.close();

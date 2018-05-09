@@ -22,12 +22,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.wilson.humancharacteristics.R;
+import com.example.wilson.humancharacteristics.bean.HumanDatabaseHelper;
 import com.example.wilson.humancharacteristics.bean.HumanModel;
 import com.example.wilson.humancharacteristics.model.FaceResult;
 import com.example.wilson.humancharacteristics.utils.ImageUtils;
 
 
+import java.io.ByteArrayOutputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -69,12 +74,43 @@ public class PhotoDetectActivity extends AppCompatActivity {
         textView = (TextView) findViewById(R.id.text_recognize);
         btnRecognize = (Button) findViewById(R.id.btn_recognize);
         btnSave = (Button) findViewById(R.id.btn_save);
+        btnSave.setEnabled(false);
         checkCropImage = false;
-
+        btnSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(checkCreateModel && checkCropImage && faces[0] != null){
+                    HumanDatabaseHelper database = new HumanDatabaseHelper(getApplicationContext());
+                    HumanModel humanModel = new HumanModel();
+                    humanModel.setAttracttive(String.valueOf(Integer.parseInt(faces[0].getAttractive().substring(1,2))+ 1));
+                    humanModel.setDominant(String.valueOf(Integer.parseInt(faces[0].getDominant().substring(1,2))+ 1));
+                    humanModel.setCompetent(String.valueOf(Integer.parseInt(faces[0].getCompetent().substring(1,2))+ 1));
+                    humanModel.setExtroverted(String.valueOf(Integer.parseInt(faces[0].getExtroverted().substring(1,2))+ 1));
+                    humanModel.setLikeability(String.valueOf(Integer.parseInt(faces[0].getLikeability().substring(1,2))+ 1));
+                    humanModel.setThreadCharacteristic(String.valueOf(Integer.parseInt(faces[0].getThread().substring(1,2))+ 1));
+                    humanModel.setTrustworthy(String.valueOf(Integer.parseInt(faces[0].getTrustworthy().substring(1,2))+ 1));
+                    Bitmap bmp32 = Bitmap.createScaledBitmap(faces[0].getBitmapFaceCrop(), 100, 100, false);
+                    humanModel.setImage(ConverttoArrayByte(bmp32));
+                    humanModel.setName("");
+                    humanModel.setAge(18);
+                    Date c = Calendar.getInstance().getTime();
+                    SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+                    humanModel.setDateCreatAt(df.format(c));
+                    humanModel.setComment("Type");
+                    humanModel.setEmail("Type");
+                    humanModel.setPhone("Type");
+                    database.addHuman(humanModel);
+                    database.close();
+                    btnSave.setEnabled(false);
+                    Toast.makeText(getApplicationContext(), "Saved",
+                            Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
         btnRecognize.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(checkCreateModel && checkCropImage){
+                if(checkCreateModel && checkCropImage && faces[0] != null){
                     Bitmap bmp32 = faces[0].getBitmapFaceCrop();
                     faces[0].setAttractive(humanModel.getAttracttiveHuman().recognizeImage(bmp32));
                     faces[0].setTrustworthy(humanModel.getTrustworthyHuman().recognizeImage(bmp32));
@@ -84,8 +120,11 @@ public class PhotoDetectActivity extends AppCompatActivity {
                     faces[0].setCompetnent(humanModel.getCompetentHuman().recognizeImage(bmp32));
                     faces[0].setExtroverted(humanModel.getExtrovertedHuman().recognizeImage(bmp32));
                     setStringRecognize(faces[0].getAttractive(),faces[0].getTrustworthy(),faces[0].getDominant(),
-                        faces[0].getThread(),faces[0].getLikeability(),faces[0].getCompetent(),faces[0].getExtroverted());
-                    progressBar.setVisibility(View.INVISIBLE);
+                            faces[0].getThread(),faces[0].getLikeability(),faces[0].getCompetent(),faces[0].getExtroverted());
+                    btnSave.setEnabled(true);
+                }
+                else {
+                    textView.setText("Cannot detect face");
                 }
             }
         });
@@ -108,7 +147,15 @@ public class PhotoDetectActivity extends AppCompatActivity {
             initTensorFlowAndLoadModel();
         }
     }
-
+    public byte[] ConverttoArrayByte(Bitmap bitmapConvert)
+    {
+        if (bitmapConvert == null) {
+            return null;
+        }
+        ByteArrayOutputStream bos = new ByteArrayOutputStream(bitmapConvert.getWidth() * bitmapConvert.getHeight());
+        bitmapConvert.compress(Bitmap.CompressFormat.PNG, 100, bos);
+        return bos.toByteArray();
+    }
     private void initTensorFlowAndLoadModel() {
         executor.execute(new Runnable() {
             @Override
@@ -228,8 +275,12 @@ public class PhotoDetectActivity extends AppCompatActivity {
 
     private void setStringRecognize(String atracttive, String trustworthy,String dominant, String thread,
                                     String likeability, String competent, String extroverted) {
-        textView.setText(atracttive+ "; "+trustworthy+", "+dominant+", "+thread+"; "
-        +likeability+"; "+competent+"; "+extroverted);
+        textView.setText("Attractive: "+ String.valueOf(Integer.parseInt(atracttive.substring(1,2))+ 1)+ ";   "+"Trusworthy: "+String.valueOf(Integer.parseInt(trustworthy.substring(1,2))+ 1)
+                +"; " +"Dominant: "+String.valueOf(Integer.parseInt(dominant.substring(1,2))+ 1)+";\n"+"Thread: "
+                +String.valueOf(Integer.parseInt(thread.substring(1,2))+ 1)+"; "
+                +"Likeability: "+String.valueOf(Integer.parseInt(likeability.substring(1,2))+ 1)+";  "+
+                "Competent: "+String.valueOf(Integer.parseInt(competent.substring(1,2))+ 1)+"; "+"Extroverted"+
+                String.valueOf(Integer.parseInt(extroverted.substring(1,2))+ 1));
     }
     private void detectFace(Bitmap bitmap) {
         resetData();

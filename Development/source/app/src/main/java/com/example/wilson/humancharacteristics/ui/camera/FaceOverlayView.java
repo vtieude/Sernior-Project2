@@ -135,13 +135,13 @@ public class FaceOverlayView extends View {
                 canvas.drawRect(rectF, mPaint);
 
                 if(this.isRecognizing){
-                    canvas.drawText("Attractive " + face.getAttractive(), rectF.left, rectF.bottom + mTextPaint.getTextSize() , mTextPaint);
-                    canvas.drawText("TrustWorthy " + face.getTrustworthy(), rectF.left, rectF.bottom + mTextPaint.getTextSize() * 2, mTextPaint);
-                    canvas.drawText("Dominant " + face.getDominant(), rectF.left, rectF.bottom + mTextPaint.getTextSize() * 3, mTextPaint);
-                    canvas.drawText("Thread " + face.getThread(), rectF.left, rectF.bottom + mTextPaint.getTextSize() * 4, mTextPaint);
-                    canvas.drawText("Likeability " + face.getLikeability(), rectF.left, rectF.bottom + mTextPaint.getTextSize() * 5, mTextPaint);
-                    canvas.drawText("Competent"+ face.getCompetent(), rectF.left, rectF.bottom + mTextPaint.getTextSize() * 6, mTextPaint);
-                    canvas.drawText("Extroved"+ face.getExtroverted(), rectF.left, rectF.bottom + mTextPaint.getTextSize() * 7, mTextPaint);
+                    canvas.drawText("Attractive: " + String.valueOf(Integer.parseInt(face.getAttractive().substring(1,2))+ 1), rectF.left, rectF.bottom + mTextPaint.getTextSize() , mTextPaint);
+                    canvas.drawText("TrustWorthy: " + String.valueOf(Integer.parseInt(face.getTrustworthy().substring(1,2))+ 1), rectF.left, rectF.bottom + mTextPaint.getTextSize() * 2, mTextPaint);
+                    canvas.drawText("Dominant: " + String.valueOf(Integer.parseInt(face.getDominant().substring(1,2))+ 1), rectF.left, rectF.bottom + mTextPaint.getTextSize() * 3, mTextPaint);
+                    canvas.drawText("Thread: " + String.valueOf(Integer.parseInt(face.getThread().substring(1,2))+ 1), rectF.left, rectF.bottom + mTextPaint.getTextSize() * 4, mTextPaint);
+                    canvas.drawText("Likeability: " + String.valueOf(Integer.parseInt(face.getLikeability().substring(1,2))+ 1), rectF.left, rectF.bottom + mTextPaint.getTextSize() * 5, mTextPaint);
+                    canvas.drawText("Competent: "+ String.valueOf(Integer.parseInt(face.getCompetent().substring(1,2))+ 1), rectF.left, rectF.bottom + mTextPaint.getTextSize() * 6, mTextPaint);
+                    canvas.drawText("Extroved: "+ String.valueOf(Integer.parseInt(face.getExtroverted().substring(1,2))+ 1), rectF.left, rectF.bottom + mTextPaint.getTextSize() * 7, mTextPaint);
                 }
 
                 }
