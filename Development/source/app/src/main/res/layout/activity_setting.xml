@@ -23,7 +23,7 @@
         </android.support.v7.widget.Toolbar>
         <RelativeLayout
             android:layout_width="match_parent"
-            android:background="@drawable/setting_background"
+            android:background="@drawable/customshape"
             android:id="@+id/setting_layout"
             android:layout_height="match_parent">
         </RelativeLayout>

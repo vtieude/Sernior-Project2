@@ -771,7 +771,7 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
 
                     if(saveValue != numFace && checkCreateModel == true || !initValue  && checkCreateModel == true ){
 
-                        if (faceCroped != null) {
+                        if (faceCroped != null && faces[i].getConfidence() > 0.3) {
                             Bitmap bmp32 = Bitmap.createScaledBitmap(faceCroped, INPUT_SIZE, INPUT_SIZE, false);
                             faces[i].setAttractive(humanModel.getAttracttiveHuman().recognizeImage(bmp32));
                             faces[i].setTrustworthy(humanModel.getTrustworthyHuman().recognizeImage(bmp32));
