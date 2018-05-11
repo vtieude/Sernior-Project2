@@ -58,9 +58,11 @@ import android.widget.Toast;
 import android.widget.Toolbar;
 
 import org.opencv.android.Utils;
+import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.face.FaceRecognizer;
 import org.opencv.face.LBPHFaceRecognizer;
+import org.opencv.imgproc.Imgproc;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -69,6 +71,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
+
+import static org.opencv.imgproc.Imgproc.cvtColor;
 
 public final class CameraDetectActivity extends AppCompatActivity implements SurfaceHolder.Callback, Camera.PreviewCallback, View.OnClickListener, NavigationView.OnNavigationItemSelectedListener {
 
@@ -147,6 +151,11 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
     public TextView textcharacterRecognize;
     private Executor executor = Executors.newSingleThreadExecutor();
     private DrawerLayout drawerLayout;
+    // Used to load the 'native-lib' library on application startup.
+    static {
+        System.loadLibrary("native-lib");
+        System.loadLibrary("opencv_java3");
+    }
 
 
     //==============================================================================================
@@ -753,14 +762,19 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
                     //
                     faceCroped = ImageUtils.cropFace(faces[i], bitmap, rotate);
 
-//                    Mat mat = new Mat();
-//                    Bitmap bmp_crop = faceCroped.copy(Bitmap.Config.ARGB_8888, true);
-//                    Utils.bitmapToMat(bmp_crop, mat);
-////                    drawLine(mat.getNativeObjAddr());
-//                    findLandmark(mat.getNativeObjAddr());
-//                    Utils.matToBitmap(mat, bmp_crop);
-//                    mat.release();
-                    faces[i].setBitmapFaceCrop(faceCroped);
+                    Mat rgba = new Mat(faceCroped.getHeight(), faceCroped.getWidth(), CvType.CV_8UC4);
+                    Bitmap bmp_crop = faceCroped.copy(Bitmap.Config.ARGB_8888, true);
+
+                    Utils.bitmapToMat(bmp_crop, rgba);
+
+                    Mat rgb = new Mat(faceCroped.getHeight(), faceCroped.getWidth(), CvType.CV_8UC3);
+                    cvtColor(rgba, rgb, Imgproc.COLOR_RGBA2BGR, 3);
+//                    findLandmark(rgb.getNativeObjAddr());
+                    drawLine(rgb.getNativeObjAddr());
+                    cvtColor(rgb, rgb, Imgproc.COLOR_BGR2RGBA);
+                    Utils.matToBitmap(rgb, bmp_crop);
+                    rgb.release();
+                    faces[i].setBitmapFaceCrop(bmp_crop);
                     final int finalI1 = i;
 //                    runOnUiThread(new Runnable() {
 //                        @Override
@@ -835,11 +849,7 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
         }
     }
 
-//
-//    public native void drawLine(long img);
-//    public native void trainModelLBPH(long trainModel);
-//    public native String faceRecognize(long img, long trainModel);
-//    public native void findLandmark(long img);
+    public native void drawLine(long img);
 }
 
 
