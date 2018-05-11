@@ -142,6 +142,8 @@ Java_com_example_wilson_humancharacteristics_CameraDetect_CameraDetectActivity_f
         loadModelStatus = true;
     }
     else{
+        faces.push_back(cv::Rect(0,0,frame->rows, frame->cols));
+//        facemark->getFaces((*frame),faces);
         if(facemark->fit((*frame),faces, shapes))
         {
             for( size_t i = 0; i < faces.size(); i++ )
@@ -153,6 +155,7 @@ Java_com_example_wilson_humancharacteristics_CameraDetect_CameraDetectActivity_f
                     cv::circle((*frame),shapes[i][k],5,cv::Scalar(0,0,255),cv::FILLED);
             }
         }
+        faces.clear();
     }
 }
 

@@ -769,8 +769,8 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
 
                     Mat rgb = new Mat(faceCroped.getHeight(), faceCroped.getWidth(), CvType.CV_8UC3);
                     cvtColor(rgba, rgb, Imgproc.COLOR_RGBA2BGR, 3);
-//                    findLandmark(rgb.getNativeObjAddr());
-                    drawLine(rgb.getNativeObjAddr());
+                    findLandmark(rgb.getNativeObjAddr());
+//                    drawLine(rgb.getNativeObjAddr());
                     cvtColor(rgb, rgb, Imgproc.COLOR_BGR2RGBA);
                     Utils.matToBitmap(rgb, bmp_crop);
                     rgb.release();
@@ -850,6 +850,7 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
     }
 
     public native void drawLine(long img);
+    public native void findLandmark(long img);
 }
 
 
