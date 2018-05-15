@@ -43,6 +43,7 @@ public class StorageActivity extends AppCompatActivity implements NavigationView
     private MyasyncListview myasyncListview;
     private DrawerLayout drawerLayout;
     private Menu menu;
+    private MenuItem menuItemDelete;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,21 +72,22 @@ public class StorageActivity extends AppCompatActivity implements NavigationView
         Menu menuNav = navigationView.getMenu();
         MenuItem navitem= menuNav.findItem(R.id.storage_homepage);
         navitem.setEnabled(false);
-//        listHuman = databaseHelper.getListHuman();
-//        listView = (ListView) findViewById(R.id.list_human);
-//        customListAdaptor = new CustomListAdaptor(this,listHuman);
-//        listView.setAdapter(customListAdaptor);
 
-//        setOnItemClick();
-//        setItemLongClick();
     }
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event)
     {
         if ((keyCode == KeyEvent.KEYCODE_BACK))
         {
-            super.onBackPressed();
-            finish();
+            if (myasyncListview.customListAdaptor.isLongClick) {
+                myasyncListview.customListAdaptor.isLongClick = ! myasyncListview.customListAdaptor.isLongClick;
+
+                menuItemDelete.setTitle(R.string.select_more);
+            }
+            else {
+                super.onBackPressed();
+                finish();
+            }
             return true; //I have tried here true also
         }
         return super.onKeyDown(keyCode, event);
@@ -101,6 +103,8 @@ public class StorageActivity extends AppCompatActivity implements NavigationView
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_storage, menu);
         this.menu = menu;
+        menuItemDelete = menu.findItem(R.id.delete_storage);
+        myasyncListview.menuItem = menuItemDelete;
         return super.onCreateOptionsMenu(menu);
     }
     @Override
@@ -108,13 +112,13 @@ public class StorageActivity extends AppCompatActivity implements NavigationView
         switch (item.getItemId()) {
             case R.id.delete_storage:
                 if (myasyncListview.customListAdaptor.isLongClick) {
-
                     for (int i =0 ; i < myasyncListview.customListAdaptor.positionArray.size(); i ++) {
                         if (myasyncListview.customListAdaptor.positionArray.get(i) && myasyncListview.customListAdaptor.isLongClick) {
                             myasyncListview.deleteItemCheckbox(item);
                             return  true;
                         }
                     }
+                    item.setTitle(R.string.select_more);
                     Toast.makeText(StorageActivity.this,  "Please select item delete",
                             Toast.LENGTH_LONG).show();
                 }
@@ -128,39 +132,6 @@ public class StorageActivity extends AppCompatActivity implements NavigationView
                 return super.onOptionsItemSelected(item);
         }
     }
-    public void setItemLongClick() {
-        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            public boolean onItemLongClick(AdapterView<?> arg0, View v,
-                                           int index, long arg3) {
-//                customListAdaptor.isLongClick  = !customListAdaptor.isLongClick;
-//                customListAdaptor.notifyDataSetChanged();
-                return true;
-            }
-        });
-    }
-    public void setOnItemClick() {
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Toast.makeText(StorageActivity.this,  "das" + i,
-                        Toast.LENGTH_LONG).show();
-                if (customListAdaptor.isLongClick) {
-                    CheckBox cb = (CheckBox)view.findViewById(R.id.check_delete_item);
-                    boolean isCheck = !cb.isChecked();
-                    cb.setChecked(isCheck);
-                }
-                else
-                {
-                    Intent intent = new Intent(StorageActivity.this, HumanInformationActivity.class).putExtra("human", customListAdaptor.getItem(i));
-                    startActivity(intent);
-                    finish();
-                }
-
-
-            };
-        });
-    }
-
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         Intent myIntent = null;

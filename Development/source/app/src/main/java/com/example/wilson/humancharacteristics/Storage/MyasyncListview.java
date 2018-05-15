@@ -39,6 +39,7 @@ public class MyasyncListview extends AsyncTask<Void, HumanModel, Void> implement
     private Boolean checkClickDelete =false;
     public CustomListAdaptor customListAdaptor;
     private SearchView searchNameHuman;
+    public MenuItem menuItem;
     public MyasyncListview(Activity activity) {
         this.myactivity = activity;
 
@@ -129,30 +130,20 @@ public class MyasyncListview extends AsyncTask<Void, HumanModel, Void> implement
         listView.setAdapter(customListAdaptor);
         customListAdaptor.notifyDataSetInvalidated();
     }
-    //    @Override
-//    protected void onProgressUpdate(HumanModel values) {
-//        super.onProgressUpdate(values);
-//
-//        listView.setAdapter(customListAdaptor);
-////        setItemLongClick();
-//
-//    }
-    //    @Override
-//    protected Void doInBackground() {
-//
-//        listHuman = humanDatabaseHelpers();
-//        listView = (ListView)myactivity.findViewById(R.id.list_human);
-//        customListAdaptor = new CustomListAdaptor(myactivity,listHuman);
-//        listView.setAdapter(customListAdaptor);
-//        return null;
-//    }
-
     public void setItemLongClick() {
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             public boolean onItemLongClick(AdapterView<?> arg0, View v,
                                            int index, long arg3) {
                 customListAdaptor.isLongClick  = !customListAdaptor.isLongClick;
                 customListAdaptor.notifyDataSetChanged();
+                if (menuItem != null) {
+                    if (customListAdaptor.isLongClick) {
+                        menuItem.setTitle(myactivity.getString(R.string.delete));
+                    }
+                    else {
+                        menuItem.setTitle(myactivity.getString(R.string.select_more));
+                    }
+                }
                 return true;
             }
         });
@@ -161,18 +152,12 @@ public class MyasyncListview extends AsyncTask<Void, HumanModel, Void> implement
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, final int i, long l) {
-//                Toast.makeText(StorageActivity.this,  "das" + i,
-//                        Toast.LENGTH_LONG).show();
                 if (customListAdaptor.isLongClick) {
                     CheckBox cb = (CheckBox)view.findViewById(R.id.check_delete_item);
                     boolean isCheck = !cb.isChecked();
                     cb.setChecked(isCheck);
                 }
                 else {
-
-//                    customListAdaptor.positionArray.set(i,true);
-//                    deleteItemCheckbox();
-//                    checkClickDelete = true;if( !checkClickDelete){
                     Intent intent = new Intent(myactivity, HumanInformationActivity.class).putExtra("human", customListAdaptor.getItem(i));
                     myactivity.startActivity(intent);
                     myactivity.finish();
