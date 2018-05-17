@@ -17,6 +17,7 @@
             android:title="@string/storage"></item>
         <item
             android:id="@+id/author_homepage"
+            android:enabled="false"
             android:icon="@drawable/ic_account_circle_black_24dp"
             android:title="@string/author"></item>
         <item

@@ -65,26 +65,30 @@
                 android:layout_gravity="right"
                 />
 
-            <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_gravity="center|bottom"
-                android:src="@mipmap/takecamera"
-                android:id="@+id/takePhoto"
-                android:clickable="true"
-                android:onClick="takePhotoToStore"
+            <!--<ImageButton-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_gravity="center|bottom"-->
+                <!--android:src="@mipmap/takecamera"-->
+                <!--android:id="@+id/takePhoto"-->
+                <!--android:clickable="true"-->
+                <!--android:onClick="takePhotoToStore"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--tools:ignore="OnClick" />-->
+            <include
+                layout="@layout/toolbar"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:ignore="OnClick" />
-
-            <ImageButton
-                android:id="@+id/getPhoto"
-                android:layout_width="80dp"
-                android:layout_height="78dp"
-                android:layout_gravity="left|bottom"
-                android:layout_marginLeft="30dp"
-                android:clickable="true"
-                android:onClick="getPhotoToDetect"
-                android:src="@mipmap/get_image"
-                tools:ignore="OnClick" />
+                android:layout_gravity="bottom"/>
+            <!--<ImageButton-->
+                <!--android:id="@+id/getPhoto"-->
+                <!--android:layout_width="80dp"-->
+                <!--android:layout_height="78dp"-->
+                <!--android:layout_gravity="left|bottom"-->
+                <!--android:layout_marginLeft="30dp"-->
+                <!--android:clickable="true"-->
+                <!--android:onClick="getPhotoToDetect"-->
+                <!--android:src="@mipmap/get_image"-->
+                <!--tools:ignore="OnClick" />-->
 
             <!--<android.support.v7.widget.RecyclerView-->
             <!--android:id="@+id/recycler_view"-->

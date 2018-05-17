@@ -173,6 +173,7 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         // Now create the OverlayView:
+
         mFaceView = new FaceOverlayView(this);
         mFaceDetectView = new FaceDetectView(this);
         addContentView(mFaceView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));

@@ -61,7 +61,7 @@ public class HumanInformationActivity extends AppCompatActivity implements Navig
     private int MAX_LENGTH = 20;
     private Boolean checkItent = false;
     private ImageView imageAvartaView, imagePencil;
-    private TextView textName,textAge, textComment, textPhone, textEmail, textAtractiveness, textCompetent, textDominant;
+    private TextView textName, textComment, textPhone, textEmail, textAtractiveness, textCompetent, textDominant;
     private TextView textExtroverted, textLikeability, textThread, textTrustworthy;
     private Button buttonSave, buttonBack;
     private HumanModel humanInfor;
@@ -111,7 +111,6 @@ public class HumanInformationActivity extends AppCompatActivity implements Navig
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString("TextName", textName.getText().toString());
-        outState.putString("TextAge", textAge.getText().toString());
         outState.putString("TextComment", textComment.getText().toString());
         outState.putString("TextPhone", textPhone.getText().toString());
         outState.putString("TextEmail", textEmail.getText().toString());
@@ -132,7 +131,6 @@ public class HumanInformationActivity extends AppCompatActivity implements Navig
     }
     public void updateTextChangeOrientation(Bundle save) {
         textName.setText(save.getString("TextName").toString());
-        textAge.setText(save.getString("TextAge").toString());
         textComment.setText(save.getString("TextComment").toString());
         textEmail.setText(save.getString("TextEmail").toString());
         textPhone.setText(save.getString("TextPhone").toString());
@@ -178,12 +176,10 @@ public class HumanInformationActivity extends AppCompatActivity implements Navig
         LayoutInflater inflater = getLayoutInflater();
         View layout =(View) inflater.inflate(R.layout.alert_update_information,null) ;
         final EditText editName = layout.findViewById(R.id.input_name_alert);
-        final EditText editAge = layout.findViewById(R.id.input_age_alert);
         final EditText editCommend = layout.findViewById(R.id.input_commend_alert);
         final EditText editPhone = layout.findViewById(R.id.input_phone_alert);
         final EditText editEmail = layout.findViewById(R.id.input_email_alert);
         editName.setText(humanInfor.getName());
-        editAge.setText(String.valueOf(humanInfor.getAge()));
         editCommend.setText(humanInfor.getComment());
         editPhone.setText(humanInfor.getPhone());
         editEmail.setText(humanInfor.getEmail());
@@ -257,10 +253,8 @@ public class HumanInformationActivity extends AppCompatActivity implements Navig
                 humanModel.setPhone(editPhone.getText().toString());
                 humanModel.setEmail(editEmail.getText().toString());
                 humanModel.setComment(editCommend.getText().toString());
-                humanModel.setAge(Integer.parseInt(editAge.getText().toString()));
                 database.updateHuman(humanModel);
                 textName.setText(editName.getText().toString());
-                textAge.setText(editAge.getText().toString());
                 textComment.setText(editCommend.getText().toString());
                 textPhone.setText(titlePhone+ ": "+ editPhone.getText().toString());
                 textEmail.setText(titleEmail+ ": " +editEmail.getText().toString());
@@ -280,7 +274,6 @@ public class HumanInformationActivity extends AppCompatActivity implements Navig
     }
     public void getView() {
         textName = (TextView)findViewById(R.id.text_name);
-        textAge = (TextView)findViewById(R.id.text_Age);
         imageAvartaView = (ImageView)findViewById(R.id.humanFaceAvatar);
         textComment = (TextView) findViewById(R.id.textViewComment);
         textEmail = (TextView) findViewById(R.id.tittleEmail);
@@ -356,7 +349,6 @@ public class HumanInformationActivity extends AppCompatActivity implements Navig
         humanModel.setPhone(textPhone.getText().toString());
         humanModel.setEmail(textEmail.getText().toString());
         humanModel.setComment(textComment.getText().toString());
-        humanModel.setAge(Integer.parseInt(textAge.getText().toString()));
         humanModel.setImage(ConverttoArrayByte(imageAvartaView));
         return humanModel;
     }
@@ -383,7 +375,6 @@ public class HumanInformationActivity extends AppCompatActivity implements Navig
                 imageAvartaView.setImageBitmap(bitmap);
             }
             textName.setText(humanInfor.getName());
-            textAge.setText(String.valueOf(humanInfor.getAge()));
             textEmail.setText(titleEmail+": "+humanInfor.getEmail());
             textPhone.setText(titlePhone+": "+humanInfor.getPhone());
             if (humanInfor.getComment() == "") {
