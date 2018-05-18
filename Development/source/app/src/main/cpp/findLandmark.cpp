@@ -134,6 +134,7 @@ Java_com_example_wilson_humancharacteristics_CameraDetect_CameraDetectActivity_f
         jobject /* this */,
         jlong imgMat) {
     cv::Mat *frame = (cv::Mat*) imgMat;
+    cv::Mat dst = cv::Mat::zeros((*frame).size(), CV_8UC1);
     if(!loadModelStatus){
         face_cascade_.load("/sdcard/data/lbpcascade_frontalface_improved.xml");
         facemark = cv::face::FacemarkKazemi::create(params);
@@ -144,19 +145,21 @@ Java_com_example_wilson_humancharacteristics_CameraDetect_CameraDetectActivity_f
     else{
         faces.push_back(cv::Rect(0,0,frame->rows, frame->cols));
 //        facemark->getFaces((*frame),faces);
-        if(facemark->fit((*frame),faces, shapes))
-        {
-            for( size_t i = 0; i < faces.size(); i++ )
-            {
-                cv::rectangle((*frame),faces[i],cv::Scalar( 255, 0, 0 ));
+        if(facemark->fit((*frame),faces, shapes)) {
+//            (*frame) = cv::Mat::zeros((*frame).size(), CV_8UC1);
+
+            for (size_t i = 0; i < faces.size(); i++) {
+                cv::rectangle((*frame), faces[i], cv::Scalar(255, 0, 0));
             }
-            for(unsigned long i=0;i<faces.size();i++){
-                for(unsigned long k=0;k<shapes[i].size();k++)
-                    cv::circle((*frame),shapes[i][k],5,cv::Scalar(0,0,255),cv::FILLED);
+            for (unsigned long i = 0; i < faces.size(); i++) {
+                for (unsigned long k = 0; k < shapes[i].size(); k++)
+                    cv::circle((*frame), shapes[i][k], 5, cv::Scalar(0, 0, 255), cv::FILLED);
+                cv::face::drawFacemarks(dst, shapes[i], cv::Scalar(255));
             }
         }
         faces.clear();
     }
+    (*frame) = dst.clone();
 }
 
 JNIEXPORT void JNICALL

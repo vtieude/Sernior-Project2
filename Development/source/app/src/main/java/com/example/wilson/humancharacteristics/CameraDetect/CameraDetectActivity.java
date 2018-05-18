@@ -771,10 +771,10 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
                     cvtColor(rgba, rgb, Imgproc.COLOR_RGBA2BGR, 3);
                     findLandmark(rgb.getNativeObjAddr());
 //                    drawLine(rgb.getNativeObjAddr());
-                    cvtColor(rgb, rgb, Imgproc.COLOR_BGR2RGBA);
+                    cvtColor(rgb, rgb, Imgproc.COLOR_GRAY2RGBA);
                     Utils.matToBitmap(rgb, bmp_crop);
                     rgb.release();
-                    faces[i].setBitmapFaceCrop(bmp_crop);
+                    faces[i].setBitmapFaceCrop(faceCroped);
                     final int finalI1 = i;
 //                    runOnUiThread(new Runnable() {
 //                        @Override
