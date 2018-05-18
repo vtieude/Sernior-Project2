@@ -4,13 +4,13 @@
 
 #include <jni.h>
 #include <fstream>
-#include <opencv2/face.hpp>
-#include <opencv2/imgproc.hpp>
-#include <opencv2/highgui.hpp>
-#include <opencv2/core.hpp>
+#include "opencv2/face.hpp"
+#include "opencv2/videoio.hpp"
+#include "opencv2/highgui.hpp"
+#include "opencv2/imgcodecs.hpp"
+#include "opencv2/objdetect.hpp"
+#include "opencv2/imgproc.hpp"
 #include <iostream>
-#include <fstream>
-
 JavaVM *jvm;       /* denotes a Java VM */
 JNIEnv *env;       /* pointer to native method interface */
 
@@ -20,11 +20,18 @@ std::string fn_csv;
 std::vector<cv::Mat> images;
 std::vector<int> labels;
 std::map<int, std::string> keyName;
-static bool trainStatus = false;
-static bool loadModel = false;
+bool trainStatus = false;
+bool loadModelStatus = false;
 cv::Mat faceMat;
 
-static cv::Mat norm_0_255(cv::InputArray _src) {
+//pass the face cascade xml file which you want to pass as a detector
+cv::CascadeClassifier face_cascade_;
+cv::face::FacemarkKazemi::Params params;
+static cv::Ptr<cv::face::FacemarkKazemi> facemark;
+std::vector<cv::Rect> faces;
+std::vector< std::vector<cv::Point2f> > shapes;
+
+cv::Mat norm_0_255(cv::InputArray _src) {
     cv::Mat src = _src.getMat();
     // Create and return normalized image:
     cv::Mat dst;
@@ -42,12 +49,6 @@ static cv::Mat norm_0_255(cv::InputArray _src) {
     return dst;
 }
 
-bool fexists(const char *filename)
-{
-    std::ifstream ifile(filename);
-    return ifile;
-}
-
 
 std::string intToString(int number){
     std::stringstream ss;
@@ -55,8 +56,24 @@ std::string intToString(int number){
     return ss.str();
 }
 
+static bool myDetector(cv::InputArray image, cv::OutputArray faces, cv::CascadeClassifier *face_cascade)
+{
+    cv::Mat gray;
 
-static void read_csv(const std::string& filename, std::vector<cv::Mat>& images, std::vector<int>& labels, std::map<int, std::string>& keyName, char separator = ';') {
+    if (image.channels() > 1)
+        cvtColor(image, gray, cv::COLOR_BGR2GRAY);
+    else
+        gray = image.getMat().clone();
+
+    equalizeHist(gray, gray);
+
+    std::vector<cv::Rect> faces_;
+    face_cascade->detectMultiScale(gray, faces_, 1.1, 3, 0, cv::Size(30, 30));
+    cv::Mat(faces_).copyTo(faces);
+    return true;
+}
+
+void read_csv(const std::string& filename, std::vector<cv::Mat>& images, std::vector<int>& labels, std::map<int, std::string>& keyName, char separator = ';') {
     std::ifstream file(filename.c_str(), std::ifstream::in);
     std::string nameHuman[3];
     if (!file) {
@@ -110,18 +127,6 @@ void drawLine(cv::Mat& img){
 }
 
 extern "C" {
-JNIEXPORT void JNICALL
-Java_com_example_wilson_humancharacteristics_CameraDetect_CameraDetectActivity_trainModelLBPH(
-        JNIEnv *env,
-        jobject /* this */,
-        jlong model) {
-    cv::face::LBPHFaceRecognizer* model_data = (cv::face::LBPHFaceRecognizer*) model;
-    if(!trainStatus){
-        trainModel(model_data);
-        trainStatus = true;
-    }
-}
-
 
 JNIEXPORT void JNICALL
 Java_com_example_wilson_humancharacteristics_CameraDetect_CameraDetectActivity_findLandmark(
@@ -129,55 +134,32 @@ Java_com_example_wilson_humancharacteristics_CameraDetect_CameraDetectActivity_f
         jobject /* this */,
         jlong imgMat) {
     cv::Mat *frame = (cv::Mat*) imgMat;
+    cv::Mat dst = cv::Mat::zeros((*frame).size(), CV_8UC1);
+    if(!loadModelStatus){
+        face_cascade_.load("/sdcard/data/lbpcascade_frontalface_improved.xml");
+        facemark = cv::face::FacemarkKazemi::create(params);
+        facemark->setFaceDetector((cv::face::FN_FaceDetector)myDetector, &face_cascade_);
+        facemark->loadModel("/sdcard/data/face_landmark_model.dat");
+        loadModelStatus = true;
+    }
+    else{
+        faces.push_back(cv::Rect(0,0,frame->rows, frame->cols));
+//        facemark->getFaces((*frame),faces);
+        if(facemark->fit((*frame),faces, shapes)) {
+//            (*frame) = cv::Mat::zeros((*frame).size(), CV_8UC1);
 
-    if(loadModel == false){
-        // Create an instance of Facemark
-        cv::Ptr<cv::face::Facemark> facemark = cv::face::FacemarkLBF::create();
-
-        // Load landmark detector
-        facemark->loadModel("/sdcard/data/lbfmodel.yaml");
-
-
-        // Find face
-        std::vector<cv::Rect> rect_face;
-        rect_face.push_back(cv::Rect(0, 0, (*frame).rows-1, (*frame).cols-1));
-
-        // Variable for landmarks.
-        // Landmarks for one face is a vector of points
-        // There can be more than one face in the image. Hence, we
-        // use a vector of vector of points.
-        std::vector <std::vector <cv::Point2f> > landmarks;
-
-        // Run landmark detector
-        bool success = facemark->fit((*frame),rect_face,landmarks);
-
-        if(success)
-        {
-            // If successful, render the landmarks on the face
-            for(int i = 0; i < landmarks.size(); i++)
-            {
-                cv::face::drawFacemarks((*frame), landmarks[i], cv::Scalar(0,0,255,255));
+            for (size_t i = 0; i < faces.size(); i++) {
+                cv::rectangle((*frame), faces[i], cv::Scalar(255, 0, 0));
+            }
+            for (unsigned long i = 0; i < faces.size(); i++) {
+                for (unsigned long k = 0; k < shapes[i].size(); k++)
+                    cv::circle((*frame), shapes[i][k], 5, cv::Scalar(0, 0, 255), cv::FILLED);
+                cv::face::drawFacemarks(dst, shapes[i], cv::Scalar(255));
             }
         }
-        loadModel = true;
+        faces.clear();
     }
-}
-
-JNIEXPORT jstring JNICALL
-Java_com_example_wilson_humancharacteristics_CameraDetect_CameraDetectActivity_faceRecognize(
-        JNIEnv *env,
-        jobject /* this */,
-        jlong img,
-        jlong model) {
-//    cv::Mat* image = (cv::Mat*) img;
-//    cv::face::LBPHFaceRecognizer* model_recog = (cv::face::LBPHFaceRecognizer*) model;
-//    cv::Mat gray;
-//    cv::cvtColor(*image, gray, cv::COLOR_BGR2GRAY);
-//    cv::resize(gray, gray, cv::Size(92, 112));
-//    int prediction = model_recog->predict(gray);
-//    std::string box_text = cv::format("Prediction = %s", keyName[prediction].c_str());
-
-    return env->NewStringUTF("");
+    (*frame) = dst.clone();
 }
 
 JNIEXPORT void JNICALL
