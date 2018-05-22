@@ -259,6 +259,11 @@ public class HumanInformationActivity extends AppCompatActivity implements Navig
                 textPhone.setText(titlePhone+ ": "+ editPhone.getText().toString());
                 textEmail.setText(titleEmail+ ": " +editEmail.getText().toString());
                 database.close();
+                humanInfor.setPhone(editPhone.getText().toString());
+                humanInfor.setName(editName.getText().toString());
+                humanInfor.setEmail(editEmail.getText().toString());
+                humanInfor.setComment(editCommend.getText().toString());
+
 //                Intent intent = new Intent(HumanInformationActivity.this, StorageActivity.class);
 //                startActivity(intent);
 //                finish();
@@ -393,7 +398,9 @@ public class HumanInformationActivity extends AppCompatActivity implements Navig
             buttonSave.setText(R.string.update_Button);
         }
     }
+    public void updatedHumanInfor(int id) {
 
+    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
