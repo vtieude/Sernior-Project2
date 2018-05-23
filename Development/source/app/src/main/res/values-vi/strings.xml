@@ -66,4 +66,5 @@
     <string name="navigation_start">Navigation</string>
     <string name="click_to_view_more">Xem thông tin chi tiết</string>
     <string name="select_more">Chọn nhiều</string>
+    <string name="recognizing_face_value">Đang dự đoán</string>
 </resources>

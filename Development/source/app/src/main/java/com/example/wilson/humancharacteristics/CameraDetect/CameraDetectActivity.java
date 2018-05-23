@@ -88,7 +88,7 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
     private int mDisplayRotation;
     private int mDisplayOrientation;
     private int mPreDisplayRotation = 0;
-
+    private boolean checkRecognize = false;
     private int previewWidth;
     private int previewHeight;
 
@@ -146,8 +146,10 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
     private String likeabilityResult = "";
     private String competentResult = "";
     private String extrovertedResult = "";
+    private Boolean checkCharateristicsSetting = false;
     public ProgressBar progress;
     public TextView textwaitmodel;
+    private SharedPreferences setting;
     public TextView textcharacterRecognize;
     private Executor executor = Executors.newSingleThreadExecutor();
     private DrawerLayout drawerLayout;
@@ -196,8 +198,9 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
 
 
-        SharedPreferences setting = PreferenceManager.getDefaultSharedPreferences(this);
+        setting = PreferenceManager.getDefaultSharedPreferences(this);
         MAX_FACE = setting.getInt("amount_face", 1);
+        checkCharateristicsSetting = setting.getBoolean("switch_character", true);
         takePhotoCamera.setOnClickListener(this);
         getPhotoCamera.setOnClickListener(this);
         handler = new Handler();
@@ -316,7 +319,21 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
     @Override
     protected void onResume() {
         super.onResume();
-
+        MAX_FACE = setting.getInt("amount_face", 1);
+        checkCharateristicsSetting = setting.getBoolean("switch_character", true);
+        checkRecognize = false;
+        saveValue = 0;
+        takePhotoCamera.setOnClickListener(this);
+        getPhotoCamera.setOnClickListener(this);
+        handler = new Handler();
+        faces = new FaceResult[MAX_FACE];
+        faces_previous = new FaceResult[MAX_FACE];
+        for (int i = 0; i < MAX_FACE; i++) {
+            faces[i] = new FaceResult(this.getApplicationContext());
+            faces_previous[i] = new FaceResult(this.getApplicationContext());
+        }
+        mFaceView.setFaces(faces,false);
+        textcharacterRecognize.setText("");
         Log.i(TAG, "onResume");
         startPreview();
     }
@@ -327,6 +344,21 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
     @Override
     protected void onPause() {
         super.onPause();
+        MAX_FACE = setting.getInt("amount_face", 1);
+        checkCharateristicsSetting = setting.getBoolean("switch_character", true);
+        checkRecognize = false;
+        saveValue = 0;
+        takePhotoCamera.setOnClickListener(this);
+        getPhotoCamera.setOnClickListener(this);
+        handler = new Handler();
+        faces = new FaceResult[MAX_FACE];
+        faces_previous = new FaceResult[MAX_FACE];
+        for (int i = 0; i < MAX_FACE; i++) {
+            faces[i] = new FaceResult(this.getApplicationContext());
+            faces_previous[i] = new FaceResult(this.getApplicationContext());
+        }
+        mFaceView.setFaces(faces,false);
+        textcharacterRecognize.setText("");
         Log.i(TAG, "onPause");
         if (mCamera != null) {
             mCamera.stopPreview();
@@ -634,7 +666,6 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
         }
 
         public void run() {
-
             float aspect = (float) previewHeight / (float) previewWidth;
             int w = prevSettingWidth;
             int h = (int) (prevSettingWidth * aspect);
@@ -761,31 +792,34 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
                     //
                     // Crop Face to display in RecylerView
                     //
-                    faceCroped = ImageUtils.cropFace(faces[i], bitmap, rotate);
+                    if((saveValue != numFace || !initValue) && checkCreateModel && checkCharateristicsSetting ){
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (numFace > 1) {
+                                    textcharacterRecognize.setText("");
+                                }
+                                progress.setVisibility(View.VISIBLE);
+                                textwaitmodel.setText(R.string.recognizing_face_value);
+                                textwaitmodel.setVisibility(View.VISIBLE);
+                            }
+                        });
+                        faceCroped = ImageUtils.cropFace(faces[i], bitmap, rotate);
 
-                    Mat rgba = new Mat(faceCroped.getHeight(), faceCroped.getWidth(), CvType.CV_8UC4);
-                    Bitmap bmp_crop = faceCroped.copy(Bitmap.Config.ARGB_8888, true);
+                        Mat rgba = new Mat(faceCroped.getHeight(), faceCroped.getWidth(), CvType.CV_8UC4);
+                        Bitmap bmp_crop = faceCroped.copy(Bitmap.Config.ARGB_8888, true);
 
-                    Utils.bitmapToMat(bmp_crop, rgba);
+                        Utils.bitmapToMat(bmp_crop, rgba);
 
-                    Mat rgb = new Mat(faceCroped.getHeight(), faceCroped.getWidth(), CvType.CV_8UC3);
-                    cvtColor(rgba, rgb, Imgproc.COLOR_RGBA2BGR, 3);
-                    findLandmark(rgb.getNativeObjAddr());
+                        Mat rgb = new Mat(faceCroped.getHeight(), faceCroped.getWidth(), CvType.CV_8UC3);
+                        cvtColor(rgba, rgb, Imgproc.COLOR_RGBA2BGR, 3);
+                        findLandmark(rgb.getNativeObjAddr());
 //                    drawLine(rgb.getNativeObjAddr());
-                    cvtColor(rgb, rgb, Imgproc.COLOR_GRAY2RGBA);
-                    Utils.matToBitmap(rgb, bmp_crop);
-                    rgb.release();
-                    faces[i].setBitmapFaceCrop(faceCroped);
-                    final int finalI1 = i;
-//                    runOnUiThread(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            mFaceDetectView.setFace(faces[finalI1]);
-//                        }
-//                    });
-
-                    if(saveValue != numFace && checkCreateModel == true || !initValue  && checkCreateModel == true ){
-
+                        cvtColor(rgb, rgb, Imgproc.COLOR_GRAY2RGBA);
+                        Utils.matToBitmap(rgb, bmp_crop);
+                        rgb.release();
+                        faces[i].setBitmapFaceCrop(faceCroped);
+                        final int finalI1 = i;
                         if (faceCroped != null && faces[i].getConfidence() > 0.3) {
                             Bitmap bmp32 = Bitmap.createScaledBitmap(faceCroped, INPUT_SIZE, INPUT_SIZE, false);
                             faces[i].setAttractive(humanModel.getAttracttiveHuman().recognizeImage(bmp32));
@@ -799,38 +833,37 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
+                                    progress.setVisibility(View.INVISIBLE);
+                                    textwaitmodel.setVisibility(View.INVISIBLE);
                                     if (image.getVisibility() == View.INVISIBLE) {
                                         image.setVisibility(View.VISIBLE);
                                     }
-                                    textcharacterRecognize.setText(
-                                        faces[finalI].getAttracttiveDescription()+". "+faces[finalI].getTrustworthyDescription()+"\n"+
-                                        faces[finalI].getDominantDescription()   +". "+faces[finalI].getThreadDescription()+"\n"+
-                                        faces[finalI].getLikeabilityDescription()+". "+faces[finalI].getCompetentDescription()+"\n"+
-                                        faces[finalI].getExtrovertedDescription());
-////                                    image.setEnabled(true);
-//                                      Toast.makeText(getApplicationContext(),  faces[finalI].getAttractive().substring(1,2),
-//                                            Toast.LENGTH_SHORT).show();
-
+                                    if (numFace == 1) {
+                                        textcharacterRecognize.setText(
+                                            faces[finalI].getAttracttiveDescription()+". "+faces[finalI].getTrustworthyDescription()+"\n"+
+                                                    faces[finalI].getDominantDescription()   +". "+faces[finalI].getThreadDescription()+"\n"+
+                                                    faces[finalI].getLikeabilityDescription()+". "+faces[finalI].getCompetentDescription()+"\n"+
+                                                    faces[finalI].getExtrovertedDescription());
+                                    }
+                                    else {
+                                        textcharacterRecognize.setText("");
+                                    }
                                     image.setEnabled(true);
+
                                 }
                             });
 
+                            checkRecognize = true;
                             checkUpdate = false;
                             initValue = true;
                         }
                     }
                 }
             }
-
             saveValue = numFace;
-
             handler.post(new Runnable() {
                 public void run() {
-//                    isThreadWorking = false;
-//                    if(checkCreateModel == true){
-                        //send face to FaceView to draw rect
-                        mFaceView.setFaces(faces, checkCreateModel);
-
+                        mFaceView.setFaces(faces, checkRecognize);
                         //calculate FPS
                         end = System.currentTimeMillis();
                         counter++;

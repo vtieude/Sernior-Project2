@@ -16,7 +16,8 @@
         android:layout_height="wrap_content"
         android:id="@+id/progressBarDetectFaceGalary"
         android:visibility="invisible"
-        android:layout_gravity="center"/>
+        android:layout_marginBottom="100dp"
+        android:layout_gravity="bottom|center"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="80dp"

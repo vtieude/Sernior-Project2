@@ -134,7 +134,7 @@ public class FaceOverlayView extends View {
                 mTextPaint.setColor(COLOR_CHOICES[mCurrentColorIndex]);
                 canvas.drawRect(rectF, mPaint);
 
-                if(this.isRecognizing){
+                if(this.isRecognizing && face.getAttractive().length() > 2){
                     canvas.drawText("Attractive: " + String.valueOf(Integer.parseInt(face.getAttractive().substring(1,2))+ 1), rectF.left, rectF.bottom + mTextPaint.getTextSize() , mTextPaint);
                     canvas.drawText("TrustWorthy: " + String.valueOf(Integer.parseInt(face.getTrustworthy().substring(1,2))+ 1), rectF.left, rectF.bottom + mTextPaint.getTextSize() * 2, mTextPaint);
                     canvas.drawText("Dominant: " + String.valueOf(Integer.parseInt(face.getDominant().substring(1,2))+ 1), rectF.left, rectF.bottom + mTextPaint.getTextSize() * 3, mTextPaint);
@@ -143,7 +143,6 @@ public class FaceOverlayView extends View {
                     canvas.drawText("Competent: "+ String.valueOf(Integer.parseInt(face.getCompetent().substring(1,2))+ 1), rectF.left, rectF.bottom + mTextPaint.getTextSize() * 6, mTextPaint);
                     canvas.drawText("Extroved: "+ String.valueOf(Integer.parseInt(face.getExtroverted().substring(1,2))+ 1), rectF.left, rectF.bottom + mTextPaint.getTextSize() * 7, mTextPaint);
                 }
-
                 }
             }
             canvas.restore();
