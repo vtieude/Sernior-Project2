@@ -118,7 +118,7 @@ public class StorageActivity extends AppCompatActivity implements NavigationView
                             return  true;
                         }
                     }
-                    item.setTitle(R.string.select_more);
+                    item.setTitle(R.string.delete);
                     Toast.makeText(StorageActivity.this,  "Please select item delete",
                             Toast.LENGTH_LONG).show();
                 }
