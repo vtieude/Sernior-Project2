@@ -62,7 +62,7 @@ public class PhotoDetectActivity extends AppCompatActivity {
     private boolean checkCreateModel = false;
     private boolean checkCropImage = false;
 
-    private TextView textView, textDescription;
+    private TextView textView;
     private Button btnRecognize;
     private Button btnSave;
     private ProgressBar progressBar;
@@ -79,7 +79,6 @@ public class PhotoDetectActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("Face Detect Image");
         progressBar = findViewById(R.id.progressBarDetectFaceGalary);
         faceView = (FaceView) findViewById(R.id.faceView);
-        textDescription= (TextView) findViewById(R.id.text_decription);
         textView = (TextView) findViewById(R.id.text_recognize);
         btnRecognize = (Button) findViewById(R.id.btn_recognize);
         btnSave = (Button) findViewById(R.id.btn_save);
