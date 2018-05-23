@@ -623,6 +623,8 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         Intent myIntent = null;
+        progress.setVisibility(View.INVISIBLE);
+        textwaitmodel.setVisibility(View.INVISIBLE);
         switch (item.getItemId()) {
             case R.id.camera_start:
                 break;
