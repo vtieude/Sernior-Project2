@@ -2,8 +2,8 @@
 # documentation: https://d.android.com/studio/projects/add-native-code.html
 
 # Sets the minimum version of CMake required to build the native library.
-set (pathToProject E:/DATN/GitCompany/BC11-Human-Analysis/Development/source)
-set (pathToOpencv E:/DATN/GitCompany/opencv3-android-sdk-with-contrib-master/OpenCV-android-sdk)
+set (pathToProject ~/BC11-Human-Analysis/Development/source)
+set (pathToOpencv ~/OpenCV-android-sdk)
 
 
 cmake_minimum_required(VERSION 3.4.1)

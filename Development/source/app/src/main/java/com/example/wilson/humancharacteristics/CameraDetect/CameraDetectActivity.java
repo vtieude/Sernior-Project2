@@ -857,7 +857,7 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
                         cvtColor(rgb, rgb, Imgproc.COLOR_GRAY2RGBA);
                         Utils.matToBitmap(rgb, bmp_crop);
                         rgb.release();
-                        faces[i].setBitmapFaceCrop(faceCroped);
+                        faces[i].setBitmapFaceCrop(bmp_crop);
                         final int finalI1 = i;
                         if (faceCroped != null && faces[i].getConfidence() > 0.3) {
                             Bitmap bmp32 = Bitmap.createScaledBitmap(faceCroped, INPUT_SIZE, INPUT_SIZE, false);
@@ -940,7 +940,7 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
         return bmpGrayscale;
     }
     public native void drawLine(long img);
-    public native void findLandmark(long img);
+    public native String findLandmark(long img);
 }
 
 
