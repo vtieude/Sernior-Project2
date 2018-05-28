@@ -229,10 +229,11 @@ Java_com_example_wilson_humancharacteristics_CameraDetect_CameraDetectActivity_f
         faces.push_back(cv::Rect(0,0,frame->rows, frame->cols));
 //        facemark->getFaces((*frame), faces);
 
+
         if(facemark->fit((*frame),faces, shapes)) {
 
             for (size_t i = 0; i < faces.size(); i++) {
-                cv::rectangle(dst, faces[i], cv::Scalar(255));
+//                cv::rectangle(dst, faces[i], cv::Scalar(255));
                 cv::Point2f leftEye = get_left_eye_centroid(shapes[i]);
                 cv::Point2f rightEye = get_right_eye_centroid(shapes[i]);
 

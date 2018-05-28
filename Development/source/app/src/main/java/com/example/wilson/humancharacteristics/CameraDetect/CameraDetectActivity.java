@@ -816,7 +816,7 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
                         Bitmap bmp32 = Bitmap.createScaledBitmap(faceCroped, INPUT_SIZE, INPUT_SIZE, false);
                         bmp32 =  toGrayscale(bmp32);
                         final String text = emotionHuman.recognizeImage(bmp32).toString();
-                        faces[i].setBitmapFaceCrop(bmp32);
+//                        faces[i].setBitmapFaceCrop(bmp32);
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
@@ -840,6 +840,7 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
                                     textcharacterRecognize.setText("");
                                 }
                                 progress.setVisibility(View.VISIBLE);
+                                image.setEnabled(false);
                                 textwaitmodel.setText(R.string.recognizing_face_value);
                                 textwaitmodel.setVisibility(View.VISIBLE);
                             }
@@ -859,7 +860,7 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
                         rgb.release();
                         faces[i].setBitmapFaceCrop(bmp_crop);
                         final int finalI1 = i;
-                        if (faceCroped != null && faces[i].getConfidence() > 0.3) {
+                        if (faceCroped != null) {
                             Bitmap bmp32 = Bitmap.createScaledBitmap(faceCroped, INPUT_SIZE, INPUT_SIZE, false);
                             faces[i].setAttractive(humanModel.getAttracttiveHuman().recognizeImage(bmp32));
                             faces[i].setTrustworthy(humanModel.getTrustworthyHuman().recognizeImage(bmp32));
@@ -892,10 +893,17 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
 
                                 }
                             });
-
                             checkRecognize = true;
                             checkUpdate = false;
                             initValue = true;
+                        }
+                        else {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    progress.setVisibility(View.INVISIBLE);
+                                 }
+                            });
                         }
                     }
                 }
