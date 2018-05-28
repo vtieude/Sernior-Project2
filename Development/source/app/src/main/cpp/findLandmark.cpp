@@ -199,6 +199,14 @@ void drawLine(cv::Mat& img){
     cv::line(img, cv::Point(img.cols, 0), cv::Point(0, img.rows),cv::Scalar(0,0,255,255), 3);
 }
 
+void drawFacemarks(cv::InputOutputArray image, cv::InputArray points, cv::Scalar color){
+    cv::Mat img = image.getMat();
+    std::vector<cv::Point2f> pts = points.getMat();
+    for(size_t i=0;i<pts.size();i++){
+        circle(img, pts[i],10, color,-1);
+    }
+}
+
 extern "C" {
 
 JNIEXPORT jstring JNICALL
@@ -218,8 +226,8 @@ Java_com_example_wilson_humancharacteristics_CameraDetect_CameraDetectActivity_f
         loadModelStatus = true;
     }
     else{
-//        faces.push_back(cv::Rect(0,0,frame->rows, frame->cols));
-        facemark->getFaces((*frame), faces);
+        faces.push_back(cv::Rect(0,0,frame->rows, frame->cols));
+//        facemark->getFaces((*frame), faces);
 
         if(facemark->fit((*frame),faces, shapes)) {
 
@@ -240,7 +248,7 @@ Java_com_example_wilson_humancharacteristics_CameraDetect_CameraDetectActivity_f
                     status+="0";
             }
             for (unsigned long i = 0; i < faces.size(); i++) {
-                cv::face::drawFacemarks(dst, shapes[i], cv::Scalar(255));
+                drawFacemarks(dst, shapes[i], cv::Scalar(255));
             }
         }
         faces.clear();
