@@ -4,7 +4,9 @@ import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 
 import com.example.wilson.Tensorflow.Classifier;
+import com.example.wilson.Tensorflow.ClassifierEmotion;
 import com.example.wilson.Tensorflow.TensorFlowImageClassifier;
+import com.example.wilson.Tensorflow.TensorFlowImageClassifierEmotion;
 
 import java.util.List;
 
@@ -13,30 +15,30 @@ import java.util.List;
  */
 
 public class HumanEmotion extends BaseHumanCharacteristic {
-    private Classifier classifier;
+    private ClassifierEmotion classifierEmotion;
     private static final String MODEL = "file:///android_asset/emotion.pb";
     private static final String Label= "file:///android_asset/emotion.txt";
     private boolean activeMode;
     public HumanEmotion(final AssetManager assetManager) {
         initTensorFlowAndLoadModel(assetManager);
         setMode(true);
-        setNameModel("TrustWorthy");
+        setNameModel("Emotion");
     }
     void initTensorFlowAndLoadModel(AssetManager assetManager) {
-        classifier = TensorFlowImageClassifier.create(
+        classifierEmotion = TensorFlowImageClassifierEmotion.create(
                 assetManager,
                 MODEL,
                 Label,
-                299,
+                224,
                 IMAGE_MEAN,
                 IMAGE_STD,
-                "pool_3/_reshape",
+                INPUT_NAME,
                 OUTPUT_NAME);
     }
 
     @Override
     public String recognizeImage(Bitmap bitmap) {
-        final List<Classifier.Recognition> results = classifier.recognizeImage(bitmap);
+        final List<ClassifierEmotion.Recognition> results = classifierEmotion.recognizeImage(bitmap);
         String result = results.toString();
         return result;
     }
@@ -53,7 +55,7 @@ public class HumanEmotion extends BaseHumanCharacteristic {
 
     @Override
     public void onDestroy() {
-        classifier.close();
+        classifierEmotion.close();
     }
 
     @Override

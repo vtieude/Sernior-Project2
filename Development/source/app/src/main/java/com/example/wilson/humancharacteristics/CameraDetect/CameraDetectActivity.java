@@ -6,7 +6,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.ColorMatrix;
+import android.graphics.ColorMatrixColorFilter;
 import android.graphics.ImageFormat;
+import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.Rect;
 import android.graphics.RectF;
@@ -41,6 +45,7 @@ import com.example.wilson.humancharacteristics.Setting.SettingActivity;
 import com.example.wilson.humancharacteristics.Storage.StorageActivity;
 import com.example.wilson.humancharacteristics.bean.HumanModel;
 import com.example.wilson.humancharacteristics.model.FaceResult;
+import com.example.wilson.humancharacteristics.model.HumanEmotion;
 import com.example.wilson.humancharacteristics.ui.camera.FaceDetectView;
 import com.example.wilson.humancharacteristics.ui.camera.FaceOverlayView;
 import com.example.wilson.humancharacteristics.utils.CameraErrorCallback;
@@ -119,6 +124,7 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
     private int Id = 0;
     private HumanModel humanModel;
     private String BUNDLE_CAMERA_ID = "camera";
+    private HumanEmotion emotionHuman;
 
 
 
@@ -150,9 +156,10 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
     public ProgressBar progress;
     public TextView textwaitmodel;
     private SharedPreferences setting;
-    public TextView textcharacterRecognize;
+    public TextView textcharacterRecognize, textEmotion;
     private Executor executor = Executors.newSingleThreadExecutor();
     private DrawerLayout drawerLayout;
+    private Boolean checkEmotionModel = false;
     // Used to load the 'native-lib' library on application startup.
     static {
         System.loadLibrary("native-lib");
@@ -193,6 +200,7 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
         getPhotoCamera = findViewById(R.id.getPhoto);
         image = findViewById(R.id.takePhoto);
         textcharacterRecognize = findViewById(R.id.text_characteristic);
+        textEmotion = findViewById(R.id.text_for_emotion);
         image.setEnabled(false);
         // Create and Start the OrientationListener:
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
@@ -200,6 +208,8 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
 
         setting = PreferenceManager.getDefaultSharedPreferences(this);
         MAX_FACE = setting.getInt("amount_face", 1);
+
+
         checkCharateristicsSetting = setting.getBoolean("switch_character", true);
         takePhotoCamera.setOnClickListener(this);
         getPhotoCamera.setOnClickListener(this);
@@ -251,6 +261,8 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
                         }
                     });
                     humanModel = new HumanModel(getAssets());
+                    emotionHuman = new HumanEmotion(getAssets());
+                    checkEmotionModel = setting.getBoolean("switch_emotion", false);
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -320,6 +332,7 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
     protected void onResume() {
         super.onResume();
         MAX_FACE = setting.getInt("amount_face", 1);
+        checkEmotionModel = setting.getBoolean("switch_emotion", false);
         checkCharateristicsSetting = setting.getBoolean("switch_character", true);
         checkRecognize = false;
         saveValue = 0;
@@ -345,6 +358,7 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
     protected void onPause() {
         super.onPause();
         MAX_FACE = setting.getInt("amount_face", 1);
+        checkEmotionModel = setting.getBoolean("switch_emotion", false);
         checkCharateristicsSetting = setting.getBoolean("switch_character", true);
         checkRecognize = false;
         saveValue = 0;
@@ -384,6 +398,7 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
                     humanModel.getThreadHuman().onDestroy();
                     humanModel.getTrustworthyHuman().onDestroy();
                     checkCreateModel = false;
+                    emotionHuman.onDestroy();
                 }
             }
         });
@@ -794,6 +809,29 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
                     //
                     // Crop Face to display in RecylerView
                     //
+                    faceCroped = ImageUtils.cropFace(faces[i], bitmap, rotate);
+
+                    if (checkEmotionModel && numFace == 1 && checkCreateModel) {
+
+                        Bitmap bmp32 = Bitmap.createScaledBitmap(faceCroped, INPUT_SIZE, INPUT_SIZE, false);
+                        bmp32 =  toGrayscale(bmp32);
+                        final String text = emotionHuman.recognizeImage(bmp32).toString();
+                        faces[i].setBitmapFaceCrop(bmp32);
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                textEmotion.setText(text);
+                            }
+                        });
+                    }
+                    else {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                textEmotion.setText("");
+                            }
+                        });
+                    }
                     if((saveValue != numFace || !initValue) && checkCreateModel && checkCharateristicsSetting ){
                         runOnUiThread(new Runnable() {
                             @Override
@@ -806,7 +844,6 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
                                 textwaitmodel.setVisibility(View.VISIBLE);
                             }
                         });
-                        faceCroped = ImageUtils.cropFace(faces[i], bitmap, rotate);
 
                         Mat rgba = new Mat(faceCroped.getHeight(), faceCroped.getWidth(), CvType.CV_8UC4);
                         Bitmap bmp_crop = faceCroped.copy(Bitmap.Config.ARGB_8888, true);
@@ -849,6 +886,7 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
                                     }
                                     else {
                                         textcharacterRecognize.setText("");
+                                        textEmotion.setText("");
                                     }
                                     image.setEnabled(true);
 
@@ -885,6 +923,22 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
         }
     }
 
+    public Bitmap toGrayscale(Bitmap bmpOriginal)
+    {
+        int width, height;
+        height = bmpOriginal.getHeight();
+        width = bmpOriginal.getWidth();
+
+        Bitmap bmpGrayscale = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        Canvas c = new Canvas(bmpGrayscale);
+        Paint paint = new Paint();
+        ColorMatrix cm = new ColorMatrix();
+        cm.setSaturation(0);
+        ColorMatrixColorFilter f = new ColorMatrixColorFilter(cm);
+        paint.setColorFilter(f);
+        c.drawBitmap(bmpOriginal, 0, 0, paint);
+        return bmpGrayscale;
+    }
     public native void drawLine(long img);
     public native void findLandmark(long img);
 }
