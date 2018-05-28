@@ -218,13 +218,13 @@ Java_com_example_wilson_humancharacteristics_CameraDetect_CameraDetectActivity_f
         loadModelStatus = true;
     }
     else{
-//        faces.push_back(cv::Rect(0,0,frame->rows, frame->cols));
-        facemark->getFaces((*frame), faces);
+          faces.push_back(cv::Rect(0,0,frame->rows, frame->cols));
+        //facemark->getFaces((*frame), faces);
 
         if(facemark->fit((*frame),faces, shapes)) {
 
             for (size_t i = 0; i < faces.size(); i++) {
-                cv::rectangle(dst, faces[i], cv::Scalar(255));
+//                cv::rectangle(dst, faces[i], cv::Scalar(255));
                 cv::Point2f leftEye = get_left_eye_centroid(shapes[i]);
                 cv::Point2f rightEye = get_right_eye_centroid(shapes[i]);
 
@@ -240,7 +240,12 @@ Java_com_example_wilson_humancharacteristics_CameraDetect_CameraDetectActivity_f
                     status+="0";
             }
             for (unsigned long i = 0; i < faces.size(); i++) {
-                cv::face::drawFacemarks(dst, shapes[i], cv::Scalar(255));
+
+                for(unsigned long  k = 0; k < shapes.size(); k++)
+                {
+                    circle(dst,shapes[i][k],8, cv::Scalar(255), cv::FILLED);
+                }
+//                cv::face::drawFacemarks(dst, shapes[i], cv::Scalar(255));
             }
         }
         faces.clear();
