@@ -832,6 +832,21 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
                             }
                         });
                     }
+                    Mat rgba = new Mat(faceCroped.getHeight(), faceCroped.getWidth(), CvType.CV_8UC4);
+                    Bitmap bmp_crop = faceCroped.copy(Bitmap.Config.ARGB_8888, true);
+
+                    Utils.bitmapToMat(bmp_crop, rgba);
+
+                    Mat rgb = new Mat(faceCroped.getHeight(), faceCroped.getWidth(), CvType.CV_8UC3);
+                    cvtColor(rgba, rgb, Imgproc.COLOR_RGBA2BGR, 3);
+                    final String text = findLandmark(rgb.getNativeObjAddr());
+
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
+                        }
+                    });
                     if((saveValue != numFace || !initValue) && checkCreateModel && checkCharateristicsSetting ){
                         runOnUiThread(new Runnable() {
                             @Override
@@ -846,14 +861,7 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
                             }
                         });
 
-                        Mat rgba = new Mat(faceCroped.getHeight(), faceCroped.getWidth(), CvType.CV_8UC4);
-                        Bitmap bmp_crop = faceCroped.copy(Bitmap.Config.ARGB_8888, true);
 
-                        Utils.bitmapToMat(bmp_crop, rgba);
-
-                        Mat rgb = new Mat(faceCroped.getHeight(), faceCroped.getWidth(), CvType.CV_8UC3);
-                        cvtColor(rgba, rgb, Imgproc.COLOR_RGBA2BGR, 3);
-                        findLandmark(rgb.getNativeObjAddr());
 //                    drawLine(rgb.getNativeObjAddr());
                         cvtColor(rgb, rgb, Imgproc.COLOR_GRAY2RGBA);
                         Utils.matToBitmap(rgb, bmp_crop);
