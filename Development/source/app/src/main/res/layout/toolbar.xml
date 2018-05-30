@@ -9,51 +9,67 @@
     android:layout_height="wrap_content"
     app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
     app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <ImageButton
-            android:id="@+id/getPhoto"
-            android:layout_width="80dp"
-            android:layout_height="78dp"
-            android:layout_alignTop="@+id/takePhoto"
-            android:layout_gravity="left|bottom"
-            android:layout_marginEnd="237dp"
-            android:layout_toStartOf="@+id/takePhoto"
-            android:clickable="true"
-            android:onClick="getPhotoToDetect"
-            android:src="@mipmap/get_image"
-            tools:ignore="OnClick" />
-
-        <TextView
+        android:layout_height="60dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:weightSum="3"
+        >
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/getPhoto"
-            android:layout_alignParentStart="true"
-            android:layout_marginBottom="22dp"
-            android:layout_marginStart="76dp"
-            android:text="Gallery"
-            android:id="@+id/textView" />
-
-        <TextView
+            android:layout_height="40dp"
+            android:orientation="horizontal"
+            android:layout_weight="1"
+            android:gravity="center||left"
+            >
+            <ImageView
+                android:id="@+id/getPhotasdo"
+                android:layout_width="80dp"
+                android:layout_height="42dp"
+                android:layout_alignTop="@+id/takePhoto"
+                android:layout_gravity="left|bottom"
+                android:paddingRight="40dp"
+                android:layout_toStartOf="@+id/takePhoto"
+                android:clickable="true"
+                android:onClick="getPhotoToDetect"
+                android:src="@drawable/photos"
+                tools:ignore="OnClick" />
+        </LinearLayout>
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/textView"
-            android:layout_alignBottom="@+id/textView"
-            android:layout_toStartOf="@+id/takePhoto"
-            android:text="Save" />
-        <ImageButton
-            android:id="@+id/takePhoto"
+            android:layout_height="50dp"
+            android:orientation="horizontal"
+            android:layout_weight="1"
+            android:gravity="center"
+            >
+            <ImageView
+                android:id="@+id/takePhoto"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentTop="true"
+                android:clickable="true"
+                android:onClick="takePhotoToStore"
+                android:src="@drawable/takeaphoto"
+                tools:ignore="OnClick" />
+        </LinearLayout>
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginTop="6dp"
-            android:clickable="true"
-            android:onClick="takePhotoToStore"
-            android:src="@mipmap/takecamera"
-            tools:ignore="OnClick" />
-    </RelativeLayout>
+            android:layout_height="40dp"
+            android:orientation="horizontal"
+            android:layout_weight="1"
+            android:gravity="center||right"
+            android:layout_marginRight="15dp"
+            >
+            <ImageView
+                android:id="@+id/btnChangeCamera"
+                android:layout_width="80dp"
+                android:layout_height="40dp"
+                android:paddingLeft="40dp"
+                android:src="@drawable/changecamera"
+                />
+        </LinearLayout>
+    </LinearLayout>
 
 </android.support.v7.widget.Toolbar>
