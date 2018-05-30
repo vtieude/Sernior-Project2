@@ -270,10 +270,11 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
                             textwaitmodel.setVisibility(View.INVISIBLE);
                         }
                     });
+                    checkCreateModel = true;
                 } catch (final Exception e) {
                     throw new RuntimeException("Error initializing TensorFlow!", e);
                 }
-                checkCreateModel = true;
+
             }
         });
     }
@@ -347,6 +348,7 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
         }
         mFaceView.setFaces(faces,false);
         textcharacterRecognize.setText("");
+        textEmotion.setText("");
         Log.i(TAG, "onResume");
         startPreview();
     }
@@ -373,6 +375,7 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
         }
         mFaceView.setFaces(faces,false);
         textcharacterRecognize.setText("");
+        textEmotion.setText("");
         Log.i(TAG, "onPause");
         if (mCamera != null) {
             mCamera.stopPreview();
@@ -629,6 +632,7 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
                 @Override
                 public void run() {
                     textcharacterRecognize.setText("");
+                    textEmotion.setText("");
                 }
             });
         }
@@ -812,7 +816,6 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
                     faceCroped = ImageUtils.cropFace(faces[i], bitmap, rotate);
 
                     if (checkEmotionModel && numFace == 1 && checkCreateModel) {
-
                         Bitmap bmp32 = Bitmap.createScaledBitmap(faceCroped, INPUT_SIZE, INPUT_SIZE, false);
                         bmp32 =  toGrayscale(bmp32);
                         final String text = emotionHuman.recognizeImage(bmp32).toString();
@@ -832,21 +835,7 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
                             }
                         });
                     }
-                    Mat rgba = new Mat(faceCroped.getHeight(), faceCroped.getWidth(), CvType.CV_8UC4);
-                    Bitmap bmp_crop = faceCroped.copy(Bitmap.Config.ARGB_8888, true);
 
-                    Utils.bitmapToMat(bmp_crop, rgba);
-
-                    Mat rgb = new Mat(faceCroped.getHeight(), faceCroped.getWidth(), CvType.CV_8UC3);
-                    cvtColor(rgba, rgb, Imgproc.COLOR_RGBA2BGR, 3);
-                    final String text = findLandmark(rgb.getNativeObjAddr());
-
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
-                        }
-                    });
                     if((saveValue != numFace || !initValue) && checkCreateModel && checkCharateristicsSetting ){
                         runOnUiThread(new Runnable() {
                             @Override
@@ -861,12 +850,26 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
                             }
                         });
 
+                        Mat rgba = new Mat(faceCroped.getHeight(), faceCroped.getWidth(), CvType.CV_8UC4);
+                        Bitmap bmp_crop = faceCroped.copy(Bitmap.Config.ARGB_8888, true);
 
+                        Utils.bitmapToMat(bmp_crop, rgba);
+
+                        Mat rgb = new Mat(faceCroped.getHeight(), faceCroped.getWidth(), CvType.CV_8UC3);
+                        cvtColor(rgba, rgb, Imgproc.COLOR_RGBA2BGR, 3);
+                        final String text = findLandmark(rgb.getNativeObjAddr());
+//
+//                        runOnUiThread(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
+//                            }
+//                        });
 //                    drawLine(rgb.getNativeObjAddr());
                         cvtColor(rgb, rgb, Imgproc.COLOR_GRAY2RGBA);
                         Utils.matToBitmap(rgb, bmp_crop);
                         rgb.release();
-                        faces[i].setBitmapFaceCrop(bmp_crop);
+                        faces[i].setBitmapFaceCrop(faceCroped);
                         final int finalI1 = i;
                         if (faceCroped != null) {
                             Bitmap bmp32 = Bitmap.createScaledBitmap(faceCroped, INPUT_SIZE, INPUT_SIZE, false);
@@ -906,10 +909,12 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
                             initValue = true;
                         }
                         else {
+                            checkRecognize =false;
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
                                     progress.setVisibility(View.INVISIBLE);
+                                    textwaitmodel.setVisibility(View.INVISIBLE);
                                  }
                             });
                         }
@@ -931,7 +936,6 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
 
                         if (counter == (Integer.MAX_VALUE - 1000))
                             counter = 0;
-
                         isThreadWorking = false;
 //                    }
                 }
