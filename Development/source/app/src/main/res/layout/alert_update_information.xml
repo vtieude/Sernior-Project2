@@ -26,23 +26,7 @@
             android:id="@+id/input_name_alert"
             />
     </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/teal_50"
-        android:layout_marginBottom="@dimen/margin_top_5dp"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:textColor="@color/colorPrimary"
-            android:text="@string/age"/>
-        <EditText
-            android:layout_width="match_parent"
-            android:id="@+id/input_age_alert"
-            android:textColor="@color/colorPrimary"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

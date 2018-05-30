@@ -65,4 +65,5 @@
     <string name="navigation_start">Navigation</string>
     <string name="click_to_view_more">Click to view more</string>
     <string name="select_more">Select more</string>
+    <string name="recognizing_face_value">Recognizing</string>
 </resources>

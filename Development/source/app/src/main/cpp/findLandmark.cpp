@@ -31,6 +31,10 @@ static cv::Ptr<cv::face::FacemarkKazemi> facemark;
 std::vector<cv::Rect> faces;
 std::vector< std::vector<cv::Point2f> > shapes;
 
+#define PI 3.14159265
+
+
+
 cv::Mat norm_0_255(cv::InputArray _src) {
     cv::Mat src = _src.getMat();
     // Create and return normalized image:
@@ -54,6 +58,75 @@ std::string intToString(int number){
     std::stringstream ss;
     ss << number;
     return ss.str();
+}
+
+cv::Point2f get_left_eye_centroid(const std::vector<cv::Point2f> & landmark){
+    cv::Point2f center;
+    float x, y;
+    for (int i = 36; i <= 41; ++i)
+    {
+        x += landmark[i].x;
+        y += landmark[i].y;
+    }
+
+    center.x = x / 6.0;
+    center.y = y / 6.0;
+
+    return center;
+}
+
+cv::Point2f get_right_eye_centroid(const std::vector<cv::Point2f> & landmark){
+    cv::Point2f center;
+    float x, y;
+    for (int i = 42; i <= 47; ++i)
+    {
+        x += landmark[i].x;
+        y += landmark[i].y;
+    }
+
+    center.x = x / 6.0;
+    center.y = y / 6.0;
+
+    return center;
+}
+
+bool check_rotate_face(const std::vector<cv::Point2f> landmark){
+
+    float distance = 0;
+    cv::Point2f vector_eyes = cv::Point2f(landmark[29].x - landmark[27].x, landmark[29].y-landmark[27].y);
+    float denominator = sqrt(vector_eyes.x*vector_eyes.x + vector_eyes.y*vector_eyes.y);
+
+    cv::Point2f coor_mid_eyes = landmark[27];
+
+    for (int i = 27; i <= 35; ++i)
+    {
+        // calculated eviation nose to eyes axis line
+        distance += (vector_eyes.y*landmark[i].x - vector_eyes.x*landmark[i].y
+                     - vector_eyes.y*coor_mid_eyes.x + vector_eyes.x*coor_mid_eyes.y) / denominator;
+    }
+
+    float dif = abs(distance);
+
+    if(dif > 10.0)
+        return true;
+
+    return false;
+}
+
+bool check_tilted_face(const cv::Point2f& vector_1, const cv::Point2f& vector_2){
+
+    float numerator = vector_1.x*vector_2.x + vector_1.y*vector_2.y;
+
+    float denominator =  sqrt(vector_1.x*vector_1.x + vector_1.y*vector_1.y)
+                         *sqrt(vector_2.x*vector_2.x + vector_2.y*vector_2.y);
+
+    float ratio = numerator/denominator;
+
+    float angle =  acos(ratio)* 180.0 / PI;;
+    if (angle >= 5){
+        return true;
+    }
+    return false;
 }
 
 static bool myDetector(cv::InputArray image, cv::OutputArray faces, cv::CascadeClassifier *face_cascade)
@@ -126,15 +199,25 @@ void drawLine(cv::Mat& img){
     cv::line(img, cv::Point(img.cols, 0), cv::Point(0, img.rows),cv::Scalar(0,0,255,255), 3);
 }
 
+void drawFacemarks(cv::InputOutputArray image, cv::InputArray points, cv::Scalar color){
+    cv::Mat img = image.getMat();
+    std::vector<cv::Point2f> pts = points.getMat();
+    for(size_t i=0;i<pts.size();i++){
+        circle(img, pts[i],10, color,-1);
+    }
+}
+
 extern "C" {
 
-JNIEXPORT void JNICALL
+JNIEXPORT jstring JNICALL
 Java_com_example_wilson_humancharacteristics_CameraDetect_CameraDetectActivity_findLandmark(
         JNIEnv *env,
         jobject /* this */,
         jlong imgMat) {
     cv::Mat *frame = (cv::Mat*) imgMat;
     cv::Mat dst = cv::Mat::zeros((*frame).size(), CV_8UC1);
+    std::string status = "";
+
     if(!loadModelStatus){
         face_cascade_.load("/sdcard/data/lbpcascade_frontalface_improved.xml");
         facemark = cv::face::FacemarkKazemi::create(params);
@@ -143,23 +226,31 @@ Java_com_example_wilson_humancharacteristics_CameraDetect_CameraDetectActivity_f
         loadModelStatus = true;
     }
     else{
-        faces.push_back(cv::Rect(0,0,frame->rows, frame->cols));
-//        facemark->getFaces((*frame),faces);
+        facemark->getFaces((*frame),faces);
         if(facemark->fit((*frame),faces, shapes)) {
-//            (*frame) = cv::Mat::zeros((*frame).size(), CV_8UC1);
-
             for (size_t i = 0; i < faces.size(); i++) {
-                cv::rectangle((*frame), faces[i], cv::Scalar(255, 0, 0));
+                cv::Point2f leftEye = get_left_eye_centroid(shapes[i]);
+                cv::Point2f rightEye = get_right_eye_centroid(shapes[i]);
+                cv::Point2f vector_eyes = cv::Point2f(rightEye.x-leftEye.x,
+                                                      rightEye.y-leftEye.y);
+                if(check_tilted_face(cv::Point2f(1,0),  vector_eyes)){
+                    status+="1";
+                } else
+                    status+="0";
+                if(check_rotate_face(shapes[i])){
+                    status+="1";
+                } else
+                    status+="0";
             }
+
             for (unsigned long i = 0; i < faces.size(); i++) {
-                for (unsigned long k = 0; k < shapes[i].size(); k++)
-                    cv::circle((*frame), shapes[i][k], 5, cv::Scalar(0, 0, 255), cv::FILLED);
-                cv::face::drawFacemarks(dst, shapes[i], cv::Scalar(255));
+                drawFacemarks(dst, shapes[i], cv::Scalar(255));
             }
         }
         faces.clear();
     }
     (*frame) = dst.clone();
+    return env->NewStringUTF(status.c_str());
 }
 
 JNIEXPORT void JNICALL

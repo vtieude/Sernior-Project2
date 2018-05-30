@@ -1,2 +1,3 @@
-daisy
-roses
+angry
+happy
+neutral

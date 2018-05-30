@@ -11,6 +11,7 @@ import com.example.wilson.humancharacteristics.model.HumanCharacteristicExtrover
 import com.example.wilson.humancharacteristics.model.HumanCharacteristicLikeability;
 import com.example.wilson.humancharacteristics.model.HumanCharacteristicThread;
 import com.example.wilson.humancharacteristics.model.HumanCharacteristicTrustworthy;
+import com.example.wilson.humancharacteristics.model.HumanEmotion;
 
 import java.io.Serializable;
 

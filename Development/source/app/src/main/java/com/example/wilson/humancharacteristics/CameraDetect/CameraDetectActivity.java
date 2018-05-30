@@ -6,7 +6,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.ColorMatrix;
+import android.graphics.ColorMatrixColorFilter;
 import android.graphics.ImageFormat;
+import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.Rect;
 import android.graphics.RectF;
@@ -41,6 +45,7 @@ import com.example.wilson.humancharacteristics.Setting.SettingActivity;
 import com.example.wilson.humancharacteristics.Storage.StorageActivity;
 import com.example.wilson.humancharacteristics.bean.HumanModel;
 import com.example.wilson.humancharacteristics.model.FaceResult;
+import com.example.wilson.humancharacteristics.model.HumanEmotion;
 import com.example.wilson.humancharacteristics.ui.camera.FaceDetectView;
 import com.example.wilson.humancharacteristics.ui.camera.FaceOverlayView;
 import com.example.wilson.humancharacteristics.utils.CameraErrorCallback;
@@ -88,7 +93,7 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
     private int mDisplayRotation;
     private int mDisplayOrientation;
     private int mPreDisplayRotation = 0;
-
+    private boolean checkRecognize = false;
     private int previewWidth;
     private int previewHeight;
 
@@ -119,6 +124,7 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
     private int Id = 0;
     private HumanModel humanModel;
     private String BUNDLE_CAMERA_ID = "camera";
+    private HumanEmotion emotionHuman;
 
 
 
@@ -146,11 +152,14 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
     private String likeabilityResult = "";
     private String competentResult = "";
     private String extrovertedResult = "";
+    private Boolean checkCharateristicsSetting = false;
     public ProgressBar progress;
     public TextView textwaitmodel;
-    public TextView textcharacterRecognize;
+    private SharedPreferences setting;
+    public TextView textcharacterRecognize, textEmotion;
     private Executor executor = Executors.newSingleThreadExecutor();
     private DrawerLayout drawerLayout;
+    private Boolean checkEmotionModel = false;
     // Used to load the 'native-lib' library on application startup.
     static {
         System.loadLibrary("native-lib");
@@ -191,13 +200,17 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
         getPhotoCamera = findViewById(R.id.getPhoto);
         image = findViewById(R.id.takePhoto);
         textcharacterRecognize = findViewById(R.id.text_characteristic);
+        textEmotion = findViewById(R.id.text_for_emotion);
         image.setEnabled(false);
         // Create and Start the OrientationListener:
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
 
 
-        SharedPreferences setting = PreferenceManager.getDefaultSharedPreferences(this);
+        setting = PreferenceManager.getDefaultSharedPreferences(this);
         MAX_FACE = setting.getInt("amount_face", 1);
+
+
+        checkCharateristicsSetting = setting.getBoolean("switch_character", true);
         takePhotoCamera.setOnClickListener(this);
         getPhotoCamera.setOnClickListener(this);
         handler = new Handler();
@@ -248,6 +261,8 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
                         }
                     });
                     humanModel = new HumanModel(getAssets());
+                    emotionHuman = new HumanEmotion(getAssets());
+                    checkEmotionModel = setting.getBoolean("switch_emotion", false);
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -255,10 +270,11 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
                             textwaitmodel.setVisibility(View.INVISIBLE);
                         }
                     });
+                    checkCreateModel = true;
                 } catch (final Exception e) {
                     throw new RuntimeException("Error initializing TensorFlow!", e);
                 }
-                checkCreateModel = true;
+
             }
         });
     }
@@ -316,7 +332,23 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
     @Override
     protected void onResume() {
         super.onResume();
-
+        MAX_FACE = setting.getInt("amount_face", 1);
+        checkEmotionModel = setting.getBoolean("switch_emotion", false);
+        checkCharateristicsSetting = setting.getBoolean("switch_character", true);
+        checkRecognize = false;
+        saveValue = 0;
+        takePhotoCamera.setOnClickListener(this);
+        getPhotoCamera.setOnClickListener(this);
+        handler = new Handler();
+        faces = new FaceResult[MAX_FACE];
+        faces_previous = new FaceResult[MAX_FACE];
+        for (int i = 0; i < MAX_FACE; i++) {
+            faces[i] = new FaceResult(this.getApplicationContext());
+            faces_previous[i] = new FaceResult(this.getApplicationContext());
+        }
+        mFaceView.setFaces(faces,false);
+        textcharacterRecognize.setText("");
+        textEmotion.setText("");
         Log.i(TAG, "onResume");
         startPreview();
     }
@@ -327,6 +359,23 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
     @Override
     protected void onPause() {
         super.onPause();
+        MAX_FACE = setting.getInt("amount_face", 1);
+        checkEmotionModel = setting.getBoolean("switch_emotion", false);
+        checkCharateristicsSetting = setting.getBoolean("switch_character", true);
+        checkRecognize = false;
+        saveValue = 0;
+        takePhotoCamera.setOnClickListener(this);
+        getPhotoCamera.setOnClickListener(this);
+        handler = new Handler();
+        faces = new FaceResult[MAX_FACE];
+        faces_previous = new FaceResult[MAX_FACE];
+        for (int i = 0; i < MAX_FACE; i++) {
+            faces[i] = new FaceResult(this.getApplicationContext());
+            faces_previous[i] = new FaceResult(this.getApplicationContext());
+        }
+        mFaceView.setFaces(faces,false);
+        textcharacterRecognize.setText("");
+        textEmotion.setText("");
         Log.i(TAG, "onPause");
         if (mCamera != null) {
             mCamera.stopPreview();
@@ -352,6 +401,7 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
                     humanModel.getThreadHuman().onDestroy();
                     humanModel.getTrustworthyHuman().onDestroy();
                     checkCreateModel = false;
+                    emotionHuman.onDestroy();
                 }
             }
         });
@@ -582,6 +632,7 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
                 @Override
                 public void run() {
                     textcharacterRecognize.setText("");
+                    textEmotion.setText("");
                 }
             });
         }
@@ -591,6 +642,8 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         Intent myIntent = null;
+        progress.setVisibility(View.INVISIBLE);
+        textwaitmodel.setVisibility(View.INVISIBLE);
         switch (item.getItemId()) {
             case R.id.camera_start:
                 break;
@@ -634,7 +687,6 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
         }
 
         public void run() {
-
             float aspect = (float) previewHeight / (float) previewWidth;
             int w = prevSettingWidth;
             int h = (int) (prevSettingWidth * aspect);
@@ -763,30 +815,63 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
                     //
                     faceCroped = ImageUtils.cropFace(faces[i], bitmap, rotate);
 
-                    Mat rgba = new Mat(faceCroped.getHeight(), faceCroped.getWidth(), CvType.CV_8UC4);
-                    Bitmap bmp_crop = faceCroped.copy(Bitmap.Config.ARGB_8888, true);
+                    if (checkEmotionModel && numFace == 1 && checkCreateModel) {
+                        Bitmap bmp32 = Bitmap.createScaledBitmap(faceCroped, INPUT_SIZE, INPUT_SIZE, false);
+                        bmp32 =  toGrayscale(bmp32);
+                        final String text = emotionHuman.recognizeImage(bmp32).toString();
+//                        faces[i].setBitmapFaceCrop(bmp32);
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                textEmotion.setText(text);
+                            }
+                        });
+                    }
+                    else {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                textEmotion.setText("");
+                            }
+                        });
+                    }
 
-                    Utils.bitmapToMat(bmp_crop, rgba);
+                    if((saveValue != numFace || !initValue) && checkCreateModel && checkCharateristicsSetting ){
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (numFace > 1) {
+                                    textcharacterRecognize.setText("");
+                                }
+                                progress.setVisibility(View.VISIBLE);
+                                image.setEnabled(false);
+                                textwaitmodel.setText(R.string.recognizing_face_value);
+                                textwaitmodel.setVisibility(View.VISIBLE);
+                            }
+                        });
 
-                    Mat rgb = new Mat(faceCroped.getHeight(), faceCroped.getWidth(), CvType.CV_8UC3);
-                    cvtColor(rgba, rgb, Imgproc.COLOR_RGBA2BGR, 3);
-                    findLandmark(rgb.getNativeObjAddr());
+                        Mat rgba = new Mat(faceCroped.getHeight(), faceCroped.getWidth(), CvType.CV_8UC4);
+                        Bitmap bmp_crop = faceCroped.copy(Bitmap.Config.ARGB_8888, true);
+
+                        Utils.bitmapToMat(bmp_crop, rgba);
+
+                        Mat rgb = new Mat(faceCroped.getHeight(), faceCroped.getWidth(), CvType.CV_8UC3);
+                        cvtColor(rgba, rgb, Imgproc.COLOR_RGBA2BGR, 3);
+                        final String text = findLandmark(rgb.getNativeObjAddr());
+//
+//                        runOnUiThread(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
+//                            }
+//                        });
 //                    drawLine(rgb.getNativeObjAddr());
-                    cvtColor(rgb, rgb, Imgproc.COLOR_GRAY2RGBA);
-                    Utils.matToBitmap(rgb, bmp_crop);
-                    rgb.release();
-                    faces[i].setBitmapFaceCrop(faceCroped);
-                    final int finalI1 = i;
-//                    runOnUiThread(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            mFaceDetectView.setFace(faces[finalI1]);
-//                        }
-//                    });
-
-                    if(saveValue != numFace && checkCreateModel == true || !initValue  && checkCreateModel == true ){
-
-                        if (faceCroped != null && faces[i].getConfidence() > 0.3) {
+                        cvtColor(rgb, rgb, Imgproc.COLOR_GRAY2RGBA);
+                        Utils.matToBitmap(rgb, bmp_crop);
+                        rgb.release();
+                        faces[i].setBitmapFaceCrop(faceCroped);
+                        final int finalI1 = i;
+                        if (faceCroped != null) {
                             Bitmap bmp32 = Bitmap.createScaledBitmap(faceCroped, INPUT_SIZE, INPUT_SIZE, false);
                             faces[i].setAttractive(humanModel.getAttracttiveHuman().recognizeImage(bmp32));
                             faces[i].setTrustworthy(humanModel.getTrustworthyHuman().recognizeImage(bmp32));
@@ -799,38 +884,47 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
+                                    progress.setVisibility(View.INVISIBLE);
+                                    textwaitmodel.setVisibility(View.INVISIBLE);
                                     if (image.getVisibility() == View.INVISIBLE) {
                                         image.setVisibility(View.VISIBLE);
                                     }
-                                    textcharacterRecognize.setText(
-                                        faces[finalI].getAttracttiveDescription()+". "+faces[finalI].getTrustworthyDescription()+"\n"+
-                                        faces[finalI].getDominantDescription()   +". "+faces[finalI].getThreadDescription()+"\n"+
-                                        faces[finalI].getLikeabilityDescription()+". "+faces[finalI].getCompetentDescription()+"\n"+
-                                        faces[finalI].getExtrovertedDescription());
-////                                    image.setEnabled(true);
-//                                      Toast.makeText(getApplicationContext(),  faces[finalI].getAttractive().substring(1,2),
-//                                            Toast.LENGTH_SHORT).show();
-
+                                    if (numFace == 1) {
+                                        textcharacterRecognize.setText(
+                                            faces[finalI].getAttracttiveDescription()+". "+faces[finalI].getTrustworthyDescription()+"\n"+
+                                                    faces[finalI].getDominantDescription()   +". "+faces[finalI].getThreadDescription()+"\n"+
+                                                    faces[finalI].getLikeabilityDescription()+". "+faces[finalI].getCompetentDescription()+"\n"+
+                                                    faces[finalI].getExtrovertedDescription());
+                                    }
+                                    else {
+                                        textcharacterRecognize.setText("");
+                                        textEmotion.setText("");
+                                    }
                                     image.setEnabled(true);
+
                                 }
                             });
-
+                            checkRecognize = true;
                             checkUpdate = false;
                             initValue = true;
+                        }
+                        else {
+                            checkRecognize =false;
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    progress.setVisibility(View.INVISIBLE);
+                                    textwaitmodel.setVisibility(View.INVISIBLE);
+                                 }
+                            });
                         }
                     }
                 }
             }
-
             saveValue = numFace;
-
             handler.post(new Runnable() {
                 public void run() {
-//                    isThreadWorking = false;
-//                    if(checkCreateModel == true){
-                        //send face to FaceView to draw rect
-                        mFaceView.setFaces(faces, checkCreateModel);
-
+                        mFaceView.setFaces(faces, checkRecognize);
                         //calculate FPS
                         end = System.currentTimeMillis();
                         counter++;
@@ -842,7 +936,6 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
 
                         if (counter == (Integer.MAX_VALUE - 1000))
                             counter = 0;
-
                         isThreadWorking = false;
 //                    }
                 }
@@ -850,8 +943,24 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
         }
     }
 
+    public Bitmap toGrayscale(Bitmap bmpOriginal)
+    {
+        int width, height;
+        height = bmpOriginal.getHeight();
+        width = bmpOriginal.getWidth();
+
+        Bitmap bmpGrayscale = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        Canvas c = new Canvas(bmpGrayscale);
+        Paint paint = new Paint();
+        ColorMatrix cm = new ColorMatrix();
+        cm.setSaturation(0);
+        ColorMatrixColorFilter f = new ColorMatrixColorFilter(cm);
+        paint.setColorFilter(f);
+        c.drawBitmap(bmpOriginal, 0, 0, paint);
+        return bmpGrayscale;
+    }
     public native void drawLine(long img);
-    public native void findLandmark(long img);
+    public native String findLandmark(long img);
 }
 
 

@@ -66,13 +66,13 @@ public interface ClassifierEmotion {
             String resultString = "";
             float percentConfidence = 1;
             if (id != null) {
-                percentConfidence = (float) ((Integer.parseInt(id) + 1) / 7.0);
+//                percentConfidence = (float) ((Integer.parseInt(id) + 1) / 7.0);
 //                resultString += id + " " + percentConfidence;
             }
 
-//            if (title != null) {
-//                resultString += title + " ";
-//            }
+            if (title != null) {
+                resultString += title + " ";
+            }
 
             if (confidence != null) {
                 resultString += String.valueOf(id);
@@ -81,7 +81,7 @@ public interface ClassifierEmotion {
 //            if (location != null) {
 //                resultString += location + " ";
 //            }
-            return id;
+            return resultString;
 
 //            return resultString.trim();
         }

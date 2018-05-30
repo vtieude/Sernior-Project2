@@ -101,11 +101,11 @@ public class SettingActivity extends AppCompatActivity implements NavigationView
     public void defaultSetting() {
         SettingScreen settingScreen = new SettingScreen();
         prefEditor = setting.edit();
-        prefEditor.putBoolean("switch_age",true);
-        prefEditor.putBoolean("switch_gender",true);
-        prefEditor.putBoolean("switch_character",false);
+        prefEditor.putBoolean("switch_age",false);
+        prefEditor.putBoolean("switch_gender",false);
+        prefEditor.putBoolean("switch_character",true);
         prefEditor.putBoolean("switch_emotion",false);
-        prefEditor.putInt("amount_face", 5);
+        prefEditor.putInt("amount_face", 1);
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.GINGERBREAD) {
             prefEditor.apply();
         } else {
@@ -169,12 +169,12 @@ public class SettingActivity extends AppCompatActivity implements NavigationView
 
         public void defaultValue() {
             switchAge.setChecked(false);
-            switchAge.setChecked(true);
-            switchCharacteristic.setChecked(false);
+            switchAge.setChecked(false);
+            switchCharacteristic.setChecked(true);
             switchEmotion.setChecked(false);
-            switchGender.setChecked(true);
-            seekBarAmount.setDefaultValue(5);
-            seekBarAmount.setCurrentValue(5);
+            switchGender.setChecked(false);
+            seekBarAmount.setDefaultValue(1);
+            seekBarAmount.setCurrentValue(1);
         }
     }
 }

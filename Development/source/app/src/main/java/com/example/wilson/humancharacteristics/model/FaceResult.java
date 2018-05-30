@@ -162,19 +162,22 @@ public class FaceResult extends Object {
     }
 
     public String getAttracttiveDescription(){
-        int value = Integer.parseInt(this.attracttiveHuman.substring(1,2));
-        String description = "";
-        if( value >= 0 && value <= 2 ){
-            description = context.getString(R.string.attractive_am3_am2);
+        if (this.attracttiveHuman.length() > 1) {
+            int value = Integer.parseInt(this.attracttiveHuman.substring(1,2));
+            String description = "";
+            if( value >= 0 && value <= 2 ){
+                description = context.getString(R.string.attractive_am3_am2);
+            }
+            else if( value == 3){
+                description = context.getString(R.string.attractive_am1_1);
+            }
+            else
+            {
+                description = context.getString(R.string.attractive_2_3);
+            }
+            return description;
         }
-        else if( value == 3){
-            description = context.getString(R.string.attractive_am1_1);
-        }
-        else
-        {
-            description = context.getString(R.string.attractive_2_3);
-        }
-        return description;
+      return "";
     }
 
     public void setCompetnent(String competentHuman){
@@ -187,18 +190,22 @@ public class FaceResult extends Object {
 
 
     public String getCompetentDescription(){
-        int value = Integer.parseInt(this.competentHuman.substring(1,2));
         String description = "";
-        if( value >= 0 && value <= 2 ){
-            description = context.getString(R.string.competent_am3_am2);
+
+        if (this.competentHuman.length() > 1) {
+            int value = Integer.parseInt(this.competentHuman.substring(1,2));
+            if( value >= 0 && value <= 2 ){
+                description = context.getString(R.string.competent_am3_am2);
+            }
+            else if( value == 3){
+                description = context.getString(R.string.competent_am1_1);
+            }
+            else
+            {
+                description = context.getString(R.string.competent_2_3);
+            }
         }
-        else if( value == 3){
-            description = context.getString(R.string.competent_am1_1);
-        }
-        else
-        {
-            description = context.getString(R.string.competent_2_3);
-        }
+
         return description;
     }
 
@@ -208,17 +215,20 @@ public class FaceResult extends Object {
 
 
     public String getDominantDescription(){
-        int value = Integer.parseInt(this.dominantHuman.substring(1,2));
         String description = "";
-        if( value >= 0 && value <= 2 ){
-            description = context.getString(R.string.dominant_am3_am2);
-        }
-        else if( value == 3){
-            description = context.getString(R.string.dominant_am1_1);
-        }
-        else
-        {
-            description = context.getString(R.string.dominant_2_3);
+
+        if (this.dominantHuman.length() > 1) {
+            int value = Integer.parseInt(this.dominantHuman.substring(1,2));
+            if( value >= 0 && value <= 2 ){
+                description = context.getString(R.string.dominant_am3_am2);
+            }
+            else if( value == 3){
+                description = context.getString(R.string.dominant_am1_1);
+            }
+            else
+            {
+                description = context.getString(R.string.dominant_2_3);
+            }
         }
         return description;
     }
@@ -229,18 +239,21 @@ public class FaceResult extends Object {
 
 
     public String getExtrovertedDescription(){
-        int value = Integer.parseInt(this.extrovertedHuman.substring(1,2));
         String description = "";
-        if( value >= 0 && value <= 2 ){
-            description = context.getString(R.string.extroverted_am3_am2);
+        if (this.extrovertedHuman.length() > 1) {
+            int value = Integer.parseInt(this.extrovertedHuman.substring(1,2));
+            if( value >= 0 && value <= 2 ){
+                description = context.getString(R.string.extroverted_am3_am2);
+            }
+            else if( value == 3){
+                description = context.getString(R.string.extroverted_am1_1);
+            }
+            else
+            {
+                description = context.getString(R.string.extroverted_2_3);
+            }
         }
-        else if( value == 3){
-            description = context.getString(R.string.extroverted_am1_1);
-        }
-        else
-        {
-            description = context.getString(R.string.extroverted_2_3);
-        }
+
         return description;
     }
 
@@ -250,17 +263,19 @@ public class FaceResult extends Object {
 
 
     public String getLikeabilityDescription(){
-        int value = Integer.parseInt(this.likeabilityHuman.substring(1,2));
         String description = "";
-        if( value >= 0 && value <= 2 ){
-            description = context.getString(R.string.likeability_am3_am2);
-        }
-        else if( value == 3){
-            description = context.getString(R.string.likeability_am1_1);
-        }
-        else
-        {
-            description = context.getString(R.string.likeability_2_3);
+        if (this.likeabilityHuman.length() > 1) {
+            int value = Integer.parseInt(this.likeabilityHuman.substring(1,2));
+            if( value >= 0 && value <= 2 ){
+                description = context.getString(R.string.likeability_am3_am2);
+            }
+            else if( value == 3){
+                description = context.getString(R.string.likeability_am1_1);
+            }
+            else
+            {
+                description = context.getString(R.string.likeability_2_3);
+            }
         }
         return description;
     }
@@ -271,17 +286,20 @@ public class FaceResult extends Object {
 
 
     public String getThreadDescription(){
-        int value = Integer.parseInt(this.threadHuman.substring(1,2));
         String description = "";
-        if( value >= 0 && value <= 2 ){
-            description = context.getString(R.string.thread_am3_am2);
-        }
-        else if( value == 3){
-            description = context.getString(R.string.thread_am1_1);
-        }
-        else
-        {
-            description = context.getString(R.string.thread_2_3);
+        if (this.threadHuman.length() >1) {
+            int value = Integer.parseInt(this.threadHuman.substring(1,2));
+
+            if( value >= 0 && value <= 2 ){
+                description = context.getString(R.string.thread_am3_am2);
+            }
+            else if( value == 3){
+                description = context.getString(R.string.thread_am1_1);
+            }
+            else
+            {
+                description = context.getString(R.string.thread_2_3);
+            }
         }
         return description;
     }
@@ -292,19 +310,22 @@ public class FaceResult extends Object {
 
 
     public String getTrustworthyDescription(){
-        int value = Integer.parseInt(this.trustworthyHuman.substring(1,2));
-        String description = "";
-        if( value >= 0 && value <= 2 ){
-            description = context.getString(R.string.trustworthy_am3_am2);
+        if (this.trustworthyHuman.length() > 1) {
+            int value = Integer.parseInt(this.trustworthyHuman.substring(1,2));
+            String description = "";
+            if( value >= 0 && value <= 2 ){
+                description = context.getString(R.string.trustworthy_am3_am2);
+            }
+            else if( value == 3){
+                description = context.getString(R.string.trustworthy_am1_1);
+            }
+            else
+            {
+                description = context.getString(R.string.trustworthy_2_3);
+            }
+            return description;
         }
-        else if( value == 3){
-            description = context.getString(R.string.trustworthy_am1_1);
-        }
-        else
-        {
-            description = context.getString(R.string.trustworthy_2_3);
-        }
-        return description;
+        return "";
     }
 
     public void setCountCharacters(int number){ this.countCharacters = number; }
