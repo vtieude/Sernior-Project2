@@ -57,6 +57,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -139,10 +140,10 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
 
     private boolean checkCreateModel = false;
     private boolean checkUpdate = true;
-    private ImageButton takePhotoCamera;
-    private ImageButton getPhotoCamera;
+    private ImageView takePhotoCameraGallery;
+    private ImageView changeCamera;
 
-    private ImageButton image;
+    private ImageView saveImageDetect;
     private static final int INPUT_SIZE = 224;
 
     private String attracttiveResult = "";
@@ -196,12 +197,12 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
         mFaceDetectView = new FaceDetectView(this);
         addContentView(mFaceView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         addContentView(mFaceDetectView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        takePhotoCamera = findViewById(R.id.takePhoto);
-        getPhotoCamera = findViewById(R.id.getPhoto);
-        image = findViewById(R.id.takePhoto);
+        takePhotoCameraGallery = findViewById(R.id.getPhotoGalary);
+        changeCamera = findViewById(R.id.btnChangeCamera);
+        saveImageDetect = findViewById(R.id.takePhoto);
         textcharacterRecognize = findViewById(R.id.text_characteristic);
         textEmotion = findViewById(R.id.text_for_emotion);
-        image.setEnabled(false);
+        saveImageDetect.setEnabled(false);
         // Create and Start the OrientationListener:
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
 
@@ -211,8 +212,9 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
 
 
         checkCharateristicsSetting = setting.getBoolean("switch_character", true);
-        takePhotoCamera.setOnClickListener(this);
-        getPhotoCamera.setOnClickListener(this);
+        takePhotoCameraGallery.setOnClickListener(this);
+        changeCamera.setOnClickListener(this);
+        saveImageDetect.setOnClickListener(this);
         handler = new Handler();
         faces = new FaceResult[MAX_FACE];
         faces_previous = new FaceResult[MAX_FACE];
@@ -304,23 +306,6 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
             case android.R.id.home:
                 super.onBackPressed();
                 return true;
-
-            case R.id.switchCam:
-
-                if (numberOfCameras == 1) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                    builder.setTitle("Switch Camera").setMessage("Your device have one camera").setNeutralButton("Close", null);
-                    AlertDialog alert = builder.create();
-                    alert.show();
-                    return true;
-                }
-                cameraId = (cameraId + 1) % numberOfCameras;
-                if (checkCreateModel == true){
-                    recreate();
-                    checkCreateModel = false;
-                    return true;
-                }
-                else return false;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -337,8 +322,9 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
         checkCharateristicsSetting = setting.getBoolean("switch_character", true);
         checkRecognize = false;
         saveValue = 0;
-        takePhotoCamera.setOnClickListener(this);
-        getPhotoCamera.setOnClickListener(this);
+        takePhotoCameraGallery.setOnClickListener(this);
+        changeCamera.setOnClickListener(this);
+        saveImageDetect.setOnClickListener(this);
         handler = new Handler();
         faces = new FaceResult[MAX_FACE];
         faces_previous = new FaceResult[MAX_FACE];
@@ -364,8 +350,9 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
         checkCharateristicsSetting = setting.getBoolean("switch_character", true);
         checkRecognize = false;
         saveValue = 0;
-        takePhotoCamera.setOnClickListener(this);
-        getPhotoCamera.setOnClickListener(this);
+        takePhotoCameraGallery.setOnClickListener(this);
+        changeCamera.setOnClickListener(this);
+        saveImageDetect.setOnClickListener(this);
         handler = new Handler();
         faces = new FaceResult[MAX_FACE];
         faces_previous = new FaceResult[MAX_FACE];
@@ -595,6 +582,19 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
     public  void onClick(View v) {
         Intent mIntent = null;
         switch (v.getId()) {
+            case R.id.btnChangeCamera:
+                if (numberOfCameras == 1) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                    builder.setTitle("Switch Camera").setMessage("Your device have one camera").setNeutralButton("Close", null);
+                    AlertDialog alert = builder.create();
+                    alert.show();
+                }
+                cameraId = (cameraId + 1) % numberOfCameras;
+                if (checkCreateModel == true){
+                    recreate();
+                    checkCreateModel = false;
+                }
+                break;
             case R.id.takePhoto:
                 try {
                     myAsyncTask = new MyAsyncTask(this);
@@ -605,7 +605,7 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
                 }
                 break;
 
-            case R.id.getPhoto:
+            case R.id.getPhotoGalary:
                 try {
                     if(checkCreateModel){
                         mIntent = new Intent(CameraDetectActivity.this, PhotoDetectActivity.class);
@@ -836,7 +836,7 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
                         });
                     }
 
-                    if((saveValue != numFace || !initValue) && checkCreateModel && checkCharateristicsSetting ){
+                    if((saveValue != numFace || !initValue) && checkCreateModel && checkCharateristicsSetting && numFace != 0 ){
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
@@ -844,7 +844,7 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
                                     textcharacterRecognize.setText("");
                                 }
                                 progress.setVisibility(View.VISIBLE);
-                                image.setEnabled(false);
+                                saveImageDetect.setEnabled(false);
                                 textwaitmodel.setText(R.string.recognizing_face_value);
                                 textwaitmodel.setVisibility(View.VISIBLE);
                             }
@@ -886,8 +886,8 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
                                 public void run() {
                                     progress.setVisibility(View.INVISIBLE);
                                     textwaitmodel.setVisibility(View.INVISIBLE);
-                                    if (image.getVisibility() == View.INVISIBLE) {
-                                        image.setVisibility(View.VISIBLE);
+                                    if (saveImageDetect.getVisibility() == View.INVISIBLE) {
+                                        saveImageDetect.setVisibility(View.VISIBLE);
                                     }
                                     if (numFace == 1) {
                                         textcharacterRecognize.setText(
@@ -900,7 +900,7 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
                                         textcharacterRecognize.setText("");
                                         textEmotion.setText("");
                                     }
-                                    image.setEnabled(true);
+                                    saveImageDetect.setEnabled(true);
 
                                 }
                             });

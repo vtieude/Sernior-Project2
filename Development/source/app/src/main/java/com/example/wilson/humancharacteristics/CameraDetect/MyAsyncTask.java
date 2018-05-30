@@ -40,7 +40,7 @@ import java.util.Date;
 public class MyAsyncTask extends AsyncTask<FaceResult, FaceResult, FaceResult[]> {
     public Activity activityScren;
     public ProgressBar progress;
-    ImageButton imageButton;
+    ImageView imageButton;
     private int MAX_LENGTH = 20;
     Boolean check = false;
     private int max_face = 0;

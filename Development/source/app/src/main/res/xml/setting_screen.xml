@@ -3,7 +3,7 @@
     xmlns:sample="http://schemas.android.com/apk/res-auto"
     android:key="setting_pre">
     <SwitchPreference
-        android:title="@string/you_age"
+        android:title="@string/age"
         android:key="switch_age"
         android:icon="@mipmap/age"
         android:summaryOff="Off"

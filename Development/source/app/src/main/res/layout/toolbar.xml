@@ -21,20 +21,19 @@
             android:layout_height="40dp"
             android:orientation="horizontal"
             android:layout_weight="1"
-            android:gravity="center||left"
+            android:gravity="center|left"
             >
             <ImageView
-                android:id="@+id/getPhotasdo"
+                android:id="@+id/getPhotoGalary"
                 android:layout_width="80dp"
                 android:layout_height="42dp"
-                android:layout_alignTop="@+id/takePhoto"
+                android:layout_alignTop="@+id/getPhotoGalary"
                 android:layout_gravity="left|bottom"
                 android:paddingRight="40dp"
                 android:layout_toStartOf="@+id/takePhoto"
                 android:clickable="true"
-                android:onClick="getPhotoToDetect"
                 android:src="@drawable/photos"
-                tools:ignore="OnClick" />
+                 />
         </LinearLayout>
         <LinearLayout
             android:layout_width="wrap_content"
@@ -50,16 +49,15 @@
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentTop="true"
                 android:clickable="true"
-                android:onClick="takePhotoToStore"
                 android:src="@drawable/takeaphoto"
-                tools:ignore="OnClick" />
+                 />
         </LinearLayout>
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:orientation="horizontal"
             android:layout_weight="1"
-            android:gravity="center||right"
+            android:gravity="center|right"
             android:layout_marginRight="15dp"
             >
             <ImageView

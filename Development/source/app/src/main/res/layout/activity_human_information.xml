@@ -147,7 +147,7 @@
                                 android:paddingLeft="10dp"
                                 android:textColor="@color/blackColor"
                                 android:textSize="17dp"
-                                android:text="asdasdadd"
+                                android:text=""
                                 />
                         </LinearLayout>
                         <LinearLayout
@@ -170,7 +170,7 @@
                                 android:paddingLeft="10dp"
                                 android:textColor="@color/blackColor"
                                 android:textSize="17dp"
-                                android:text="asdasddsa"
+                                android:text=""
                                 />
                             />
                         </LinearLayout>
@@ -184,7 +184,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:orientation="horizontal"
-                                android:gravity="center||left"
+                                android:gravity="center|left"
                                 >
                                 <ImageView
                                     android:layout_width="20dp"
@@ -295,7 +295,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:layout_gravity="bottom||center"
+                android:layout_gravity="bottom|center"
                 android:orientation="horizontal">
                 <Button
                     android:id="@+id/back_screen"
@@ -319,7 +319,7 @@
         </FrameLayout>
 
     </LinearLayout>
-    <android.support.design.widget.NavigationView
+  <!--  <android.support.design.widget.NavigationView
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
@@ -327,6 +327,6 @@
         app:menu="@menu/drawer_menu"
         android:id="@+id/nav_view">
 
-    </android.support.design.widget.NavigationView>
+    </android.support.design.widget.NavigationView>-->
 
 </android.support.v4.widget.DrawerLayout>
