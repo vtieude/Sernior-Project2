@@ -75,7 +75,7 @@ public interface ClassifierEmotion {
             }
 
             if (confidence != null) {
-                resultString += String.valueOf(id);
+                resultString += String.valueOf(confidence);
             }
 //
 //            if (location != null) {

@@ -118,6 +118,7 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
     private FaceDetectThread detectThread = null;
     private int prevSettingWidth;
     private int prevSettingHeight;
+    private ImageView imageViewAvatart;
     private android.media.FaceDetector fdet;
 
     private FaceResult faces[];
@@ -202,6 +203,7 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
         saveImageDetect = findViewById(R.id.takePhoto);
         textcharacterRecognize = findViewById(R.id.text_characteristic);
         textEmotion = findViewById(R.id.text_for_emotion);
+        imageViewAvatart = findViewById(R.id.imageViewAvatar);
         saveImageDetect.setEnabled(false);
         // Create and Start the OrientationListener:
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
