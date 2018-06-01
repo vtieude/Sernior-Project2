@@ -857,7 +857,7 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
 
                         Mat rgb = new Mat(faceCroped.getHeight(), faceCroped.getWidth(), CvType.CV_8UC3);
                         cvtColor(rgba, rgb, Imgproc.COLOR_RGBA2BGR, 3);
-                        final String text = findLandmark(rgb.getNativeObjAddr());
+                        findLandmark(rgb.getNativeObjAddr());
 //
 //                        runOnUiThread(new Runnable() {
 //                            @Override
@@ -872,7 +872,7 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
                         faces[i].setBitmapFaceCrop(faceCroped);
                         final int finalI1 = i;
                         if (faceCroped != null) {
-                            Bitmap bmp32 = Bitmap.createScaledBitmap(faceCroped, INPUT_SIZE, INPUT_SIZE, false);
+                            Bitmap bmp32 = Bitmap.createScaledBitmap(bmp_crop, INPUT_SIZE, INPUT_SIZE, false);
                             faces[i].setAttractive(humanModel.getAttracttiveHuman().recognizeImage(bmp32));
                             faces[i].setTrustworthy(humanModel.getTrustworthyHuman().recognizeImage(bmp32));
                             faces[i].setDominant(humanModel.getDominantHuman().recognizeImage(bmp32));
@@ -960,7 +960,7 @@ public final class CameraDetectActivity extends AppCompatActivity implements Sur
         return bmpGrayscale;
     }
     public native void drawLine(long img);
-    public native String findLandmark(long img);
+    public native void findLandmark(long img);
 }
 
 

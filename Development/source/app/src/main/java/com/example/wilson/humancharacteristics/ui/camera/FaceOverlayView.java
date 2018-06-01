@@ -35,10 +35,7 @@ public class FaceOverlayView extends View {
     private int mCurrentColorIndex = 0;
 
     private final int COLOR_CHOICES[] = {
-            Color.RED,
-            Color.YELLOW,
             Color.GREEN,
-            Color.GRAY
     };
 
     public FaceOverlayView(Context context) {

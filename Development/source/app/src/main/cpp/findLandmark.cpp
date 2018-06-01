@@ -175,16 +175,16 @@ void read_csv(const std::string& filename, std::vector<cv::Mat>& images, std::ve
 
 void trainModel(cv::face::LBPHFaceRecognizer* model){
     try {
-            fn_csv = "/sdcard/data/at.txt";
-            read_csv(fn_csv, images, labels, keyName);
-            if (static_cast<int>(images.size())>0 && static_cast<int>(labels.size())>0 && !trainStatus){
-                model->train(images, labels);
-                trainStatus = true;
-            }
-            if (model->empty()){
-                std::cerr << "Error " << std::endl;
-                exit(-1);
-            }
+        fn_csv = "/sdcard/data/at.txt";
+        read_csv(fn_csv, images, labels, keyName);
+        if (static_cast<int>(images.size())>0 && static_cast<int>(labels.size())>0 && !trainStatus){
+            model->train(images, labels);
+            trainStatus = true;
+        }
+        if (model->empty()){
+            std::cerr << "Error " << std::endl;
+            exit(-1);
+        }
 
     } catch (cv::Exception& e) {
         std::cerr << "Error opening file \"" << fn_csv << "\". Reason: " << e.msg << std::endl;
@@ -209,7 +209,7 @@ void drawFacemarks(cv::InputOutputArray image, cv::InputArray points, cv::Scalar
 
 extern "C" {
 
-JNIEXPORT jstring JNICALL
+JNIEXPORT void JNICALL
 Java_com_example_wilson_humancharacteristics_CameraDetect_CameraDetectActivity_findLandmark(
         JNIEnv *env,
         jobject /* this */,
@@ -226,7 +226,8 @@ Java_com_example_wilson_humancharacteristics_CameraDetect_CameraDetectActivity_f
         loadModelStatus = true;
     }
     else{
-        facemark->getFaces((*frame),faces);
+//        facemark->getFaces((*frame),faces);
+        faces.push_back(cv::Rect(0, 0, (*frame).rows, (*frame).cols));
         if(facemark->fit((*frame),faces, shapes)) {
             for (size_t i = 0; i < faces.size(); i++) {
                 cv::Point2f leftEye = get_left_eye_centroid(shapes[i]);
@@ -250,7 +251,6 @@ Java_com_example_wilson_humancharacteristics_CameraDetect_CameraDetectActivity_f
         faces.clear();
     }
     (*frame) = dst.clone();
-    return env->NewStringUTF(status.c_str());
 }
 
 JNIEXPORT void JNICALL

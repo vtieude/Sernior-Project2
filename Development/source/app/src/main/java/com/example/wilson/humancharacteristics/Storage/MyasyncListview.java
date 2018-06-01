@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.SystemClock;
 import android.support.v7.app.AlertDialog;
+import android.text.Html;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -13,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.PopupMenu;
@@ -98,6 +100,7 @@ public class MyasyncListview extends AsyncTask<Void, HumanModel, Void> implement
         searchNameHuman.setOnQueryTextListener(this);
         searchNameHuman.setSubmitButtonEnabled(true);
         searchNameHuman.setQueryHint(myactivity.getString(R.string.search_name));
+        searchNameHuman.setQueryHint(Html.fromHtml("<font color = #ffffff>" + myactivity.getString(R.string.search_name) + "</font>"));
     }
 
     @Override
